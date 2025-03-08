@@ -1,0 +1,32 @@
+name: Build and Deploy on Release
+
+on:
+  release:
+    types:
+      - published  # Esto se activa cuando se publica una nueva release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'adoptopenjdk'
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Deploy to Nexus
+      env:
+        NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+        NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      run: |
+        mvn deploy -DaltDeploymentRepository=nexus-releases::default::http://localhost:8081/repository/maven-releases/ \
+            -Dnexus.username=${{ secrets.NEXUS_USERNAME }} \
+            -Dnexus.password=${{ secrets.NEXUS_PASSWORD }}
