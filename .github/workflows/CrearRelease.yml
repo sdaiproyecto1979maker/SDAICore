@@ -27,6 +27,6 @@ jobs:
         NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
         NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       run: |
-        mvn deploy -DaltDeploymentRepository=nexus-releases::default::http://192.168.1.117:8081/repository/maven-releases/ \
+        mvn deploy -DaltDeploymentRepository=nexus-releases::default::http://83.39.25.253:8081/repository/maven-releases/ \
             -Dnexus.username=${{ secrets.NEXUS_USERNAME }} \
             -Dnexus.password=${{ secrets.NEXUS_PASSWORD }}
