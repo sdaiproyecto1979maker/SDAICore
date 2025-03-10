@@ -14,7 +14,7 @@ import sdai.com.sis.versionado.versionesdproyecto.accesoadatos.VersionDProyecto;
 
 /**
  * @date 09/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 0.1.0.0-SNAPSHOT
  * @author Sergio_M
  */
 public final class ADNumeroDVersion extends AbstractAccesoADatos {

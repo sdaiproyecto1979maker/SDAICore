@@ -10,7 +10,7 @@ import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 09/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 0.1.0.0-SNAPSHOT
  * @author Sergio_M
  */
 public abstract class BasesDDatos {

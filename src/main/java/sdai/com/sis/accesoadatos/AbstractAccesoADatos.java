@@ -9,7 +9,7 @@ import sdai.com.sis.utilidades.Util;
 
 /**
  * @date 09/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 0.1.0.0-SNAPSHOT
  * @author Sergio_M
  */
 public abstract class AbstractAccesoADatos implements IAccesoADatos {
