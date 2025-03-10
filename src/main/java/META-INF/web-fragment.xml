@@ -20,6 +20,6 @@
 	</listener>
 	<context-param>
 		<param-name>VERSIDCORE</param-name>
-		<param-value>0.0.0.0-RELEASE</param-value>
+		<param-value>0.1.0.0-SNAPSHOT</param-value>
 	</context-param>
 </web-fragment>

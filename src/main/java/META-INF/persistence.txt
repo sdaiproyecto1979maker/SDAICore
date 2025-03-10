@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+	<persistence-unit name="SDAIDATASG" transaction-type="RESOURCE_LOCAL">
+		<shared-cache-mode>NONE</shared-cache-mode>
+	</persistence-unit>
+	<persistence-unit name="SDAICFGASG" transaction-type="RESOURCE_LOCAL">
+		<class>sdai.com.sis.versionado.versionesdproyecto.accesoadatos.VersionDProyecto</class>
+		<class>sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion</class>
+		<shared-cache-mode>NONE</shared-cache-mode>
+	</persistence-unit>
+</persistence>
