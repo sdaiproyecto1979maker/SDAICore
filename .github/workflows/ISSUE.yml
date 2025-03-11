@@ -1,0 +1,27 @@
+name: Notify on New Issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send Email
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: 'Se ha creado la incidencia: ${{ github.event.issue.title }} para el proyecto SDAICore'
+        body: |
+          Titulo: ${{ github.event.issue.title }}
+         
+          Issue body: ${{ github.event.issue.body }}
+
+          URL: ${{ github.event.issue.html_url }}
+        to: 'sdaiproyecto.1979.maker@gmail.com'
+        from: 'sdaiproyecto.1979.maker@gmail.com'
