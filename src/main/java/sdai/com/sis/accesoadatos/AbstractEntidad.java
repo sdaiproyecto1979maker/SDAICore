@@ -1,6 +1,7 @@
 package sdai.com.sis.accesoadatos;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -21,11 +22,29 @@ public abstract class AbstractEntidad implements IEntidad, Serializable {
 	@Column(name = KAplicaciones.AtributosDEntidad.USUARAUDIT, length = 45, nullable = false)
 	private String usuarioDAuditoria;
 
+	@SuppressWarnings("deprecation")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = KAplicaciones.AtributosDEntidad.FECHAAUDIT, nullable = false)
+	private Date fechaDAuditoria;
 
 	protected AbstractEntidad() {
-		// TODO Auto-generated constructor stub
+
+	}
+
+	public String getUsuarioDAuditoria() {
+		return usuarioDAuditoria;
+	}
+
+	public void setUsuarioDAuditoria(String usuarioDAuditoria) {
+		this.usuarioDAuditoria = usuarioDAuditoria;
+	}
+
+	public Date getFechaDAuditoria() {
+		return fechaDAuditoria;
+	}
+
+	public void setFechaDAuditoria(Date fechaDAuditoria) {
+		this.fechaDAuditoria = fechaDAuditoria;
 	}
 
 }
