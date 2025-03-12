@@ -1,5 +1,7 @@
 package sdai.com.sis.versionado.elementosCFG;
 
+import org.w3c.dom.Node;
+
 /**
  * @date 11/03/2025
  * @since VERSIONDCOREENCURSO
@@ -7,8 +9,8 @@ package sdai.com.sis.versionado.elementosCFG;
  */
 public final class ElementoCFG extends AbstractElementoCFG {
 
-	public ElementoCFG() {
-
+	ElementoCFG(Node root) {
+		super(root);
 	}
 
 }

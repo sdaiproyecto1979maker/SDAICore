@@ -4,6 +4,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.w3c.dom.Node;
+
+import sdai.com.sis.xml.DocumentoXML;
+
 /**
  * @date 11/03/2025
  * @since VERSIONDCOREENCURSO
@@ -34,6 +38,17 @@ public final class ElementosCFG {
 
 	private void load() throws Exception {
 		InputStream inputStream = ElementosCFG.class.getResourceAsStream(PATH);
+		DocumentoXML documentoXML = new DocumentoXML(inputStream);
+		Node root = documentoXML.getRoot();
+		Node[] nodes = DocumentoXML.getDescendencia(root);
+		for (Node node : nodes) {
+			IElementoCFG elementoCFG = new ElementoCFG(node);
+			this.elementosCFG.add(elementoCFG);
+		}
+	}
+
+	public List<IElementoCFG> getElementosCFG() {
+		return elementosCFG;
 	}
 
 }

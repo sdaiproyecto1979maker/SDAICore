@@ -7,4 +7,7 @@ package sdai.com.sis.versionado.elementosCFG;
  */
 public interface IElementoCFG {
 
+	String getCodigoDElemento();
+
+	String getFabricaDElemento();
 }
