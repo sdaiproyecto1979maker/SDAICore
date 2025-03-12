@@ -6,9 +6,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.w3c.dom.Node;
 
+import sdai.com.sis.utilidades.Transform;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplicacion;
 import sdai.com.sis.xml.DocumentoXML;
@@ -61,27 +63,69 @@ public final class ProyectosDAplicacion {
 	}
 
 	private ProyectoDAplicacion getCreateProyectoDAplicacion(IProyecto proyecto) throws Exception {
-		// TODO: Pendiente desarrollar las conexiones de la aplicación
 		String codigoDProyectoDAplicacion = proyecto.getCodigoDProyecto();
 		ProyectoDAplicacion proyectoDAplicacion = ProyectoDAplicacion.getInstancia(codigoDProyectoDAplicacion);
 		if (proyectoDAplicacion == null) {
-			// TODO: Crear el proyecto de aplicación
+			ProyectoDAplicacion.createInstancia(codigoDProyectoDAplicacion);
+			proyectoDAplicacion = ProyectoDAplicacion.getInstancia(codigoDProyectoDAplicacion);
 		}
-		// TODO: Crear o instanciar un número de versión en el caso de que no este
-		// asociado a el proyecto de aplicacion. En el caso de no estar asociado
-		// actualizar el proyecto de aplicacion con el numero de versión añadido
-		return null;
+		Boolean existeNumeroDVersion = existeNumeroDVersion(proyecto, proyectoDAplicacion);
+		if (!existeNumeroDVersion) {
+			String numeroVersion = proyecto.getNumeroDVersion();
+			Integer numeroDSituacion = proyectoDAplicacion.getNumerosDVersion().size();
+			NumeroDVersion.createInstancia(numeroVersion, numeroDSituacion);
+			NumeroDVersion numeroDVersion = NumeroDVersion.getInstancia(numeroVersion, codigoDProyectoDAplicacion);
+			numeroDVersion.setProyectoDAplicacion(proyectoDAplicacion);
+			proyectoDAplicacion.getNumerosDVersion().add(numeroDVersion);
+			ProyectoDAplicacion.updateInstancia(proyectoDAplicacion);
+		}
+		return proyectoDAplicacion;
 	}
 
-	private void ordenarNumerosDVersion(ProyectoDAplicacion proyectoDAplicacion) {
+	// TODO: Hacer mas eficiente este metodo
+	private Boolean existeNumeroDVersion(IProyecto proyecto, ProyectoDAplicacion proyectoDAplicacion) {
+		String numeroVersion = "";
+		String numeroDVersion = proyecto.getNumeroDVersion();
+		StringTokenizer stringTokenizer = new StringTokenizer(numeroDVersion, "-");
+		Integer contador = Integer.valueOf(0);
+		while (stringTokenizer.hasMoreElements()) {
+			if (contador.equals(Integer.valueOf(0)))
+				numeroVersion = stringTokenizer.nextToken();
+		}
+		Map<Integer, Integer> almacen = new HashMap<Integer, Integer>();
+		stringTokenizer = new StringTokenizer(numeroVersion, ".");
+		contador = Integer.valueOf(1);
+		while (stringTokenizer.hasMoreElements()) {
+			almacen.put(contador, Transform.toInteger(stringTokenizer.nextToken()));
+			contador++;
+		}
+		List<NumeroDVersion> numerosDVersion = proyectoDAplicacion.getNumerosDVersion();
+		for (NumeroDVersion instancia : numerosDVersion) {
+			Integer versionDRelease = instancia.getVersionDRelease();
+			Integer versionDFeature = instancia.getVersionDFeature();
+			Integer versionDFix = instancia.getVersionDFix();
+			Integer versionDHotfix = instancia.getVersionDHotfix();
+			if (versionDRelease.equals(almacen.get(Integer.valueOf(1))) && versionDFeature.equals(almacen.get(Integer.valueOf(2))) && versionDFix.equals(almacen.get(Integer.valueOf(3)))
+					&& versionDHotfix.equals(almacen.get(Integer.valueOf(4)))) {
+				return Boolean.valueOf(true);
+			}
+		}
+		return Boolean.valueOf(false);
+	}
+
+	// TODO: Mejorar el metodo para no coger una conexion por cada actualizacion
+	private void ordenarNumerosDVersion(ProyectoDAplicacion proyectoDAplicacion) throws Exception {
 		List<NumeroDVersion> numerosDVersion = proyectoDAplicacion.getNumerosDVersion();
 		Collections.sort(numerosDVersion);
 		for (Integer i = Integer.valueOf(1); i <= numerosDVersion.size(); i++) {
 			NumeroDVersion numeroDVersion = numerosDVersion.get(i - 1);
 			numeroDVersion.setNumeroDSituacion(i);
+			NumeroDVersion.updateInstancia(numeroDVersion);
 		}
-		// TODO: Actualizar los números de versióncuando se hayan desarrollado las
-		// conexiones a la base de datos
+	}
+
+	public List<IProyecto> getProyectos() {
+		return proyectos;
 	}
 
 	public ProyectoDAplicacion[] getProyectosDAplicacion() {

@@ -77,6 +77,10 @@ public abstract class KVersionado {
 			 * aplicación
 			 */
 			public static final String SNUVER0000 = "SNUVER0000";
+			/**
+			 * Obtiene un número de versión por su identificador
+			 */
+			public static final String SNUVER0001 = "SNUVER0001";
 		}
 	}
 

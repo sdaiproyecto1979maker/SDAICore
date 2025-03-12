@@ -1,5 +1,9 @@
 package sdai.com.sis.versionado.numerosdversion.accesoadatos;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +15,9 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidad;
+import sdai.com.sis.conexiones.IdConexion;
+import sdai.com.sis.utilidades.Fecha;
+import sdai.com.sis.utilidades.Transform;
 import sdai.com.sis.versionado.KVersionado;
 import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplicacion;
 
@@ -22,7 +29,8 @@ import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplica
 @Entity
 @Table(name = KVersionado.KNumerosDVersion.NOMBRTABLA)
 @NamedQueries({
-		@NamedQuery(name = KVersionado.KNumerosDVersion.NamedQueries.SNUVER0000, query = "SELECT N FROM NumeroDVersion N WHERE N.versionDRelease =:VERRELEASE AND N.versionDFeature =:VERFEATURE AND N.versionDFix =:VERSIONFIX AND N.versionDHotfix =:VERSHOTFIX AND N.proyectoDAplicacion.codigoDProyectoDAplicacion =:CODPROYECT") })
+		@NamedQuery(name = KVersionado.KNumerosDVersion.NamedQueries.SNUVER0000, query = "SELECT N FROM NumeroDVersion N WHERE N.versionDRelease =:VERRELEASE AND N.versionDFeature =:VERFEATURE AND N.versionDFix =:VERSIONFIX AND N.versionDHotfix =:VERSHOTFIX AND N.proyectoDAplicacion.codigoDProyectoDAplicacion =:CODPROYECT"),
+		@NamedQuery(name = KVersionado.KNumerosDVersion.NamedQueries.SNUVER0001, query = "SELECT N FROM NumeroDVersion N WHERE N.identificador =:IDNUMEVERS ") })
 public final class NumeroDVersion extends AbstractEntidad implements Comparable<NumeroDVersion> {
 
 	private static final long serialVersionUID = 1L;
@@ -62,9 +70,59 @@ public final class NumeroDVersion extends AbstractEntidad implements Comparable<
 	}
 
 	public static NumeroDVersion getInstancia(String numeroDVersion, String codigoDProyectoDAplicacion) throws Exception {
-		// TODO: Desarrollar el metodo cuando se hayan desarrollado las conexiones a la
-		// base de datos
-		return null;
+		ADNumeroDVersion adatos = new ADNumeroDVersion();
+		NumeroDVersion instancia = adatos.getNumeroDVersion(numeroDVersion, codigoDProyectoDAplicacion);
+		return instancia;
+	}
+
+	// TODO: Eliminar este metodo cuando se prepare el nodo de reflexion y la
+	// fabrica y optimización del mismo
+	public static void createInstancia(String numeroDVersion, Integer numeroDSituacion) throws Exception {
+		IdConexion idConexion = IdConexion.getInstancia(IdConexion.CONEXCONFI);
+		String idDConexion = idConexion.getIdDConexion();
+		NumeroDVersion instancia = new NumeroDVersion();
+		instancia.setNumeroDSituacion(numeroDSituacion);
+		Boolean swRelease = Boolean.valueOf(false);
+		String numeroVersion = "";
+		StringTokenizer stringTokenizer = new StringTokenizer(numeroDVersion, "-");
+		Integer contador = Integer.valueOf(0);
+		while (stringTokenizer.hasMoreElements()) {
+			if (contador.equals(Integer.valueOf(0)))
+				numeroVersion = stringTokenizer.nextToken();
+			else
+				swRelease = stringTokenizer.nextToken().equals("RELEASE");
+			contador++;
+		}
+		Map<Integer, Integer> almacen = new HashMap<Integer, Integer>();
+		stringTokenizer = new StringTokenizer(numeroVersion, ".");
+		contador = Integer.valueOf(1);
+		while (stringTokenizer.hasMoreElements()) {
+			almacen.put(contador, Transform.toInteger(stringTokenizer.nextToken()));
+			contador++;
+		}
+		instancia.setVersionDRelease(almacen.get(Integer.valueOf(1)));
+		instancia.setVersionDFeature(almacen.get(Integer.valueOf(2)));
+		instancia.setVersionDFix(almacen.get(Integer.valueOf(3)));
+		instancia.setVersionDHotfix(almacen.get(Integer.valueOf(4)));
+		instancia.setSwRelease(swRelease);
+		instancia.setSwInstalada(Boolean.valueOf(false));
+		instancia.setUsuarioDAuditoria("USUAREXPLO");
+		instancia.setFechaDAuditoria(Fecha.getFechaDSistema().toDate());
+		ADNumeroDVersion adatos = new ADNumeroDVersion(idDConexion);
+		adatos.createNumeroDVersion(instancia);
+		idConexion.doCommit();
+		idConexion.liberarConexion();
+	}
+
+	// TODO: Eliminar este metodo cuando se prepare el nodo de reflexion y la
+	// fabrica
+	public static void updateInstancia(NumeroDVersion instancia) throws Exception {
+		IdConexion idConexion = IdConexion.getInstancia(IdConexion.CONEXCONFI);
+		String idDConexion = idConexion.getIdDConexion();
+		ADNumeroDVersion adatos = new ADNumeroDVersion(idDConexion);
+		adatos.updateNumeroDVersion(instancia);
+		idConexion.doCommit();
+		idConexion.liberarConexion();
 	}
 
 	public Long getIdentificador() {

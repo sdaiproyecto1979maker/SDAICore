@@ -14,6 +14,8 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidad;
+import sdai.com.sis.conexiones.IdConexion;
+import sdai.com.sis.utilidades.Fecha;
 import sdai.com.sis.versionado.KVersionado;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 
@@ -46,9 +48,35 @@ public final class ProyectoDAplicacion extends AbstractEntidad {
 	}
 
 	public static ProyectoDAplicacion getInstancia(String codigoDProyectoDAplicacion) throws Exception {
-		// TODO: Desarrollar el metodo cuando se hayan desarrollado las conexiones a la
-		// base de datos
-		return null;
+		ADProyectoDAplicacion adatos = new ADProyectoDAplicacion();
+		ProyectoDAplicacion instancia = adatos.getProyectoDAplicacion(codigoDProyectoDAplicacion);
+		return instancia;
+	}
+
+	// TODO: Eliminar este metodo cuando se prepare el nodo de reflexion y la
+	// fabrica
+	public static void createInstancia(String codigoDProyectoDAplicacion) throws Exception {
+		IdConexion idConexion = IdConexion.getInstancia(IdConexion.CONEXCONFI);
+		String idDConexion = idConexion.getIdDConexion();
+		ProyectoDAplicacion instancia = new ProyectoDAplicacion();
+		instancia.setCodigoDProyectoDAplicacion(codigoDProyectoDAplicacion);
+		instancia.setUsuarioDAuditoria("USUAREXPLO");
+		instancia.setFechaDAuditoria(Fecha.getFechaDSistema().toDate());
+		ADProyectoDAplicacion adatos = new ADProyectoDAplicacion(idDConexion);
+		adatos.createProyectoDAplicacion(instancia);
+		idConexion.doCommit();
+		idConexion.liberarConexion();
+	}
+
+	// TODO: Eliminar este metodo cuando se prepare el nodo de reflexion y la
+	// fabrica
+	public static void updateInstancia(ProyectoDAplicacion instancia) throws Exception {
+		IdConexion idConexion = IdConexion.getInstancia(IdConexion.CONEXCONFI);
+		String idDConexion = idConexion.getIdDConexion();
+		ADProyectoDAplicacion adatos = new ADProyectoDAplicacion(idDConexion);
+		adatos.updateProyectoDAplicacion(instancia);
+		idConexion.doCommit();
+		idConexion.liberarConexion();
 	}
 
 	public Long getIdentificador() {
