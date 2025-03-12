@@ -2,12 +2,14 @@ package sdai.com.sis.versionado.proyectosdaplicacion;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Node;
 
+import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplicacion;
 import sdai.com.sis.xml.DocumentoXML;
 
@@ -53,6 +55,7 @@ public final class ProyectosDAplicacion {
 			IProyecto proyecto = new Proyecto(node);
 			String codigoDProyecto = proyecto.getCodigoDProyecto();
 			ProyectoDAplicacion proyectoDAplicacion = getCreateProyectoDAplicacion(proyecto);
+			ordenarNumerosDVersion(proyectoDAplicacion);
 			this.almacenDProyectos.put(codigoDProyecto, proyectoDAplicacion);
 		}
 	}
@@ -68,6 +71,17 @@ public final class ProyectosDAplicacion {
 		// asociado a el proyecto de aplicacion. En el caso de no estar asociado
 		// actualizar el proyecto de aplicacion con el numero de versión añadido
 		return null;
+	}
+
+	private void ordenarNumerosDVersion(ProyectoDAplicacion proyectoDAplicacion) {
+		List<NumeroDVersion> numerosDVersion = proyectoDAplicacion.getNumerosDVersion();
+		Collections.sort(numerosDVersion);
+		for (Integer i = Integer.valueOf(1); i <= numerosDVersion.size(); i++) {
+			NumeroDVersion numeroDVersion = numerosDVersion.get(i - 1);
+			numeroDVersion.setNumeroDSituacion(i);
+		}
+		// TODO: Actualizar los números de versióncuando se hayan desarrollado las
+		// conexiones a la base de datos
 	}
 
 	public ProyectoDAplicacion[] getProyectosDAplicacion() {
