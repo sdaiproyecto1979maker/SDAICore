@@ -2,6 +2,7 @@ package sdai.com.sis.versionado.elementosCFG;
 
 import org.w3c.dom.Node;
 
+import sdai.com.sis.versionado.KVersionado;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
@@ -11,9 +12,6 @@ import sdai.com.sis.xml.DocumentoXML;
  */
 public abstract class AbstractElementoCFG implements IElementoCFG {
 
-	private static final String CODELEMENT = "CODELEMENT";
-	private static final String FBKELEMENT = "FBKELEMENT";
-
 	private final Node root;
 
 	protected AbstractElementoCFG(Node root) {
@@ -22,12 +20,12 @@ public abstract class AbstractElementoCFG implements IElementoCFG {
 
 	@Override
 	public String getCodigoDElemento() {
-		return DocumentoXML.getStringValueNodeDescendencia(this.root, CODELEMENT);
+		return DocumentoXML.getStringValueNodeDescendencia(this.root, KVersionado.KElementosCFG.CODELEMENT);
 	}
 
 	@Override
 	public String getFabricaDElemento() {
-		return DocumentoXML.getStringValueNodeDescendencia(this.root, FBKELEMENT);
+		return DocumentoXML.getStringValueNodeDescendencia(this.root, KVersionado.KElementosCFG.FBKELEMENT);
 	}
 
 }
