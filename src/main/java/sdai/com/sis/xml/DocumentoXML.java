@@ -11,6 +11,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import sdai.com.sis.utilidades.Transform;
+
 /**
  * @date 11/03/2025
  * @since VERSIONDCOREENCURSO
@@ -69,6 +71,11 @@ public final class DocumentoXML {
 	public static String getStringValueNodeDescendencia(Node root, String tagName) {
 		Node node = DocumentoXML.getNodeDescendencia(root, tagName);
 		return node == null ? "" : node.getTextContent();
+	}
+
+	public static Integer getIntegerValueNodeDescendencia(Node root, String tagName) {
+		Node node = DocumentoXML.getNodeDescendencia(root, tagName);
+		return node == null ? Integer.valueOf(0) : Transform.toInteger(node.getTextContent());
 	}
 
 }
