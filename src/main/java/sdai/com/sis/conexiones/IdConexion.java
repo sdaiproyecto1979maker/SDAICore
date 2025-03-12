@@ -67,28 +67,28 @@ public final class IdConexion {
 		return instancia;
 	}
 
-	public List<IEntidad> ejecutarConsulta(IdConexion idConexion, IdQuery idQuery) throws Exception {
+	public List<IEntidad> ejecutarConsulta(IdQuery idQuery) throws Exception {
 		PoolDConexiones poolDConexiones = PoolDConexiones.getInstancia(this.entornoDConexion);
 		List<IEntidad> resultados = poolDConexiones.ejecutarConsulta(this, idQuery);
 		return resultados;
 	}
 
-	public void ejecutarPersist(IdConexion idConexion, IEntidad entidad) throws Exception {
+	public void ejecutarPersist(IEntidad entidad) throws Exception {
 		PoolDConexiones poolDConexiones = PoolDConexiones.getInstancia(this.entornoDConexion);
 		poolDConexiones.ejecutarPersist(this, entidad);
 	}
 
-	public void ejecutarMerge(IdConexion idConexion, IEntidad entidad) throws Exception {
+	public void ejecutarMerge(IEntidad entidad) throws Exception {
 		PoolDConexiones poolDConexiones = PoolDConexiones.getInstancia(this.entornoDConexion);
 		poolDConexiones.ejecutarMerge(this, entidad);
 	}
 
-	public void ejecutarRemove(IdConexion idConexion, IEntidad entidad) throws Exception {
+	public void ejecutarRemove(IEntidad entidad) throws Exception {
 		PoolDConexiones poolDConexiones = PoolDConexiones.getInstancia(this.entornoDConexion);
 		poolDConexiones.ejecutarRemove(this, entidad);
 	}
 
-	public void doCommit(IdConexion idConexion) throws Exception {
+	public void doCommit() throws Exception {
 		PoolDConexiones poolDConexiones = PoolDConexiones.getInstancia(this.entornoDConexion);
 		poolDConexiones.doCommit(this);
 	}
