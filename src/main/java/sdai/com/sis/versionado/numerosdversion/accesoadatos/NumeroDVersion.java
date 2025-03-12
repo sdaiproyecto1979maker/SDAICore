@@ -1,7 +1,5 @@
 package sdai.com.sis.versionado.numerosdversion.accesoadatos;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import sdai.com.sis.accesoadatos.AbstractEntidad;
 import sdai.com.sis.versionado.KVersionado;
 import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplicacion;
 
@@ -24,7 +23,7 @@ import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplica
 @Table(name = KVersionado.KNumerosDVersion.NOMBRTABLA)
 @NamedQueries({
 		@NamedQuery(name = KVersionado.KNumerosDVersion.NamedQueries.SNUVER0000, query = "SELECT N FROM NumeroDVersion N WHERE N.versionDRelease =:VERRELEASE AND N.versionDFeature =:VERFEATURE AND N.versionDFix =:VERSIONFIX AND N.versionDHotfix =:VERSHOTFIX AND N.proyectoDAplicacion.codigoDProyectoDAplicacion =:CODPROYECT") })
-public final class NumeroDVersion implements Comparable<NumeroDVersion>, Serializable {
+public final class NumeroDVersion extends AbstractEntidad implements Comparable<NumeroDVersion> {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,5 @@
 package sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import sdai.com.sis.accesoadatos.AbstractEntidad;
 import sdai.com.sis.versionado.KVersionado;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 
@@ -26,7 +26,7 @@ import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 @Table(name = KVersionado.KProyectosDAplicacion.KProyectoDAplicacion.NOMBRTABLA)
 @NamedQueries({
 		@NamedQuery(name = KVersionado.KProyectosDAplicacion.KProyectoDAplicacion.NamedQueries.SPRAPL0000, query = "SELECT P FROM ProyectoDAplicacion P WHERE P.codigoDProyectoDAplicacion =:CODPROYECT") })
-public final class ProyectoDAplicacion implements Serializable {
+public final class ProyectoDAplicacion extends AbstractEntidad {
 
 	private static final long serialVersionUID = 1L;
 
