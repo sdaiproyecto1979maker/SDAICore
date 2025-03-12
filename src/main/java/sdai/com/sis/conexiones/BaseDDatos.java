@@ -30,11 +30,9 @@ public final class BaseDDatos {
 	private final Map<String, Object> propiedadesDConexion;
 
 	BaseDDatos(Node root) {
-		// TODO: establecer el entorno de conexión cuando este desarrollado el metodo
-		// que devuelva un integer en la lectura de un fichero XML
+		this.entornoDConexion = DocumentoXML.getIntegerValueNodeDescendencia(root, ENTORCONEX);
 		this.unidadDPersistencia = DocumentoXML.getStringValueNodeDescendencia(root, UNIDPERSIS);
-		// TODO: establecer las conexiones maximas cuando este desarrollado el metodo
-		// que devuelva un integer en la lectura de un fichero XML
+		this.conexionesMaximas = DocumentoXML.getIntegerValueNodeDescendencia(root, CONEXMAXIM);
 		this.propiedadesDConexion = new HashMap<String, Object>();
 		loadPropiedades(root);
 	}
