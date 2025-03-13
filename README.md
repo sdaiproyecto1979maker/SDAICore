@@ -16,6 +16,7 @@
 * Desarrollar los accesos a datos de las aplicaciones
 * Desarrollar la carga de los proyectos de la aplicación
 * Desarrollar las utilidades de reflexión
+* Desarrollar las entidades de configuración
 
 # 0.0.0.0-RELEASE
 * Commit con la configuración inicial
