@@ -18,8 +18,4 @@
 	<listener>
 		<listener-class>sdai.com.sis.sesionesdusuario.SessionListener</listener-class>
 	</listener>
-	<context-param>
-		<param-name>VERSIDCORE</param-name>
-		<param-value>0.0.0.0-RELEASE</param-value>
-	</context-param>
 </web-fragment>

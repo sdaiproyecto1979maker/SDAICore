@@ -1,13 +1,10 @@
 package sdai.com.sis.versionado.numerosdversion.accesoadatos;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import sdai.com.sis.accesoadatos.AbstractAccesoADatos;
 import sdai.com.sis.conexiones.IdQuery;
-import sdai.com.sis.utilidades.Transform;
 import sdai.com.sis.versionado.KVersionado;
+import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
+import sdai.com.sis.versionado.proyectosdaplicacion.IProyecto;
 
 /**
  * @date 12/03/2025
@@ -25,27 +22,13 @@ public final class ADNumeroDVersion extends AbstractAccesoADatos {
 		super(idDConexion);
 	}
 
-	NumeroDVersion getNumeroDVersion(String numeroDVersion, String codigoDProyectoDAplicacion) throws Exception {
-		String numeroVersion = "";
-		StringTokenizer stringTokenizer = new StringTokenizer(numeroDVersion, "-");
-		Integer contador = Integer.valueOf(0);
-		while (stringTokenizer.hasMoreElements()) {
-			if (contador.equals(Integer.valueOf(0)))
-				numeroVersion = stringTokenizer.nextToken();
-		}
-		Map<Integer, Integer> almacen = new HashMap<Integer, Integer>();
-		stringTokenizer = new StringTokenizer(numeroVersion, ".");
-		contador = Integer.valueOf(1);
-		while (stringTokenizer.hasMoreElements()) {
-			almacen.put(contador, Transform.toInteger(stringTokenizer.nextToken()));
-			contador++;
-		}
+	NumeroDVersion getNumeroDVersion(IProyecto proyecto) throws Exception {
 		IdQuery idQuery = new IdQuery(KVersionado.KNumerosDVersion.NamedQueries.SNUVER0000);
-		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERRELEASE, almacen.get(Integer.valueOf(1)));
-		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERFEATURE, almacen.get(Integer.valueOf(2)));
-		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERSIONFIX, almacen.get(Integer.valueOf(3)));
-		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERSHOTFIX, almacen.get(Integer.valueOf(4)));
-		idQuery.addParametroDQuery(KVersionado.KProyectosDAplicacion.KProyectoDAplicacion.AtributosDEntidad.CODPROYECT, codigoDProyectoDAplicacion);
+		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERRELEASE, NumerosDVersionUtil.getVersionRelease(proyecto));
+		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERFEATURE, NumerosDVersionUtil.getVersionFeature(proyecto));
+		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERSIONFIX, NumerosDVersionUtil.getVersionFix(proyecto));
+		idQuery.addParametroDQuery(KVersionado.KNumerosDVersion.AtributosDEntidad.VERSHOTFIX, NumerosDVersionUtil.getVersionHotfix(proyecto));
+		idQuery.addParametroDQuery(KVersionado.KProyectosDAplicacion.KProyectoDAplicacion.AtributosDEntidad.CODPROYECT, proyecto.getCodigoDProyecto());
 		NumeroDVersion entidad = (NumeroDVersion) ejecutarConsultaSimple(idQuery);
 		return entidad;
 	}

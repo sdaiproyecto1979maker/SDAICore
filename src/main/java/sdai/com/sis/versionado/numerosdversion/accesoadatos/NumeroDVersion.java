@@ -1,9 +1,5 @@
 package sdai.com.sis.versionado.numerosdversion.accesoadatos;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,8 +13,9 @@ import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidad;
 import sdai.com.sis.conexiones.IdConexion;
 import sdai.com.sis.utilidades.Fecha;
-import sdai.com.sis.utilidades.Transform;
 import sdai.com.sis.versionado.KVersionado;
+import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
+import sdai.com.sis.versionado.proyectosdaplicacion.IProyecto;
 import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplicacion;
 
 /**
@@ -69,45 +66,28 @@ public final class NumeroDVersion extends AbstractEntidad implements Comparable<
 
 	}
 
-	public static NumeroDVersion getInstancia(String numeroDVersion, String codigoDProyectoDAplicacion) throws Exception {
+	public static NumeroDVersion getInstancia(IProyecto proyecto) throws Exception {
 		ADNumeroDVersion adatos = new ADNumeroDVersion();
-		NumeroDVersion instancia = adatos.getNumeroDVersion(numeroDVersion, codigoDProyectoDAplicacion);
+		NumeroDVersion instancia = adatos.getNumeroDVersion(proyecto);
 		return instancia;
 	}
 
 	// TODO: Eliminar este metodo cuando se prepare el nodo de reflexion y la
-	// fabrica y optimización del mismo
-	public static void createInstancia(String numeroDVersion, Integer numeroDSituacion) throws Exception {
+	// fabrica
+	public static void createInstancia(IProyecto proyecto, ProyectoDAplicacion proyectoDAplicacion) throws Exception {
 		IdConexion idConexion = IdConexion.getInstancia(IdConexion.CONEXCONFI);
 		String idDConexion = idConexion.getIdDConexion();
 		NumeroDVersion instancia = new NumeroDVersion();
-		instancia.setNumeroDSituacion(numeroDSituacion);
-		Boolean swRelease = Boolean.valueOf(false);
-		String numeroVersion = "";
-		StringTokenizer stringTokenizer = new StringTokenizer(numeroDVersion, "-");
-		Integer contador = Integer.valueOf(0);
-		while (stringTokenizer.hasMoreElements()) {
-			if (contador.equals(Integer.valueOf(0)))
-				numeroVersion = stringTokenizer.nextToken();
-			else
-				swRelease = stringTokenizer.nextToken().equals("RELEASE");
-			contador++;
-		}
-		Map<Integer, Integer> almacen = new HashMap<Integer, Integer>();
-		stringTokenizer = new StringTokenizer(numeroVersion, ".");
-		contador = Integer.valueOf(1);
-		while (stringTokenizer.hasMoreElements()) {
-			almacen.put(contador, Transform.toInteger(stringTokenizer.nextToken()));
-			contador++;
-		}
-		instancia.setVersionDRelease(almacen.get(Integer.valueOf(1)));
-		instancia.setVersionDFeature(almacen.get(Integer.valueOf(2)));
-		instancia.setVersionDFix(almacen.get(Integer.valueOf(3)));
-		instancia.setVersionDHotfix(almacen.get(Integer.valueOf(4)));
-		instancia.setSwRelease(swRelease);
+		instancia.setNumeroDSituacion(Integer.valueOf(0));
+		instancia.setVersionDRelease(NumerosDVersionUtil.getVersionRelease(proyecto));
+		instancia.setVersionDFeature(NumerosDVersionUtil.getVersionFeature(proyecto));
+		instancia.setVersionDFix(NumerosDVersionUtil.getVersionFix(proyecto));
+		instancia.setVersionDHotfix(NumerosDVersionUtil.getVersionHotfix(proyecto));
+		instancia.setSwRelease(NumerosDVersionUtil.isVersionRelease(proyecto));
 		instancia.setSwInstalada(Boolean.valueOf(false));
 		instancia.setUsuarioDAuditoria("USUAREXPLO");
 		instancia.setFechaDAuditoria(Fecha.getFechaDSistema().toDate());
+		instancia.setProyectoDAplicacion(proyectoDAplicacion);
 		ADNumeroDVersion adatos = new ADNumeroDVersion(idDConexion);
 		adatos.createNumeroDVersion(instancia);
 		idConexion.doCommit();

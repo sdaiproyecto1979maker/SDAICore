@@ -101,6 +101,7 @@ public final class IdConexion {
 	public void liberarConexion() throws Exception {
 		PoolDConexiones poolDConexiones = PoolDConexiones.getInstancia(this.entornoDConexion);
 		poolDConexiones.liberarConexion(this);
+		IdConexion.almacenDConexiones.remove(this.idDConexion);
 	}
 
 	public Integer getEntornoDConexion() {
