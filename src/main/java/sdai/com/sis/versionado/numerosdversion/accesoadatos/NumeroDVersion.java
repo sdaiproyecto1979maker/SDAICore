@@ -67,8 +67,14 @@ public final class NumeroDVersion extends AbstractEntidad implements Comparable<
 	}
 
 	public static NumeroDVersion getInstancia(IProyecto proyecto) throws Exception {
+		String numeroDVersion = proyecto.getNumeroDVersion();
+		return NumeroDVersion.getInstancia(numeroDVersion, proyecto);
+	}
+
+	public static NumeroDVersion getInstancia(String numeroDVersion, IProyecto proyecto) throws Exception {
 		ADNumeroDVersion adatos = new ADNumeroDVersion();
-		NumeroDVersion instancia = adatos.getNumeroDVersion(proyecto);
+		String codigoDProyectoDAplicacion = proyecto.getCodigoDProyecto();
+		NumeroDVersion instancia = adatos.getNumeroDVersion(numeroDVersion, codigoDProyectoDAplicacion);
 		return instancia;
 	}
 

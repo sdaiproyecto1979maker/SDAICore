@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.w3c.dom.Node;
 
+import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
@@ -44,6 +45,14 @@ public final class ElementosCFG {
 		for (Node node : nodes) {
 			IElementoCFG elementoCFG = new ElementoCFG(node);
 			this.elementosCFG.add(elementoCFG);
+		}
+	}
+
+	public void instalarVersion(NumeroDVersion numeroDVersion, Node root) throws Exception {
+		for (IElementoCFG elementoCFG : this.elementosCFG) {
+			String codigoDElemento = elementoCFG.getCodigoDElemento();
+			Node[] nodes = DocumentoXML.getDescendencia(root, codigoDElemento);
+			elementoCFG.versionar(numeroDVersion, nodes);
 		}
 	}
 

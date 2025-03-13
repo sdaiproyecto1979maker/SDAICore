@@ -34,12 +34,22 @@ public abstract class NumerosDVersionUtil {
 	}
 
 	private static NumeroDVersionAux createNumeroDVersion(String cadena) throws Exception {
-		String[] palabrasGeneral = Util.separarCadena(cadena, Character.valueOf('.'));
-		if (palabrasGeneral.length < 4)
-			// TODO: Corregir cuando se desarrolla el mutliidioma
-			throw new Exception("El número de versión enviado no es correcto.");
-		NumeroDVersionAux numeroDVersionAux = new NumeroDVersionAux(palabrasGeneral);
-		return numeroDVersionAux;
+		String[] palabrasGeneral = Util.separarCadena(cadena, Character.valueOf('-'));
+		if (palabrasGeneral.length == 1) {
+			palabrasGeneral = Util.separarCadena(palabrasGeneral[0], Character.valueOf('.'));
+			if (palabrasGeneral.length < 4)
+				// TODO: Corregir cuando se desarrolla el mutliidioma
+				throw new Exception("El número de versión enviado no es correcto.");
+			NumeroDVersionAux numeroDVersionAux = new NumeroDVersionAux(palabrasGeneral);
+			return numeroDVersionAux;
+		} else {
+			palabrasGeneral = Util.separarCadena(cadena, Character.valueOf('.'));
+			if (palabrasGeneral.length < 4)
+				// TODO: Corregir cuando se desarrolla el mutliidioma
+				throw new Exception("El número de versión enviado no es correcto.");
+			NumeroDVersionAux numeroDVersionAux = new NumeroDVersionAux(palabrasGeneral);
+			return numeroDVersionAux;
+		}
 	}
 
 	public static Integer getVersionRelease(IProyecto proyecto) throws Exception {
@@ -60,6 +70,40 @@ public abstract class NumerosDVersionUtil {
 	public static Integer getVersionHotfix(IProyecto proyecto) throws Exception {
 		NumeroDVersionAux numeroDVersionAux = NumerosDVersionUtil.createNumeroDVersion(proyecto);
 		return numeroDVersionAux.getVersionDHotfix();
+	}
+
+	public static Integer getVersionRelease(String cadena) throws Exception {
+		NumeroDVersionAux numeroDVersionAux = NumerosDVersionUtil.createNumeroDVersion(cadena);
+		return numeroDVersionAux.getVersionDRelease();
+	}
+
+	public static Integer getVersionFeature(String cadena) throws Exception {
+		NumeroDVersionAux numeroDVersionAux = NumerosDVersionUtil.createNumeroDVersion(cadena);
+		return numeroDVersionAux.getVersionDFeature();
+	}
+
+	public static Integer getVersionFix(String cadena) throws Exception {
+		NumeroDVersionAux numeroDVersionAux = NumerosDVersionUtil.createNumeroDVersion(cadena);
+		return numeroDVersionAux.getVersionDFix();
+	}
+
+	public static Integer getVersionHotfix(String cadena) throws Exception {
+		NumeroDVersionAux numeroDVersionAux = NumerosDVersionUtil.createNumeroDVersion(cadena);
+		return numeroDVersionAux.getVersionDHotfix();
+	}
+
+	public static String getCadenaNumeroDVersion(NumeroDVersion numeroDVersion) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(numeroDVersion.getVersionDRelease());
+		stringBuilder.append(".");
+		stringBuilder.append(numeroDVersion.getVersionDFeature());
+		stringBuilder.append(".");
+		stringBuilder.append(numeroDVersion.getVersionDFix());
+		stringBuilder.append(".");
+		stringBuilder.append(numeroDVersion.getVersionDHotfix());
+		stringBuilder.append("-");
+		stringBuilder.append(numeroDVersion.getSwRelease() ? "RELEASE" : "SNAPSHOT");
+		return stringBuilder.toString();
 	}
 
 }
