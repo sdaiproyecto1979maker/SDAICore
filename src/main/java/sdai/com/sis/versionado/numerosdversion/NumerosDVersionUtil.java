@@ -3,6 +3,8 @@ package sdai.com.sis.versionado.numerosdversion;
 import sdai.com.sis.utilidades.Util;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.versionado.proyectosdaplicacion.IProyecto;
+import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
+import sdai.com.sis.versionado.proyectosdaplicacion.accesoadatos.ProyectoDAplicacion;
 
 /**
  * @date 12/03/2025
@@ -104,6 +106,14 @@ public abstract class NumerosDVersionUtil {
 		stringBuilder.append("-");
 		stringBuilder.append(numeroDVersion.getSwRelease() ? "RELEASE" : "SNAPSHOT");
 		return stringBuilder.toString();
+	}
+
+	public static Boolean isVersionDElementoValida(NumeroDVersion numeroDVersion) throws Exception {
+		ProyectoDAplicacion proyectoDAplicacion = numeroDVersion.getProyectoDAplicacion();
+		String codigoDProyectoDAplicacion = proyectoDAplicacion.getCodigoDProyectoDAplicacion();
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersionDProyecto = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		return numeroDVersion.getNumeroDSituacion() <= numeroDVersionDProyecto.getNumeroDSituacion();
 	}
 
 }

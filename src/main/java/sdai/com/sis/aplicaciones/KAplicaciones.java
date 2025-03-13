@@ -13,6 +13,10 @@ public abstract class KAplicaciones {
 		public static final String USUARAUDIT = "USUARAUDIT";
 		/** Fecha de auditoria */
 		public static final String FECHAAUDIT = "FECHAAUDIT";
+		/** Número de situación */
+		public static final String NUMERSITUA = "NUMERSITUA";
+		/** Indicador de entidad activa */
+		public static final String SWENTACTIV = "SWENTACTIV";
 	}
 
 }
