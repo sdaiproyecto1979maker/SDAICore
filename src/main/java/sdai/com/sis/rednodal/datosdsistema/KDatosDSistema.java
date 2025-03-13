@@ -19,6 +19,12 @@ public abstract class KDatosDSistema {
 			/** Código de dato de sistema */
 			public static final String CODIGODATO = "CODIGODATO";
 		}
+
+		public abstract class NamedQueries {
+
+			/** Obtiene un dato de sistema por su código de dato */
+			public static final String SDASIS0000 = "SDASIS0000";
+		}
 	}
 
 }
