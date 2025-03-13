@@ -31,7 +31,8 @@ import sdai.com.sis.xml.DocumentoXML;
  */
 @Entity
 @Table(name = KDatosDSistema.KDatoDSistema.NOMBRTABLA)
-@NamedQueries({ @NamedQuery(name = KDatosDSistema.KDatoDSistema.NamedQueries.SDASIS0000, query = "SELECT D FROM DatoDSistema D WHERE D.codigoDDato =:CODIGODATO") })
+@NamedQueries({ @NamedQuery(name = KDatosDSistema.KDatoDSistema.NamedQueries.SDASIS0000, query = "SELECT D FROM DatoDSistema D WHERE D.codigoDDato =:CODIGODATO"),
+		@NamedQuery(name = KDatosDSistema.KDatoDSistema.NamedQueries.SDASIS0001, query = "SELECT D FROM DatoDSistema D") })
 public final class DatoDSistema extends AbstractEntidadCFG {
 
 	private static final long serialVersionUID = 1L;

@@ -24,6 +24,8 @@ public abstract class KDatosDSistema {
 
 			/** Obtiene un dato de sistema por su código de dato */
 			public static final String SDASIS0000 = "SDASIS0000";
+			/** Obtiene todos los datos de sistema */
+			public static final String SDASIS0001 = "SDASIS0001";
 		}
 	}
 

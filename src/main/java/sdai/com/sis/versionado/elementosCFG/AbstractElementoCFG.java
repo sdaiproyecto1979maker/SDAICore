@@ -2,6 +2,7 @@ package sdai.com.sis.versionado.elementosCFG;
 
 import org.w3c.dom.Node;
 
+import sdai.com.sis.accesoadatos.IAccesoADatosCFG;
 import sdai.com.sis.accesoadatos.IFabricaDEntidadesCFG;
 import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.versionado.KVersionado;
@@ -27,6 +28,21 @@ public abstract class AbstractElementoCFG implements IElementoCFG {
 		Object[] argumentos = { numeroDVersion, nodes };
 		String className = getFabricaDElemento();
 		IFabricaDEntidadesCFG fabricaDEntidadesCFG = (IFabricaDEntidadesCFG) Reflexion.createInstancia(className, tipos, argumentos);
+		fabricaDEntidadesCFG.versionar();
+	}
+
+	@Override
+	public void loadCFG() throws Exception {
+		String className = getClaseDAccesoADatos();
+		IAccesoADatosCFG accesoADatos = (IAccesoADatosCFG) Reflexion.createInstancia(className);
+		accesoADatos.generateElementosDCache();
+	}
+
+	@Override
+	public void loadVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
+		String className = getClaseDAccesoADatos();
+		IAccesoADatosCFG accesoADatos = (IAccesoADatosCFG) Reflexion.createInstancia(className);
+		accesoADatos.generateElementosVersionEnCurso(codigoDProyectoDAplicacion, nodes);
 	}
 
 	@Override
@@ -37,6 +53,11 @@ public abstract class AbstractElementoCFG implements IElementoCFG {
 	@Override
 	public String getFabricaDElemento() {
 		return DocumentoXML.getStringValueNodeDescendencia(this.root, KVersionado.KElementosCFG.FBKELEMENT);
+	}
+
+	@Override
+	public String getClaseDAccesoADatos() {
+		return DocumentoXML.getStringValueNodeDescendencia(this.root, KVersionado.KElementosCFG.CLSACDATOS);
 	}
 
 }

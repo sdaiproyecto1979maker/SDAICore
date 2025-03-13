@@ -12,4 +12,8 @@ public interface IVersionCFG {
 	void establecerVersionesInstalables();
 
 	void versionar() throws Exception;
+
+	void loadCFG() throws Exception;
+
+	void loadVersionEnCurso() throws Exception;
 }

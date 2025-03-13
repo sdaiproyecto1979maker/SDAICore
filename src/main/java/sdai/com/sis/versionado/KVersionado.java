@@ -13,6 +13,8 @@ public abstract class KVersionado {
 		public static final String CODELEMENT = "CODELEMENT";
 		/** Fabrica de elemento de CFG */
 		public static final String FBKELEMENT = "FBKELEMENT";
+		/** Clase de acceso a datos */
+		public static final String CLSACDATOS = "CLSACDATOS";
 	}
 
 	public abstract class KProyectosDAplicacion {

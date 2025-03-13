@@ -56,6 +56,14 @@ public final class ElementosCFG {
 		}
 	}
 
+	public void loadVersionEnCurso(String codigoDProyectoDAplicacion, Node root) throws Exception {
+		for (IElementoCFG elementoCFG : this.elementosCFG) {
+			String codigoDElemento = elementoCFG.getCodigoDElemento();
+			Node[] nodes = DocumentoXML.getDescendencia(root, codigoDElemento);
+			elementoCFG.loadVersionEnCurso(codigoDProyectoDAplicacion, nodes);
+		}
+	}
+
 	public List<IElementoCFG> getElementosCFG() {
 		return elementosCFG;
 	}

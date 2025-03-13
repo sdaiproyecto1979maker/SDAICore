@@ -33,4 +33,9 @@ public abstract class CacheDRednodal {
 		}
 	}
 
+	public static Boolean existeInstancia(KeyCache keyCache) {
+		String key = keyCache.getKeyCache();
+		return CacheDRednodal.almacenDInstancias.containsKey(key);
+	}
+
 }
