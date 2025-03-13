@@ -78,4 +78,9 @@ public final class DocumentoXML {
 		return node == null ? Integer.valueOf(0) : Transform.toInteger(node.getTextContent());
 	}
 
+	public static Boolean getBooleanValueNodeDescendencia(Node root, String tagName) {
+		Node node = DocumentoXML.getNodeDescendencia(root, tagName);
+		return node == null ? Boolean.valueOf(false) : Transform.toBoolean(node.getTextContent());
+	}
+
 }

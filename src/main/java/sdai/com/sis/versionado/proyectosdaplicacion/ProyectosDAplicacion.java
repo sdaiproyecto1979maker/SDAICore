@@ -25,10 +25,12 @@ public final class ProyectosDAplicacion {
 	private static ProyectosDAplicacion instancia;
 	private final List<IProyecto> proyectos;
 	private final Map<String, ProyectoDAplicacion> almacenDProyectos;
+	private final Map<String, NumeroDVersion> numerosDVersion;
 
 	private ProyectosDAplicacion() {
 		this.proyectos = new ArrayList<IProyecto>();
 		this.almacenDProyectos = new HashMap<String, ProyectoDAplicacion>();
+		this.numerosDVersion = new HashMap<String, NumeroDVersion>();
 	}
 
 	public static ProyectosDAplicacion getInstancia() throws Exception {
@@ -56,7 +58,9 @@ public final class ProyectosDAplicacion {
 			String codigoDProyecto = proyecto.getCodigoDProyecto();
 			ProyectoDAplicacion proyectoDAplicacion = getCreateProyectoDAplicacion(proyecto);
 			ordenarNumerosDVersion(proyectoDAplicacion);
+			NumeroDVersion numeroDVersion = NumeroDVersion.getInstancia(proyecto);
 			this.almacenDProyectos.put(codigoDProyecto, proyectoDAplicacion);
+			this.numerosDVersion.put(codigoDProyecto, numeroDVersion);
 		}
 	}
 
@@ -100,6 +104,11 @@ public final class ProyectosDAplicacion {
 	public ProyectoDAplicacion getProyectoDAplicacion(String codigoDProyecto) {
 		ProyectoDAplicacion proyectoDAplicacion = this.almacenDProyectos.get(codigoDProyecto);
 		return proyectoDAplicacion;
+	}
+
+	public NumeroDVersion getNumeroDVersion(String codigoDProyectoDAplicacion) {
+		NumeroDVersion numeroDVersion = this.numerosDVersion.get(codigoDProyectoDAplicacion);
+		return numeroDVersion;
 	}
 
 }

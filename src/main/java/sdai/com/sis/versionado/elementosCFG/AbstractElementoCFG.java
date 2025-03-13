@@ -2,7 +2,10 @@ package sdai.com.sis.versionado.elementosCFG;
 
 import org.w3c.dom.Node;
 
+import sdai.com.sis.accesoadatos.IFabricaDEntidadesCFG;
+import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.versionado.KVersionado;
+import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
@@ -16,6 +19,14 @@ public abstract class AbstractElementoCFG implements IElementoCFG {
 
 	protected AbstractElementoCFG(Node root) {
 		this.root = root;
+	}
+
+	@Override
+	public void versionar(NumeroDVersion numeroDVersion, Node[] nodes) throws Exception {
+		Class<?>[] tipos = { NumeroDVersion.class, Node[].class };
+		Object[] argumentos = { numeroDVersion, nodes };
+		String className = getFabricaDElemento();
+		IFabricaDEntidadesCFG fabricaDEntidadesCFG = (IFabricaDEntidadesCFG) Reflexion.createInstancia(className, tipos, argumentos);
 	}
 
 	@Override

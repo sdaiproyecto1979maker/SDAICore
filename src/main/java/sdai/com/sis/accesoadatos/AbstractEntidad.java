@@ -3,11 +3,15 @@ package sdai.com.sis.accesoadatos;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.w3c.dom.Node;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import sdai.com.sis.aplicaciones.KAplicaciones;
+import sdai.com.sis.utilidades.Fecha;
+import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 12/03/2025
@@ -29,6 +33,13 @@ public abstract class AbstractEntidad implements IEntidad, Serializable {
 
 	protected AbstractEntidad() {
 
+	}
+
+	@Override
+	public void addNode(Node root) {
+		this.usuarioDAuditoria = DocumentoXML.getStringValueNodeDescendencia(root, KAplicaciones.AtributosDEntidad.USUARAUDIT);
+		Fecha fechaDSistema = Fecha.getFechaDSistema();
+		this.fechaDAuditoria = fechaDSistema.toDate();
 	}
 
 	public String getUsuarioDAuditoria() {
