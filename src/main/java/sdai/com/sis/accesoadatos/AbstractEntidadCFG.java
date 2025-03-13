@@ -1,5 +1,7 @@
 package sdai.com.sis.accesoadatos;
 
+import org.w3c.dom.Node;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
@@ -7,6 +9,7 @@ import jakarta.persistence.OneToOne;
 import sdai.com.sis.aplicaciones.KAplicaciones;
 import sdai.com.sis.versionado.KVersionado;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
@@ -30,6 +33,14 @@ public abstract class AbstractEntidadCFG extends AbstractEntidad implements IEnt
 
 	protected AbstractEntidadCFG() {
 
+	}
+
+	@Override
+	public void addNode(NumeroDVersion numeroDVersion, Integer numeroDSituacion, Node root) {
+		super.addNode(root);
+		this.numeroDSituacion = numeroDSituacion;
+		this.numeroDVersion = numeroDVersion;
+		this.swEntidadActiva = DocumentoXML.getBooleanValueNodeDescendencia(root, KAplicaciones.AtributosDEntidad.SWENTACTIV);
 	}
 
 	public Integer getNumeroDSituacion() {

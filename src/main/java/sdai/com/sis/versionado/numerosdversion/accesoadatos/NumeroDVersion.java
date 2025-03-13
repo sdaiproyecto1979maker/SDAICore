@@ -111,6 +111,7 @@ public final class NumeroDVersion extends AbstractEntidad implements Comparable<
 		idConexion.liberarConexion();
 	}
 
+	@Override
 	public Long getIdentificador() {
 		return identificador;
 	}

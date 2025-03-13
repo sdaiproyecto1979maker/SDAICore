@@ -116,4 +116,38 @@ public abstract class NumerosDVersionUtil {
 		return numeroDVersion.getNumeroDSituacion() <= numeroDVersionDProyecto.getNumeroDSituacion();
 	}
 
+	public static Boolean isNumeroDVersionMayor(NumeroDVersion numeroDVersion1, NumeroDVersion numeroDVersion2) {
+		if (NumerosDVersionUtil.isMismoNumeroDVersion(numeroDVersion1, numeroDVersion2).equals(Boolean.valueOf(false))
+				&& NumerosDVersionUtil.isNumeroDVersionMenor(numeroDVersion1, numeroDVersion2).equals(Boolean.valueOf(false)))
+			return Boolean.valueOf(true);
+		return Boolean.valueOf(false);
+	}
+
+	public static Boolean isNumeroDVersionMenor(NumeroDVersion numeroDVersion1, NumeroDVersion numeroDVersion2) {
+		if (NumerosDVersionUtil.isMismoNumeroDVersion(numeroDVersion1, numeroDVersion2).equals(Boolean.valueOf(false))) {
+			if (numeroDVersion1.getVersionDRelease() > numeroDVersion2.getVersionDRelease())
+				return Boolean.valueOf(false);
+			if (numeroDVersion1.getVersionDFeature() > numeroDVersion2.getVersionDFeature())
+				return Boolean.valueOf(false);
+			if (numeroDVersion1.getVersionDFix() > numeroDVersion2.getVersionDFix())
+				return Boolean.valueOf(false);
+			if (numeroDVersion1.getVersionDHotfix() > numeroDVersion2.getVersionDHotfix())
+				return Boolean.valueOf(false);
+			return Boolean.valueOf(true);
+		}
+		return Boolean.valueOf(false);
+	}
+
+	public static Boolean isMismoNumeroDVersion(NumeroDVersion numeroDVersion1, NumeroDVersion numeroDVersion2) {
+		if (!numeroDVersion1.getVersionDRelease().equals(numeroDVersion2.getVersionDRelease()))
+			return Boolean.valueOf(false);
+		if (!numeroDVersion1.getVersionDFeature().equals(numeroDVersion2.getVersionDFeature()))
+			return Boolean.valueOf(false);
+		if (!numeroDVersion1.getVersionDFix().equals(numeroDVersion2.getVersionDFix()))
+			return Boolean.valueOf(false);
+		if (!numeroDVersion1.getVersionDHotfix().equals(numeroDVersion2.getVersionDHotfix()))
+			return Boolean.valueOf(false);
+		return Boolean.valueOf(true);
+	}
+
 }

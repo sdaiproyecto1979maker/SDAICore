@@ -7,4 +7,5 @@ package sdai.com.sis.accesoadatos;
  */
 public interface IFabricaDEntidadesCFG {
 
+	void versionar() throws Exception;
 }

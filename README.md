@@ -20,6 +20,7 @@
 * Desarrollar la cache de rednodal
 * Desarrollar las fabricas de entidades
 * Desarrollar el elemento de la rednodal dato de sistema
+* Generar el desarrollo para realizar las versiones de configuración
 
 # 0.0.0.0-RELEASE
 * Commit con la configuración inicial

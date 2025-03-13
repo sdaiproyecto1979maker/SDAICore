@@ -21,6 +21,14 @@ public abstract class AbstractFabricaDEntidadesCFG extends AbstractFabricaDEntid
 		this.nodes = nodes;
 	}
 
+	@Override
+	public void versionar() throws Exception {
+		for (Node node : this.nodes)
+			versionarElemento(node);
+	}
+
+	protected abstract IEntidad versionarElemento(Node root) throws Exception;
+
 	public NumeroDVersion getNumeroDVersion() {
 		return numeroDVersion;
 	}

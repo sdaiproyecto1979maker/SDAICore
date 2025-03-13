@@ -1,5 +1,7 @@
 package sdai.com.sis.rednodal.datosdsistema.accesoadatos;
 
+import org.w3c.dom.Node;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.rednodal.CacheDRednodal;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
+import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
@@ -51,6 +55,13 @@ public final class SituacionDDatoDSistema extends AbstractEntidadCFG {
 		return instancia;
 	}
 
+	@Override
+	public void addNode(NumeroDVersion numeroDVersion, Integer numeroDSituacion, Node root) {
+		super.addNode(numeroDVersion, numeroDSituacion, root);
+		this.descripcionDDato = DocumentoXML.getStringValueNodeDescendencia(root, KDatosDSistema.KSituacionDDatoDSistema.AtributosDEntidad.DESCRDDATO);
+	}
+
+	@Override
 	public Long getIdentificador() {
 		return identificador;
 	}

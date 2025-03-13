@@ -38,4 +38,13 @@ public abstract class Transform {
 		}
 	}
 
+	public static Boolean toBoolean(Object value) {
+		if (value == null)
+			return Boolean.valueOf(false);
+		String cadena = Transform.toString(value);
+		if (Integer.valueOf(cadena.length()).equals(Integer.valueOf(1)))
+			return cadena.equalsIgnoreCase("S");
+		return Boolean.parseBoolean(cadena);
+	}
+
 }
