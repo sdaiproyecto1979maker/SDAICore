@@ -4,6 +4,7 @@
 	<ELEMENTCFG>
 		<CODELEMENT>TBDATSISTE</CODELEMENT>
 		<FBKELEMENT>sdai.com.sis.rednodal.datosdsistema.accesoadatos.FabricaDDatosDSistema</FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.datosdsistema.accesoadatos.ADDatosDSistema</CLSACDATOS>		
 	</ELEMENTCFG>
 	<ELEMENTCFG>
 		<CODELEMENT>TBENTINODO</CODELEMENT>
