@@ -18,6 +18,7 @@
 * Desarrollar las utilidades de reflexión
 * Desarrollar las entidades de configuración
 * Desarrollar la cache de rednodal
+* Desarrollar las fabricas de entidades
 
 # 0.0.0.0-RELEASE
 * Commit con la configuración inicial
