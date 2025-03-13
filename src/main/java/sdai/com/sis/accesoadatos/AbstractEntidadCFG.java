@@ -14,7 +14,7 @@ import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
  * @author Sergio_M
  */
 @MappedSuperclass
-public abstract class AbstractEntidadCFG extends AbstractEntidad implements IEntidadCFG {
+public abstract class AbstractEntidadCFG extends AbstractEntidad implements IEntidadCFG, Comparable<AbstractEntidadCFG> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,6 +54,15 @@ public abstract class AbstractEntidadCFG extends AbstractEntidad implements IEnt
 
 	public void setSwEntidadActiva(Boolean swEntidadActiva) {
 		this.swEntidadActiva = swEntidadActiva;
+	}
+
+	@Override
+	public int compareTo(AbstractEntidadCFG o) {
+		if (getNumeroDSituacion() > o.getNumeroDSituacion())
+			return 1;
+		else if (getNumeroDSituacion() < o.getNumeroDSituacion())
+			return -1;
+		return 0;
 	}
 
 }

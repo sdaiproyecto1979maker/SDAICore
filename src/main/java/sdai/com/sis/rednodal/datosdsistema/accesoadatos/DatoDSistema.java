@@ -1,14 +1,23 @@
 package sdai.com.sis.rednodal.datosdsistema.accesoadatos;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.KeyCache;
+import sdai.com.sis.rednodal.CacheDRednodal;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 
 /**
@@ -31,8 +40,26 @@ public final class DatoDSistema extends AbstractEntidadCFG {
 	@Column(name = KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO, length = 10, nullable = false, unique = true)
 	private String codigoDDato;
 
-	DatoDSistema() {
+	@OneToOne
+	@JoinColumn(name = KDatosDSistema.KSituacionDDatoDSistema.AtributosDEntidad.IDSITDASIS)
+	private SituacionDDatoDSistema situacionDDatoDSistema;
 
+	@OneToMany(mappedBy = "datoDSistema", cascade = CascadeType.ALL)
+	private List<SituacionDDatoDSistema> situacionesDDatoDSistema;
+
+	DatoDSistema() {
+		this.situacionesDDatoDSistema = new ArrayList<SituacionDDatoDSistema>();
+	}
+
+	public static DatoDSistema getInstancia(String codigoDDato) throws Exception {
+		KeyCache keyCache = KeyCache.getInstancia(DatoDSistema.class, codigoDDato);
+		DatoDSistema instancia = (DatoDSistema) CacheDRednodal.recuperarInstancia(keyCache);
+		if (instancia == null) {
+			ADDatosDSistema adatos = new ADDatosDSistema();
+			instancia = adatos.getDatoDSistema(codigoDDato);
+			CacheDRednodal.almacenarInstancia(keyCache, instancia);
+		}
+		return instancia;
 	}
 
 	public Long getIdentificador() {
@@ -49,6 +76,22 @@ public final class DatoDSistema extends AbstractEntidadCFG {
 
 	public void setCodigoDDato(String codigoDDato) {
 		this.codigoDDato = codigoDDato;
+	}
+
+	public SituacionDDatoDSistema getSituacionDDatoDSistema() {
+		return situacionDDatoDSistema;
+	}
+
+	public void setSituacionDDatoDSistema(SituacionDDatoDSistema situacionDDatoDSistema) {
+		this.situacionDDatoDSistema = situacionDDatoDSistema;
+	}
+
+	public List<SituacionDDatoDSistema> getSituacionesDDatoDSistema() {
+		return situacionesDDatoDSistema;
+	}
+
+	public void setSituacionesDDatoDSistema(List<SituacionDDatoDSistema> situacionesDDatoDSistema) {
+		this.situacionesDDatoDSistema = situacionesDDatoDSistema;
 	}
 
 }

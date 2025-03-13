@@ -27,4 +27,18 @@ public abstract class KDatosDSistema {
 		}
 	}
 
+	public abstract class KSituacionDDatoDSistema {
+
+		/** Nombre de la tabla */
+		public static final String NOMBRTABLA = "TBSITDASIS";
+
+		public abstract class AtributosDEntidad {
+
+			/** Identificador de situación de dato de sistema */
+			public static final String IDSITDASIS = "IDSITDASIS";
+			/** Descripción de dato de sistema */
+			public static final String DESCRDDATO = "DESCRDDATO";
+		}
+	}
+
 }
