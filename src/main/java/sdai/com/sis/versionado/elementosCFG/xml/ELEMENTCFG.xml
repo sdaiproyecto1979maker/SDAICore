@@ -4,11 +4,12 @@
 	<ELEMENTCFG>
 		<CODELEMENT>TBDATSISTE</CODELEMENT>
 		<FBKELEMENT>sdai.com.sis.rednodal.datosdsistema.accesoadatos.FabricaDDatosDSistema</FBKELEMENT>
-		<CLSACDATOS>sdai.com.sis.rednodal.datosdsistema.accesoadatos.ADDatosDSistema</CLSACDATOS>		
+		<CLSACDATOS>sdai.com.sis.rednodal.datosdsistema.accesoadatos.ADDatosDSistema</CLSACDATOS>
 	</ELEMENTCFG>
 	<ELEMENTCFG>
 		<CODELEMENT>TBENTINODO</CODELEMENT>
-		<FBKELEMENT></FBKELEMENT>
+		<FBKELEMENT>sdai.com.sis.rednodal.nodos.accesoadatos.FabricaDNodos</FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.nodos.accesoadatos.ADNodos</CLSACDATOS>
 	</ELEMENTCFG>
 	<ELEMENTCFG>
 		<CODELEMENT>TBATRSNODO</CODELEMENT>
