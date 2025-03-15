@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.rednodal.CacheDRednodal;
+import sdai.com.sis.rednodal.datosdsistema.DatosDSistemaUtil;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
@@ -48,8 +49,7 @@ public final class SituacionDDatoDSistema extends AbstractEntidadCFG {
 		KeyCache keyCache = KeyCache.getInstancia(SituacionDDatoDSistema.class, codigoDDato);
 		SituacionDDatoDSistema instancia = (SituacionDDatoDSistema) CacheDRednodal.recuperarInstancia(keyCache);
 		if (instancia == null) {
-			ADDatosDSistema adatos = new ADDatosDSistema();
-			instancia = adatos.getSituacionDDatoDSistema(codigoDDato);
+			instancia = DatosDSistemaUtil.getSituacionDDatoDSistema(codigoDDato);
 			CacheDRednodal.almacenarInstancia(keyCache, instancia);
 		}
 		return instancia;
