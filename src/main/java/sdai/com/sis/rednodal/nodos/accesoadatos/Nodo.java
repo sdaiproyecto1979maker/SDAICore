@@ -20,6 +20,7 @@ import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.rednodal.CacheDRednodal;
+import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.AtributoDNodo;
 import sdai.com.sis.rednodal.nodos.KNodos;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
@@ -52,8 +53,12 @@ public final class Nodo extends AbstractEntidadCFG {
 	@OneToMany(mappedBy = "nodo", cascade = CascadeType.ALL)
 	private List<SituacionDNodo> situacionesDNodo;
 
+	@OneToMany(mappedBy = "nodo", cascade = CascadeType.ALL)
+	private List<AtributoDNodo> atributosDNodo;
+
 	Nodo() {
 		this.situacionesDNodo = new ArrayList<SituacionDNodo>();
+		this.atributosDNodo = new ArrayList<AtributoDNodo>();
 	}
 
 	public static Nodo getInstancia(String codigoDNodo) throws Exception {
@@ -104,6 +109,14 @@ public final class Nodo extends AbstractEntidadCFG {
 
 	public void setSituacionesDNodo(List<SituacionDNodo> situacionesDNodo) {
 		this.situacionesDNodo = situacionesDNodo;
+	}
+
+	public List<AtributoDNodo> getAtributosDNodo() {
+		return atributosDNodo;
+	}
+
+	public void setAtributosDNodo(List<AtributoDNodo> atributosDNodo) {
+		this.atributosDNodo = atributosDNodo;
 	}
 
 }

@@ -20,6 +20,7 @@ import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.rednodal.CacheDRednodal;
+import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.AtributoDNodo;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
@@ -52,8 +53,12 @@ public final class DatoDSistema extends AbstractEntidadCFG {
 	@OneToMany(mappedBy = "datoDSistema", cascade = CascadeType.ALL)
 	private List<SituacionDDatoDSistema> situacionesDDatoDSistema;
 
+	@OneToMany(mappedBy = "datoDSistema", cascade = CascadeType.ALL)
+	private List<AtributoDNodo> atributosDNodo;
+
 	DatoDSistema() {
 		this.situacionesDDatoDSistema = new ArrayList<SituacionDDatoDSistema>();
+		this.atributosDNodo = new ArrayList<AtributoDNodo>();
 	}
 
 	public static DatoDSistema getInstancia(String codigoDDato) throws Exception {
@@ -104,6 +109,14 @@ public final class DatoDSistema extends AbstractEntidadCFG {
 
 	public void setSituacionesDDatoDSistema(List<SituacionDDatoDSistema> situacionesDDatoDSistema) {
 		this.situacionesDDatoDSistema = situacionesDDatoDSistema;
+	}
+
+	public List<AtributoDNodo> getAtributosDNodo() {
+		return atributosDNodo;
+	}
+
+	public void setAtributosDNodo(List<AtributoDNodo> atributosDNodo) {
+		this.atributosDNodo = atributosDNodo;
 	}
 
 }

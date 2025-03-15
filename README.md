@@ -4,6 +4,7 @@
 
 > FEATURES
 
+* Desarrollar el elemento de rednodal atributo de nodo
 * Desarrollar el elemento de la rednodal nodo
 * Desarrollar la carga de los elementos de configuración de una versión en desarrollo
 * Generar el desarrollo para realizar las versiones de configuración
