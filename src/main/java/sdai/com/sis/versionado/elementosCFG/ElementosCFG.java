@@ -60,7 +60,8 @@ public final class ElementosCFG {
 		for (IElementoCFG elementoCFG : this.elementosCFG) {
 			String codigoDElemento = elementoCFG.getCodigoDElemento();
 			Node[] nodes = DocumentoXML.getDescendencia(root, codigoDElemento);
-			elementoCFG.loadVersionEnCurso(codigoDProyectoDAplicacion, nodes);
+			if (nodes != null && nodes.length > 0)
+				elementoCFG.loadVersionEnCurso(codigoDProyectoDAplicacion, nodes);
 		}
 	}
 

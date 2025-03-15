@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import sdai.com.sis.versionado.elementosCFG.ElementosCFG;
 import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
+import sdai.com.sis.versionado.versionesCFG.VersionesCFG;
 
 /**
  * @date 12/03/2025
@@ -19,6 +20,7 @@ public class SessionListener implements ServletContextListener, HttpSessionListe
 		try {
 			ElementosCFG.getInstancia();
 			ProyectosDAplicacion.getInstancia();
+			VersionesCFG.getInstancia();
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}

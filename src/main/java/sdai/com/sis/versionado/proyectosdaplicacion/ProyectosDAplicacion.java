@@ -61,6 +61,7 @@ public final class ProyectosDAplicacion {
 			NumeroDVersion numeroDVersion = NumeroDVersion.getInstancia(proyecto);
 			this.almacenDProyectos.put(codigoDProyecto, proyectoDAplicacion);
 			this.numerosDVersion.put(codigoDProyecto, numeroDVersion);
+			this.proyectos.add(proyecto);
 		}
 	}
 
