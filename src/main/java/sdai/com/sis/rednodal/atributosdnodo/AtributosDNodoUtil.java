@@ -9,7 +9,7 @@ import org.w3c.dom.Node;
 
 import sdai.com.sis.aplicaciones.KAplicaciones;
 import sdai.com.sis.cacchesdsistema.KeyCache;
-import sdai.com.sis.rednodal.CacheDRednodal;
+import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.AtributoDNodo;
 import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.SituacionDAtributoDNodo;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;

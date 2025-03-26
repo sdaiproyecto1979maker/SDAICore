@@ -13,8 +13,6 @@ public interface IElementoCFG {
 
 	void versionar(NumeroDVersion numeroDVersion, Node[] nodes) throws Exception;
 
-	void loadCFG() throws Exception;
-
 	void loadVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception;
 
 	String getCodigoDElemento();

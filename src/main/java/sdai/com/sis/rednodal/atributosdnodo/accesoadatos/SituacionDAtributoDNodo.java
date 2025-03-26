@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
-import sdai.com.sis.rednodal.CacheDRednodal;
+import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.AtributosDNodoUtil;
 import sdai.com.sis.rednodal.atributosdnodo.KAtributosDNodo;
 

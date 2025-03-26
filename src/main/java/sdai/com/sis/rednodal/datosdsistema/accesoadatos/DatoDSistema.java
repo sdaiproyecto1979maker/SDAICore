@@ -19,7 +19,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
-import sdai.com.sis.rednodal.CacheDRednodal;
+import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.AtributoDNodo;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
@@ -32,8 +32,7 @@ import sdai.com.sis.xml.DocumentoXML;
  */
 @Entity
 @Table(name = KDatosDSistema.KDatoDSistema.NOMBRTABLA)
-@NamedQueries({ @NamedQuery(name = KDatosDSistema.KDatoDSistema.NamedQueries.SDASIS0000, query = "SELECT D FROM DatoDSistema D WHERE D.codigoDDato =:CODIGODATO"),
-		@NamedQuery(name = KDatosDSistema.KDatoDSistema.NamedQueries.SDASIS0001, query = "SELECT D FROM DatoDSistema D") })
+@NamedQueries({ @NamedQuery(name = KDatosDSistema.KDatoDSistema.NamedQueries.SDASIS0000, query = "SELECT D FROM DatoDSistema D WHERE D.codigoDDato =:CODIGODATO") })
 public final class DatoDSistema extends AbstractEntidadCFG {
 
 	private static final long serialVersionUID = 1L;
