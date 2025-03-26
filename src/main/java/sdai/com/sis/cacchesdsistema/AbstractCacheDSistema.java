@@ -1,5 +1,7 @@
 package sdai.com.sis.cacchesdsistema;
 
+import sdai.com.sis.cacchesdsistema.rednodal.ContenedorDCache;
+
 /**
  * @date 26/03/2025
  * @since VERSIONDCOREENCURSO
@@ -9,6 +11,7 @@ public abstract class AbstractCacheDSistema implements ICacheDSistema {
 
 	private final Class<?> clase;
 	private final ContenedorDInstancias contenedorDInstancias;
+	private ContenedorDCache contenedorDCache;
 
 	protected AbstractCacheDSistema(Class<?> clase) {
 		this.clase = clase;
@@ -43,14 +46,17 @@ public abstract class AbstractCacheDSistema implements ICacheDSistema {
 
 	@Override
 	public Integer getMinutosEnContenedor() {
-		// TODO: Pendiente desarrollo
-		return null;
+		return this.contenedorDCache == null ? Integer.valueOf(9999999) : this.contenedorDCache.getMinutosEnContenedor();
 	}
 
 	@Override
 	public Integer getElementosMaximos() {
-		// TODO: Pendiente desarrollo
-		return null;
+		return this.contenedorDCache == null ? Integer.valueOf(9999999) : this.contenedorDCache.getElementosMaximos();
+	}
+
+	@Override
+	public void setContenedorDCache(ContenedorDCache contenedorDCache) {
+		this.contenedorDCache = contenedorDCache;
 	}
 
 }

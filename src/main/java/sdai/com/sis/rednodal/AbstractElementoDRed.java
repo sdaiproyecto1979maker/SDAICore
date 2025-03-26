@@ -1,5 +1,7 @@
 package sdai.com.sis.rednodal;
 
+import sdai.com.sis.utilidades.Transform;
+
 /**
  * @date 26/03/2025
  * @since VERSIONDCOREENCURSO
@@ -8,6 +10,7 @@ package sdai.com.sis.rednodal;
 public abstract class AbstractElementoDRed implements IElementoDRed {
 
 	private final NodoDRed nodoDRed;
+	private TuplaDNodo tuplaDNodo;
 
 	protected AbstractElementoDRed(String codigoDNodo) throws Exception {
 		this.nodoDRed = NodoDRed.getInstancia(codigoDNodo);
@@ -23,6 +26,20 @@ public abstract class AbstractElementoDRed implements IElementoDRed {
 		if (tuplasDNodo == null || tuplasDNodo.length == 0)
 			return null;
 		return tuplasDNodo[0];
+	}
+
+	public void setTuplaDNodo(TuplaDNodo tuplaDNodo) {
+		this.tuplaDNodo = tuplaDNodo;
+	}
+
+	protected String getValorString(String key) {
+		DatoDTupla datoDTupla = this.tuplaDNodo.getDatoDTupla(key);
+		return datoDTupla == null ? "" : Transform.toString(datoDTupla.getValorDAtributo());
+	}
+
+	protected Integer getValorInteger(String key) {
+		DatoDTupla datoDTupla = this.tuplaDNodo.getDatoDTupla(key);
+		return datoDTupla == null ? Integer.valueOf(0) : Transform.toInteger(datoDTupla.getValorDAtributo());
 	}
 
 }

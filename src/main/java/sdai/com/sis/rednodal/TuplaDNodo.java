@@ -47,4 +47,16 @@ public final class TuplaDNodo {
 		return datosDTupla;
 	}
 
+	public DatoDTupla getDatoDTupla(String codigoDDato) {
+		if (this.datosDTupla == null || this.datosDTupla.length == 0)
+			return null;
+		for (DatoDTupla datoDTupla : this.datosDTupla) {
+			DatoDRed datoDRed = datoDTupla.getDatoDRed();
+			String codigo = datoDRed.getCodigoDDato();
+			if (codigo.equals(codigoDDato))
+				return datoDTupla;
+		}
+		return null;
+	}
+
 }

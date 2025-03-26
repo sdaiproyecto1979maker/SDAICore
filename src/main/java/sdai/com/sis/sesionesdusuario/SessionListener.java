@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionListener;
 
+import sdai.com.sis.cacchesdsistema.GlobalCaches;
 import sdai.com.sis.versionado.elementosCFG.ElementosCFG;
 import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
 import sdai.com.sis.versionado.versionesCFG.VersionesCFG;
@@ -21,6 +22,7 @@ public class SessionListener implements ServletContextListener, HttpSessionListe
 			ElementosCFG.getInstancia();
 			ProyectosDAplicacion.getInstancia();
 			VersionesCFG.getInstancia();
+			GlobalCaches.getInstancia();
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}

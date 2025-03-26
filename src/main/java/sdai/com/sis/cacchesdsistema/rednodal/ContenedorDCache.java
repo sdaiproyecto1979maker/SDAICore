@@ -18,8 +18,15 @@ public final class ContenedorDCache extends AbstractElementoDRed {
 
 	private static final String CODIGONODO = "CONTECACHE";
 
+	private static final String CODIGCONTE = "CODIGCONTE";
+	private static final String DESCRCONTE = "DESCRCONTE";
+	private static final String CLASECONTE = "CLASECONTE";
+	private static final String MINUTCONTE = "MINUTCONTE";
+	private static final String ELEMENTMAX = "ELEMENTMAX";
+
 	private ContenedorDCache(TuplaDNodo tuplaDNodo) throws Exception {
 		super(CODIGONODO);
+		setTuplaDNodo(tuplaDNodo);
 	}
 
 	public static ContenedorDCache[] getInstancias() throws Exception {
@@ -39,6 +46,26 @@ public final class ContenedorDCache extends AbstractElementoDRed {
 			}
 		}
 		return instancias;
+	}
+
+	public String getCodigoDContenedor() {
+		return getValorString(CODIGCONTE);
+	}
+
+	public String getDescripcionDContenedor() {
+		return getValorString(DESCRCONTE);
+	}
+
+	public String getClaseDContenedor() {
+		return getValorString(CLASECONTE);
+	}
+
+	public Integer getMinutosEnContenedor() {
+		return getValorInteger(MINUTCONTE);
+	}
+
+	public Integer getElementosMaximos() {
+		return getValorInteger(ELEMENTMAX);
 	}
 
 }

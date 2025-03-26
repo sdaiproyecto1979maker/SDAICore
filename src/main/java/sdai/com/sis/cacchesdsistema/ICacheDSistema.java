@@ -1,5 +1,7 @@
 package sdai.com.sis.cacchesdsistema;
 
+import sdai.com.sis.cacchesdsistema.rednodal.ContenedorDCache;
+
 /**
  * @date 26/03/2025
  * @since VERSIONDCOREENCURSO
@@ -20,5 +22,7 @@ public interface ICacheDSistema {
 	Integer getMinutosEnContenedor();
 
 	Integer getElementosMaximos();
+
+	void setContenedorDCache(ContenedorDCache contenedorDCache);
 
 }
