@@ -40,7 +40,6 @@ public final class VersionesCFG {
 			versionCFG.createNumerosDVersion();
 			versionCFG.establecerVersionesInstalables();
 			versionCFG.versionar();
-			// versionCFG.loadCFG();
 			versionCFG.loadVersionEnCurso();
 			this.versiones.add(versionCFG);
 		}

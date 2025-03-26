@@ -8,15 +8,21 @@ package sdai.com.sis.cacchesdsistema;
 public final class KeyCache {
 
 	private final Class<?> clase;
+	private final Boolean swDeleteable;
 	private final Object[] argumentos;
 
-	private KeyCache(Class<?> clase, Object[] argumentos) {
+	private KeyCache(Class<?> clase, Boolean swDeleteable, Object[] argumentos) {
 		this.clase = clase;
+		this.swDeleteable = swDeleteable;
 		this.argumentos = argumentos;
 	}
 
 	public static KeyCache getInstancia(Class<?> clase, Object... argumentos) {
-		return new KeyCache(clase, argumentos);
+		return new KeyCache(clase, Boolean.valueOf(true), argumentos);
+	}
+
+	public static KeyCache getInstancia(Class<?> clase, Boolean swDeleteable, Object... argumentos) {
+		return new KeyCache(clase, swDeleteable, argumentos);
 	}
 
 	public String getKeyCache() {

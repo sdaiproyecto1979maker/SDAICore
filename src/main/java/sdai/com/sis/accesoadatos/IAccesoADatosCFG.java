@@ -7,9 +7,7 @@ import org.w3c.dom.Node;
  * @since VERSIONDCOREENCURSO
  * @author Sergio_M
  */
-public interface IAccesoADatosCFG {
-
-	void generateElementosDCache() throws Exception;
+public interface IAccesoADatosCFG {	
 
 	void generateElementosVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception;
 }

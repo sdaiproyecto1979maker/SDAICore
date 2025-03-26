@@ -8,7 +8,6 @@ import java.util.List;
 import org.w3c.dom.Node;
 
 import sdai.com.sis.versionado.elementosCFG.ElementosCFG;
-import sdai.com.sis.versionado.elementosCFG.IElementoCFG;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.versionado.proyectosdaplicacion.IProyecto;
@@ -97,14 +96,6 @@ public abstract class AbstractVersionCFG implements IVersionCFG {
 	}
 
 	@Override
-	public void loadCFG() throws Exception {
-		ElementosCFG elementosCFG = ElementosCFG.getInstancia();
-		List<IElementoCFG> lista = elementosCFG.getElementosCFG();
-		for (IElementoCFG elementoCFG : lista)
-			elementoCFG.loadCFG();
-	}
-
-	@Override
 	public void loadVersionEnCurso() throws Exception {
 		String pack = this.proyecto.getPackageDProyecto();
 		String path = pack.concat(PATH);
@@ -112,7 +103,9 @@ public abstract class AbstractVersionCFG implements IVersionCFG {
 		InputStream inputStream = AbstractVersionCFG.class.getResourceAsStream(path);
 		DocumentoXML documentoXML = new DocumentoXML(inputStream);
 		Node root = documentoXML.getRoot();
-		ElementosCFG.getInstancia().loadVersionEnCurso(this.proyecto.getCodigoDProyecto(), root);
+		ElementosCFG elementosCFG = ElementosCFG.getInstancia();
+		String codigoDProyecto = this.proyecto.getCodigoDProyecto();
+		elementosCFG.loadVersionEnCurso(codigoDProyecto, root);
 	}
 
 	public IProyecto getProyecto() {

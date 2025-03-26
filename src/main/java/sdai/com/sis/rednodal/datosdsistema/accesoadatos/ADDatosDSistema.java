@@ -1,5 +1,7 @@
 package sdai.com.sis.rednodal.datosdsistema.accesoadatos;
 
+import java.util.List;
+
 import org.w3c.dom.Node;
 
 import sdai.com.sis.accesoadatos.AbstractAccesoADatos;
@@ -7,6 +9,9 @@ import sdai.com.sis.accesoadatos.IAccesoADatosCFG;
 import sdai.com.sis.conexiones.IdQuery;
 import sdai.com.sis.rednodal.datosdsistema.DatosDSistemaUtil;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
+import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
+import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
@@ -25,21 +30,18 @@ public final class ADDatosDSistema extends AbstractAccesoADatos implements IAcce
 	}
 
 	@Override
-	public void generateElementosDCache() throws Exception {
-		DatoDSistema[] datosDSistema = getDatosDSistema();
-		DatosDSistemaUtil.generateCacheDDatosDSistema(datosDSistema);
-	}
-
-	@Override
 	public void generateElementosVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
 		for (Node node : nodes) {
-			DatoDSistema datoDSistema = DatosDSistemaUtil.getDatoDSistema(node);
+			String codigoDDato = DocumentoXML.getStringValueNodeDescendencia(node, KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO);
+			DatoDSistema datoDSistema = DatoDSistema.getInstancia(codigoDDato);
 			if (datoDSistema != null) {
-				SituacionDDatoDSistema situacionDDatoDSistema = DatosDSistemaUtil.getSituacionDDatoDSistema(datoDSistema);
-				if (DatosDSistemaUtil.existenCambiosEnSituacionDDatoDSistema(situacionDDatoDSistema, node))
+				SituacionDDatoDSistema situacionDDatoDSistema = SituacionDDatoDSistema.getInstancia(codigoDDato);
+				if (DatosDSistemaUtil.existenCambiosEnSituacionDDatoDSistema(situacionDDatoDSistema, node)) {
 					DatosDSistemaUtil.createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
+				}
 			} else {
-
+				datoDSistema = DatosDSistemaUtil.createNewDatoDSistema(node, codigoDProyectoDAplicacion);
+				DatosDSistemaUtil.createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
 			}
 		}
 	}
@@ -51,10 +53,15 @@ public final class ADDatosDSistema extends AbstractAccesoADatos implements IAcce
 		return datoDSistema;
 	}
 
-	DatoDSistema[] getDatosDSistema() throws Exception {
-		IdQuery idQuery = new IdQuery(KDatosDSistema.KDatoDSistema.NamedQueries.SDASIS0001);
-		DatoDSistema[] datosDSistema = ejecutarConsulta(idQuery).toArray(new DatoDSistema[0]);
-		return datosDSistema;
+	SituacionDDatoDSistema getSituacionDDatoDSistema(String codigoDDato) throws Exception {
+		DatoDSistema datoDSistema = DatoDSistema.getInstancia(codigoDDato);
+		List<SituacionDDatoDSistema> instancias = datoDSistema.getSituacionesDDatoDSistema();
+		for (SituacionDDatoDSistema instancia : instancias) {
+			NumeroDVersion numeroDVersion = instancia.getNumeroDVersion();
+			Boolean swValida = NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion);
+			return swValida ? instancia : null;
+		}
+		return null;
 	}
 
 }

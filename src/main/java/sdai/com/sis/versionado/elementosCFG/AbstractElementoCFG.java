@@ -32,13 +32,6 @@ public abstract class AbstractElementoCFG implements IElementoCFG {
 	}
 
 	@Override
-	public void loadCFG() throws Exception {
-		String className = getClaseDAccesoADatos();
-		IAccesoADatosCFG accesoADatos = (IAccesoADatosCFG) Reflexion.createInstancia(className);
-		accesoADatos.generateElementosDCache();
-	}
-
-	@Override
 	public void loadVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
 		String className = getClaseDAccesoADatos();
 		IAccesoADatosCFG accesoADatos = (IAccesoADatosCFG) Reflexion.createInstancia(className);
