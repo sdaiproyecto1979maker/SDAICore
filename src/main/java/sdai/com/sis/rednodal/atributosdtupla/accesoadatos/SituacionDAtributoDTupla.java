@@ -1,5 +1,7 @@
 package sdai.com.sis.rednodal.atributosdtupla.accesoadatos;
 
+import org.w3c.dom.Node;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +11,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.KeyCache;
+import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdtupla.KAtributosDTupla;
+import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 15/03/2025
@@ -36,6 +42,23 @@ public final class SituacionDAtributoDTupla extends AbstractEntidadCFG {
 
 	SituacionDAtributoDTupla() {
 
+	}
+
+	public static SituacionDAtributoDTupla[] getInstancias(String codigoDTupla) throws Exception {
+		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDTupla.class, codigoDTupla);
+		SituacionDAtributoDTupla[] instancias = (SituacionDAtributoDTupla[]) CacheDRednodal.recuperarInstancia(keyCache);
+		if (instancias == null) {
+			ADAtributosDTupla adatos = new ADAtributosDTupla();
+			instancias = adatos.getSituacionesDAtributoDTupla(codigoDTupla);
+			CacheDRednodal.almacenarInstancia(keyCache, instancias);
+		}
+		return instancias;
+	}
+
+	@Override
+	public void addNode(NumeroDVersion numeroDVersion, Integer numeroDSituacion, Node root) {
+		super.addNode(numeroDVersion, numeroDSituacion, root);
+		this.valorDAtributo = DocumentoXML.getStringValueNodeDescendencia(root, KAtributosDTupla.KSituacionDAtributoDTupla.AtributosDEntidad.VALORATRIB);
 	}
 
 	@Override

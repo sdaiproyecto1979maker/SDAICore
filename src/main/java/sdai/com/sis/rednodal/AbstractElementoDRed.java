@@ -14,11 +14,15 @@ public abstract class AbstractElementoDRed implements IElementoDRed {
 	}
 
 	protected TuplaDNodo[] getTuplasDNodo(String... argumentos) throws Exception {
-
+		TuplaDNodo[] tuplasDNodo = this.nodoDRed.getTuplasDNodo(argumentos);
+		return tuplasDNodo;
 	}
 
 	protected TuplaDNodo getTuplaDNodo(String... argumentos) throws Exception {
-
+		TuplaDNodo[] tuplasDNodo = this.nodoDRed.getTuplasDNodo(argumentos);
+		if (tuplasDNodo == null || tuplasDNodo.length == 0)
+			return null;
+		return tuplasDNodo[0];
 	}
 
 }

@@ -89,4 +89,12 @@ public final class AtributoDTupla extends AbstractEntidadCFG {
 		this.situacionDAtributoDTupla = situacionDAtributoDTupla;
 	}
 
+	public List<SituacionDAtributoDTupla> getSituacionesDAtributoDTupla() {
+		return situacionesDAtributoDTupla;
+	}
+
+	public void setSituacionesDAtributoDTupla(List<SituacionDAtributoDTupla> situacionesDAtributoDTupla) {
+		this.situacionesDAtributoDTupla = situacionesDAtributoDTupla;
+	}
+
 }

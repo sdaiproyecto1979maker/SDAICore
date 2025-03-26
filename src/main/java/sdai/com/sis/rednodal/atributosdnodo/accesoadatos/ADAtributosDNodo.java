@@ -93,7 +93,6 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 						if (NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion))
 							lista.add(situacionDAtributoDNodo);
 					}
-
 				}
 			}
 		}

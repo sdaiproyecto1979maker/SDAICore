@@ -7,7 +7,7 @@ package sdai.com.sis.rednodal;
  */
 public final class ElementoDRed extends AbstractElementoDRed {
 
-	public ElementoDRed(String codigoDNodo) {
+	public ElementoDRed(String codigoDNodo) throws Exception {
 		super(codigoDNodo);
 	}
 
