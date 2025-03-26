@@ -21,6 +21,7 @@ import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.AtributoDNodo;
+import sdai.com.sis.rednodal.atributosdtupla.accesoadatos.AtributoDTupla;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
@@ -55,9 +56,13 @@ public final class DatoDSistema extends AbstractEntidadCFG {
 	@OneToMany(mappedBy = "datoDSistema", cascade = CascadeType.ALL)
 	private List<AtributoDNodo> atributosDNodo;
 
+	@OneToMany(mappedBy = "datoDSistema", cascade = CascadeType.ALL)
+	private List<AtributoDTupla> atributosDTupla;
+
 	DatoDSistema() {
 		this.situacionesDDatoDSistema = new ArrayList<SituacionDDatoDSistema>();
 		this.atributosDNodo = new ArrayList<AtributoDNodo>();
+		this.atributosDTupla = new ArrayList<AtributoDTupla>();
 	}
 
 	public static DatoDSistema getInstancia(String codigoDDato) throws Exception {
@@ -116,6 +121,14 @@ public final class DatoDSistema extends AbstractEntidadCFG {
 
 	public void setAtributosDNodo(List<AtributoDNodo> atributosDNodo) {
 		this.atributosDNodo = atributosDNodo;
+	}
+
+	public List<AtributoDTupla> getAtributosDTupla() {
+		return atributosDTupla;
+	}
+
+	public void setAtributosDTupla(List<AtributoDTupla> atributosDTupla) {
+		this.atributosDTupla = atributosDTupla;
 	}
 
 }

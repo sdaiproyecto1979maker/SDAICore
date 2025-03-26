@@ -1,5 +1,9 @@
 package sdai.com.sis.rednodal.atributosdnodo.accesoadatos;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.w3c.dom.Node;
 
 import sdai.com.sis.accesoadatos.AbstractAccesoADatos;
@@ -9,8 +13,12 @@ import sdai.com.sis.rednodal.atributosdnodo.AtributosDNodoUtil;
 import sdai.com.sis.rednodal.atributosdnodo.KAtributosDNodo;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 import sdai.com.sis.rednodal.datosdsistema.accesoadatos.DatoDSistema;
+import sdai.com.sis.rednodal.datosdsistema.accesoadatos.SituacionDDatoDSistema;
 import sdai.com.sis.rednodal.nodos.KNodos;
 import sdai.com.sis.rednodal.nodos.accesoadatos.Nodo;
+import sdai.com.sis.rednodal.nodos.accesoadatos.SituacionDNodo;
+import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
+import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 
 /**
  * @date 15/03/2025
@@ -26,12 +34,6 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 
 	ADAtributosDNodo(String idDConexion) throws Exception {
 		super(idDConexion);
-	}
-
-	@Override
-	public void generateElementosDCache() throws Exception {
-		AtributoDNodo[] atributosDNodo = getAtributosDNodo();
-		AtributosDNodoUtil.generateCacheAtributosDNodo(atributosDNodo);
 	}
 
 	@Override
@@ -70,6 +72,32 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 		idQuery.addParametroDQuery(KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO, codigoDDato);
 		AtributoDNodo instancia = (AtributoDNodo) ejecutarConsultaSimple(idQuery);
 		return instancia;
+	}
+
+	SituacionDAtributoDNodo[] getSituacionesDAtributoDNodo(String codigoDNodo) throws Exception {
+		List<SituacionDAtributoDNodo> lista = new ArrayList<SituacionDAtributoDNodo>();
+		SituacionDNodo situacionDNodo = SituacionDNodo.getInstancia(codigoDNodo);
+		if (situacionDNodo != null) {
+			Nodo nodo = Nodo.getInstancia(codigoDNodo);
+			List<AtributoDNodo> atributosDNodo = nodo.getAtributosDNodo();
+			for (AtributoDNodo atributoDNodo : atributosDNodo) {
+				DatoDSistema datoDSistema = atributoDNodo.getDatoDSistema();
+				String codigoDDato = datoDSistema.getCodigoDDato();
+				SituacionDDatoDSistema situacionDDatoDSistema = SituacionDDatoDSistema.getInstancia(codigoDDato);
+				if (situacionDDatoDSistema != null) {
+					List<SituacionDAtributoDNodo> situacionesDAtributoDNodo = atributoDNodo.getSituacionesDAtributoDNodo();
+					Collections.sort(situacionesDAtributoDNodo);
+					for (Integer i = Integer.valueOf(situacionesDAtributoDNodo.size()); i > 0; i--) {
+						SituacionDAtributoDNodo situacionDAtributoDNodo = situacionesDAtributoDNodo.get(i);
+						NumeroDVersion numeroDVersion = situacionDAtributoDNodo.getNumeroDVersion();
+						if (NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion))
+							lista.add(situacionDAtributoDNodo);
+					}
+
+				}
+			}
+		}
+		return lista.toArray(new SituacionDAtributoDNodo[0]);
 	}
 
 }

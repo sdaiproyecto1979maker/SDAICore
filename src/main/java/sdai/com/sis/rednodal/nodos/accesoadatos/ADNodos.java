@@ -89,6 +89,12 @@ public final class ADNodos extends AbstractAccesoADatos implements IAccesoADatos
 		return nodo;
 	}
 
+	Nodo[] getNodos() throws Exception {
+		IdQuery idQuery = new IdQuery(KNodos.KNodo.NamedQueries.SNODOS0001);
+		Nodo[] nodos = ejecutarConsulta(idQuery).toArray(new Nodo[0]);
+		return nodos;
+	}
+
 	SituacionDNodo getSituacionDNodo(String codigoDNodo) throws Exception {
 		Nodo nodo = Nodo.getInstancia(codigoDNodo);
 		List<SituacionDNodo> situacionesDNodo = nodo.getSituacionesDNodo();

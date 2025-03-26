@@ -18,7 +18,7 @@ public final class ContenedorDCache extends AbstractElementoDRed {
 
 	private static final String CODIGONODO = "CONTECACHE";
 
-	private ContenedorDCache(TuplaDNodo tuplaDNodo) {
+	private ContenedorDCache(TuplaDNodo tuplaDNodo) throws Exception {
 		super(CODIGONODO);
 	}
 

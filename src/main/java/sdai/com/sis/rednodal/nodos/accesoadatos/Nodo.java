@@ -22,6 +22,7 @@ import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.AtributoDNodo;
 import sdai.com.sis.rednodal.nodos.KNodos;
+import sdai.com.sis.rednodal.tuplas.accesoadatos.Tupla;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
 
@@ -32,7 +33,8 @@ import sdai.com.sis.xml.DocumentoXML;
  */
 @Entity
 @Table(name = KNodos.KNodo.NOMBRTABLA)
-@NamedQueries({ @NamedQuery(name = KNodos.KNodo.NamedQueries.SNODOS0000, query = "SELECT N FROM Nodo N WHERE N.codigoDNodo =:CODIGONODO") })
+@NamedQueries({ @NamedQuery(name = KNodos.KNodo.NamedQueries.SNODOS0000, query = "SELECT N FROM Nodo N WHERE N.codigoDNodo =:CODIGONODO"),
+		@NamedQuery(name = KNodos.KNodo.NamedQueries.SNODOS0001, query = "SELECT N FROM Nodo N") })
 public final class Nodo extends AbstractEntidadCFG {
 
 	private static final long serialVersionUID = 1L;
@@ -55,9 +57,13 @@ public final class Nodo extends AbstractEntidadCFG {
 	@OneToMany(mappedBy = "nodo", cascade = CascadeType.ALL)
 	private List<AtributoDNodo> atributosDNodo;
 
+	@OneToMany(mappedBy = "nodo", cascade = CascadeType.ALL)
+	private List<Tupla> tuplas;
+
 	Nodo() {
 		this.situacionesDNodo = new ArrayList<SituacionDNodo>();
 		this.atributosDNodo = new ArrayList<AtributoDNodo>();
+		this.tuplas = new ArrayList<Tupla>();
 	}
 
 	public static Nodo getInstancia(String codigoDNodo) throws Exception {
@@ -69,6 +75,17 @@ public final class Nodo extends AbstractEntidadCFG {
 			CacheDRednodal.almacenarInstancia(keyCache, instancia);
 		}
 		return instancia;
+	}
+
+	public static Nodo[] getInstancias() throws Exception {
+		KeyCache keyCache = KeyCache.getInstancia(Nodo.class);
+		Nodo[] instancias = (Nodo[]) CacheDRednodal.recuperarInstancia(keyCache);
+		if (instancias == null) {
+			ADNodos adatos = new ADNodos();
+			instancias = adatos.getNodos();
+			CacheDRednodal.almacenarInstancia(keyCache, instancias);
+		}
+		return instancias;
 	}
 
 	@Override
@@ -116,6 +133,14 @@ public final class Nodo extends AbstractEntidadCFG {
 
 	public void setAtributosDNodo(List<AtributoDNodo> atributosDNodo) {
 		this.atributosDNodo = atributosDNodo;
+	}
+
+	public List<Tupla> getTuplas() {
+		return tuplas;
+	}
+
+	public void setTuplas(List<Tupla> tuplas) {
+		this.tuplas = tuplas;
 	}
 
 }

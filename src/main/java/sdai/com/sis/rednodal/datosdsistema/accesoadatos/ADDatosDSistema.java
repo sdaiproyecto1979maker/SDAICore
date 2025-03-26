@@ -1,5 +1,6 @@
 package sdai.com.sis.rednodal.datosdsistema.accesoadatos;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.w3c.dom.Node;
@@ -55,11 +56,13 @@ public final class ADDatosDSistema extends AbstractAccesoADatos implements IAcce
 
 	SituacionDDatoDSistema getSituacionDDatoDSistema(String codigoDDato) throws Exception {
 		DatoDSistema datoDSistema = DatoDSistema.getInstancia(codigoDDato);
-		List<SituacionDDatoDSistema> instancias = datoDSistema.getSituacionesDDatoDSistema();
-		for (SituacionDDatoDSistema instancia : instancias) {
-			NumeroDVersion numeroDVersion = instancia.getNumeroDVersion();
-			Boolean swValida = NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion);
-			return swValida ? instancia : null;
+		List<SituacionDDatoDSistema> situacionesDDatoDSistema = datoDSistema.getSituacionesDDatoDSistema();
+		Collections.sort(situacionesDDatoDSistema);
+		for (Integer i = Integer.valueOf(situacionesDDatoDSistema.size()); i > 0; i--) {
+			SituacionDDatoDSistema situacionDDatoDSistema = situacionesDDatoDSistema.get(i);
+			NumeroDVersion numeroDVersion = situacionDDatoDSistema.getNumeroDVersion();
+			if (NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion))
+				return situacionDDatoDSistema;
 		}
 		return null;
 	}

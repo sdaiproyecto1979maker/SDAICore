@@ -11,7 +11,6 @@ import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
-import sdai.com.sis.rednodal.atributosdnodo.AtributosDNodoUtil;
 import sdai.com.sis.rednodal.atributosdnodo.KAtributosDNodo;
 
 /**
@@ -42,20 +41,11 @@ public final class SituacionDAtributoDNodo extends AbstractEntidadCFG {
 		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDNodo.class, codigoDNodo);
 		SituacionDAtributoDNodo[] instancias = (SituacionDAtributoDNodo[]) CacheDRednodal.recuperarInstancia(keyCache);
 		if (instancias == null) {
-			instancias = AtributosDNodoUtil.getSituacionesDAtributoDNodo(codigoDNodo);
+			ADAtributosDNodo adatos = new ADAtributosDNodo();
+			instancias = adatos.getSituacionesDAtributoDNodo(codigoDNodo);
 			CacheDRednodal.almacenarInstancia(keyCache, instancias);
 		}
 		return instancias;
-	}
-
-	public static SituacionDAtributoDNodo getInstancia(String codigoDNodo, String codigoDDato) throws Exception {
-		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDNodo.class, codigoDNodo, codigoDDato);
-		SituacionDAtributoDNodo instancia = (SituacionDAtributoDNodo) CacheDRednodal.recuperarInstancia(keyCache);
-		if (instancia == null) {
-			instancia = AtributosDNodoUtil.getSituacionDAtributoDNodo(codigoDNodo, codigoDDato);
-			CacheDRednodal.almacenarInstancia(keyCache, instancia);
-		}
-		return instancia;
 	}
 
 	@Override
