@@ -38,5 +38,13 @@ public abstract class Util {
 		}
 		return lista.toArray(new String[0]);
 	}
+	
+	public static Object[] createArray(Object[] lista1, Object[] lista2, @SuppressWarnings("rawtypes") Class type) {
+		int size = lista1.length + lista2.length;
+		Object[] destino = (Object[]) java.lang.reflect.Array.newInstance(type, size);
+		System.arraycopy(lista1, 0, destino, 0, lista1.length);
+		System.arraycopy(lista2, 0, destino, lista1.length, lista2.length);
+		return destino;
+	}
 
 }
