@@ -16,6 +16,7 @@ import sdai.com.sis.rednodal.nodos.accesoadatos.Nodo;
 import sdai.com.sis.rednodal.nodos.accesoadatos.SituacionDNodo;
 import sdai.com.sis.rednodal.tuplas.KTuplas;
 import sdai.com.sis.utilidades.Reflexion;
+import sdai.com.sis.utilidades.Util;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
@@ -87,15 +88,11 @@ public final class ADTuplas extends AbstractAccesoADatos implements IAccesoADato
 	}
 
 	private void addToCacheDNodos(String codigoDNodo, SituacionDTupla situacionDTupla) throws Exception {
-		List<SituacionDTupla> lista = new ArrayList<SituacionDTupla>();
 		KeyCache keyCache = KeyCache.getInstancia(SituacionDTupla.class, codigoDNodo);
 		SituacionDTupla[] situacionesDTupla = (SituacionDTupla[]) CacheDRednodal.recuperarInstancia(keyCache);
 		if (situacionesDTupla == null || situacionesDTupla.length == 0)
 			situacionesDTupla = getSituacionesDTupla(codigoDNodo);
-		for (SituacionDTupla situacionDTupla2 : situacionesDTupla)
-			lista.add(situacionDTupla2);
-		lista.add(situacionDTupla);
-		situacionesDTupla = lista.toArray(new SituacionDTupla[0]);
+		situacionesDTupla = (SituacionDTupla[]) Util.addItemArray(situacionesDTupla, situacionDTupla);
 		CacheDRednodal.almacenarInstancia(keyCache, situacionesDTupla);
 	}
 
