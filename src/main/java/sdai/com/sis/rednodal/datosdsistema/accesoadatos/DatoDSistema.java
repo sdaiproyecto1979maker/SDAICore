@@ -18,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.InstanciaDContenedor;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.accesoadatos.AtributoDNodo;
@@ -80,6 +81,11 @@ public final class DatoDSistema extends AbstractEntidadCFG {
 	public void addNode(NumeroDVersion numeroDVersion, Integer numeroDSituacion, Node root) {
 		super.addNode(numeroDVersion, numeroDSituacion, root);
 		this.codigoDDato = DocumentoXML.getStringValueNodeDescendencia(root, KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO);
+	}
+	
+	@Override
+	public void deleteCacheInstanciaArray(InstanciaDContenedor instanciaDContenedor) {
+
 	}
 
 	@Override

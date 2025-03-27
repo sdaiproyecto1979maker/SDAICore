@@ -107,7 +107,12 @@ public final class NodoDRed {
 	}
 
 	private void indexarTuplas(String keyCache, String... argumentos) {
-
+		List<TuplaDNodo> lista = new ArrayList<TuplaDNodo>();
+		for (TuplaDNodo tuplaDNodo : this.tuplasDNodo)
+			if (tuplaDNodo.isTuplaBuscada(argumentos))
+				lista.add(tuplaDNodo);
+		TuplaDNodo[] tuplasDNodo = lista.toArray(new TuplaDNodo[0]);
+		this.tuplasIndexadas.put(keyCache, tuplasDNodo);
 	}
 
 	public String getCodigoDNodo() {

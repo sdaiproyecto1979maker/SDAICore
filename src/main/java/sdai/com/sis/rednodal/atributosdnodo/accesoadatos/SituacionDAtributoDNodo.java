@@ -9,9 +9,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.InstanciaDContenedor;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.KAtributosDNodo;
+import sdai.com.sis.rednodal.datosdsistema.accesoadatos.DatoDSistema;
+import sdai.com.sis.rednodal.nodos.accesoadatos.Nodo;
 
 /**
  * @date 15/03/2025
@@ -46,6 +49,28 @@ public final class SituacionDAtributoDNodo extends AbstractEntidadCFG {
 			CacheDRednodal.almacenarInstancia(keyCache, instancias);
 		}
 		return instancias;
+	}
+
+	@Override
+	public void deleteCacheInstanciaArray(InstanciaDContenedor instanciaDContenedor) throws Exception {
+		Boolean isInstanciasNoDeleteables = Boolean.valueOf(true);
+		SituacionDAtributoDNodo[] instancias = (SituacionDAtributoDNodo[]) instanciaDContenedor.getInstancia();
+		for (SituacionDAtributoDNodo instancia : instancias) {
+			AtributoDNodo atributoDNodo = instancia.getAtributoDNodo();
+			Nodo nodo = atributoDNodo.getNodo();
+			String codigoDNodo = nodo.getCodigoDNodo();
+			DatoDSistema datoDSistema = atributoDNodo.getDatoDSistema();
+			String codigoDDato = datoDSistema.getCodigoDDato();
+			KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDNodo.class, Boolean.valueOf(false), codigoDNodo, codigoDDato);
+			if (CacheDRednodal.existeInstanciaNoDeleteable(keyCache)) {
+				isInstanciasNoDeleteables = Boolean.valueOf(false);
+				break;
+			}
+		}
+		if (isInstanciasNoDeleteables.equals(Boolean.valueOf(true))) {
+			KeyCache keyCache = instanciaDContenedor.getKeyCache();
+			CacheDRednodal.eliminarInstancia(keyCache);
+		}
 	}
 
 	@Override

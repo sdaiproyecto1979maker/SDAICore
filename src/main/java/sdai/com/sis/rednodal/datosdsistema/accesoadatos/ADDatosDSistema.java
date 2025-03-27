@@ -7,11 +7,14 @@ import org.w3c.dom.Node;
 
 import sdai.com.sis.accesoadatos.AbstractAccesoADatos;
 import sdai.com.sis.accesoadatos.IAccesoADatosCFG;
+import sdai.com.sis.cacchesdsistema.KeyCache;
+import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.conexiones.IdQuery;
-import sdai.com.sis.rednodal.datosdsistema.DatosDSistemaUtil;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
+import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
@@ -37,14 +40,52 @@ public final class ADDatosDSistema extends AbstractAccesoADatos implements IAcce
 			DatoDSistema datoDSistema = DatoDSistema.getInstancia(codigoDDato);
 			if (datoDSistema != null) {
 				SituacionDDatoDSistema situacionDDatoDSistema = SituacionDDatoDSistema.getInstancia(codigoDDato);
-				if (DatosDSistemaUtil.existenCambiosEnSituacionDDatoDSistema(situacionDDatoDSistema, node)) {
-					DatosDSistemaUtil.createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
-				}
+				if (existenDiferencias(node, codigoDProyectoDAplicacion, situacionDDatoDSistema))
+					createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
 			} else {
-				datoDSistema = DatosDSistemaUtil.createNewDatoDSistema(node, codigoDProyectoDAplicacion);
-				DatosDSistemaUtil.createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
+				datoDSistema = createNewDatoDSistema(node, codigoDProyectoDAplicacion);
+				createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
 			}
 		}
+	}
+
+	private DatoDSistema createNewDatoDSistema(Node root, String codigoDProyectoDAplicacion) throws Exception {
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		Integer numeroDSituacion = Integer.valueOf(1);
+		DatoDSistema datoDSistema = (DatoDSistema) Reflexion.createInstancia(DatoDSistema.class);
+		datoDSistema.addNode(numeroDVersion, numeroDSituacion, root);
+		String codigoDDato = datoDSistema.getCodigoDDato();
+		KeyCache keyCache = KeyCache.getInstancia(DatoDSistema.class, Boolean.valueOf(false), codigoDDato);
+		CacheDRednodal.almacenarInstancia(keyCache, datoDSistema);
+		return datoDSistema;
+	}
+
+	private void createNewSituacionDDatoDSistema(DatoDSistema datoDSistema, Node root, String codigoDProyectoDAplicacion) throws Exception {
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		Integer numeroDSituacion = datoDSistema.getSituacionesDDatoDSistema().size() + 1;
+		SituacionDDatoDSistema situacionDDatoDSistema = (SituacionDDatoDSistema) Reflexion.createInstancia(SituacionDDatoDSistema.class);
+		situacionDDatoDSistema.addNode(numeroDVersion, numeroDSituacion, root);
+		situacionDDatoDSistema.setDatoDSistema(datoDSistema);
+		datoDSistema.setSituacionDDatoDSistema(situacionDDatoDSistema);
+		datoDSistema.getSituacionesDDatoDSistema().add(situacionDDatoDSistema);
+		String codigoDDato = datoDSistema.getCodigoDDato();
+		KeyCache keyCache = KeyCache.getInstancia(SituacionDDatoDSistema.class, Boolean.valueOf(false), codigoDDato);
+		CacheDRednodal.almacenarInstancia(keyCache, situacionDDatoDSistema);
+	}
+
+	private Boolean existenDiferencias(Node root, String codigoDProyectoDAplicacion, SituacionDDatoDSistema situacionDDatoDSistema) throws Exception {
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		Integer numeroDSituacion = Integer.valueOf(1);
+		SituacionDDatoDSistema newSituacionDDatoDSistema = (SituacionDDatoDSistema) Reflexion.createInstancia(SituacionDDatoDSistema.class);
+		newSituacionDDatoDSistema.addNode(numeroDVersion, numeroDSituacion, root);
+		if (!situacionDDatoDSistema.getDescripcionDDato().equals(newSituacionDDatoDSistema.getDescripcionDDato()))
+			return Boolean.valueOf(true);
+		if (!situacionDDatoDSistema.getSwEntidadActiva().equals(newSituacionDDatoDSistema.getSwEntidadActiva()))
+			return Boolean.valueOf(true);
+		return Boolean.valueOf(false);
 	}
 
 	DatoDSistema getDatoDSistema(String codigoDDato) throws Exception {

@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.InstanciaDContenedor;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.tuplas.KTuplas;
@@ -70,6 +71,25 @@ public final class SituacionDTupla extends AbstractEntidadCFG {
 	public void addNode(NumeroDVersion numeroDVersion, Integer numeroDSituacion, Node root) {
 		super.addNode(numeroDVersion, numeroDSituacion, root);
 		this.descripcionDTupla = DocumentoXML.getStringValueNodeDescendencia(root, KTuplas.KSituacionDTupla.AtributosDEntidad.DESCRTUPLA);
+	}
+
+	@Override
+	public void deleteCacheInstanciaArray(InstanciaDContenedor instanciaDContenedor) throws Exception {
+		Boolean isInstanciasNoDeleteables = Boolean.valueOf(true);
+		SituacionDTupla[] instancias = (SituacionDTupla[]) instanciaDContenedor.getInstancia();
+		for (SituacionDTupla instancia : instancias) {
+			Tupla tupla = instancia.getTupla();
+			String codigoDTupla = tupla.getCodigoDTupla();
+			KeyCache keyCache = KeyCache.getInstancia(SituacionDTupla.class, Boolean.valueOf(false), codigoDTupla);
+			if (CacheDRednodal.existeInstanciaNoDeleteable(keyCache)) {
+				isInstanciasNoDeleteables = Boolean.valueOf(false);
+				break;
+			}
+		}
+		if (isInstanciasNoDeleteables.equals(Boolean.valueOf(true))) {
+			KeyCache keyCache = instanciaDContenedor.getKeyCache();
+			CacheDRednodal.eliminarInstancia(keyCache);
+		}
 	}
 
 	@Override

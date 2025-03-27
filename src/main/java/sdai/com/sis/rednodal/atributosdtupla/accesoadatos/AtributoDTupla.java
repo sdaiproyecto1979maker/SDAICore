@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.InstanciaDContenedor;
 import sdai.com.sis.rednodal.atributosdtupla.KAtributosDTupla;
 import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 import sdai.com.sis.rednodal.datosdsistema.accesoadatos.DatoDSistema;
@@ -54,6 +55,11 @@ public final class AtributoDTupla extends AbstractEntidadCFG {
 
 	AtributoDTupla() {
 		this.situacionesDAtributoDTupla = new ArrayList<SituacionDAtributoDTupla>();
+	}
+	
+	@Override
+	public void deleteCacheInstanciaArray(InstanciaDContenedor instanciaDContenedor) {
+
 	}
 
 	@Override

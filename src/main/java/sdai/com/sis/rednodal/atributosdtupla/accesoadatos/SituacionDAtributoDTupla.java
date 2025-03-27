@@ -11,9 +11,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.InstanciaDContenedor;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdtupla.KAtributosDTupla;
+import sdai.com.sis.rednodal.datosdsistema.accesoadatos.DatoDSistema;
+import sdai.com.sis.rednodal.tuplas.accesoadatos.SituacionDTupla;
+import sdai.com.sis.rednodal.tuplas.accesoadatos.Tupla;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
 
@@ -59,6 +63,28 @@ public final class SituacionDAtributoDTupla extends AbstractEntidadCFG {
 	public void addNode(NumeroDVersion numeroDVersion, Integer numeroDSituacion, Node root) {
 		super.addNode(numeroDVersion, numeroDSituacion, root);
 		this.valorDAtributo = DocumentoXML.getStringValueNodeDescendencia(root, KAtributosDTupla.KSituacionDAtributoDTupla.AtributosDEntidad.VALORATRIB);
+	}
+
+	@Override
+	public void deleteCacheInstanciaArray(InstanciaDContenedor instanciaDContenedor) throws Exception {
+		Boolean isInstanciasNoDeleteables = Boolean.valueOf(true);
+		SituacionDAtributoDTupla[] instancias = (SituacionDAtributoDTupla[]) instanciaDContenedor.getInstancia();
+		for (SituacionDAtributoDTupla instancia : instancias) {
+			AtributoDTupla atributoDTupla = instancia.getAtributoDTupla();
+			Tupla tupla = atributoDTupla.getTupla();
+			String codigoDTupla = tupla.getCodigoDTupla();
+			DatoDSistema datoDSistema = atributoDTupla.getDatoDSistema();
+			String codigoDDato = datoDSistema.getCodigoDDato();
+			KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDTupla.class, Boolean.valueOf(false), codigoDTupla, codigoDDato);
+			if (CacheDRednodal.existeInstanciaNoDeleteable(keyCache)) {
+				isInstanciasNoDeleteables = Boolean.valueOf(false);
+				break;
+			}
+		}
+		if (isInstanciasNoDeleteables.equals(Boolean.valueOf(true))) {
+			KeyCache keyCache = instanciaDContenedor.getKeyCache();
+			CacheDRednodal.eliminarInstancia(keyCache);
+		}
 	}
 
 	@Override

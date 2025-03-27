@@ -35,6 +35,19 @@ public final class TuplaDNodo {
 		return lista.toArray(new DatoDTupla[0]);
 	}
 
+	Boolean isTuplaBuscada(String... argumentos) {
+		for (Integer i = Integer.valueOf(0); i < argumentos.length; i = i + Integer.valueOf(2)) {
+			String codigoDDato = argumentos[i];
+			DatoDTupla datoDTupla = getDatoDTupla(codigoDDato);
+			if (datoDTupla == null)
+				return Boolean.valueOf(false);
+			String valorDAtributo = argumentos[i + Integer.valueOf(1)];
+			if (!valorDAtributo.equals(datoDTupla.getValorDAtributo()))
+				return Boolean.valueOf(false);
+		}
+		return Boolean.valueOf(true);
+	}
+
 	public String getCodigoDTupla() {
 		return codigoDTupla;
 	}

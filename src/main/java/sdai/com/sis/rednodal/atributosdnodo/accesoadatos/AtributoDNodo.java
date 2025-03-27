@@ -17,6 +17,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
+import sdai.com.sis.cacchesdsistema.InstanciaDContenedor;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdnodo.KAtributosDNodo;
@@ -94,6 +95,11 @@ public final class AtributoDNodo extends AbstractEntidadCFG {
 			CacheDRednodal.almacenarInstancia(keyCache, instancia);
 		}
 		return instancia;
+	}
+
+	@Override
+	public void deleteCacheInstanciaArray(InstanciaDContenedor instanciaDContenedor) {
+
 	}
 
 	@Override

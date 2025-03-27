@@ -12,16 +12,18 @@
 		<CLSACDATOS>sdai.com.sis.rednodal.nodos.accesoadatos.ADNodos</CLSACDATOS>
 	</ELEMENTCFG>
 	<ELEMENTCFG>
-		<CODELEMENT>TBATRSNODO</CODELEMENT>
+		<CODELEMENT>TBATRDNODO</CODELEMENT>
 		<FBKELEMENT></FBKELEMENT>
 		<CLSACDATOS>sdai.com.sis.rednodal.atributosdnodo.accesoadatos.ADAtributosDNodo</CLSACDATOS>
 	</ELEMENTCFG>
 	<ELEMENTCFG>
 		<CODELEMENT>TBENTTUPLA</CODELEMENT>
 		<FBKELEMENT></FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.tuplas.accesoadatos.ADTuplas</CLSACDATOS>
 	</ELEMENTCFG>
 	<ELEMENTCFG>
 		<CODELEMENT>TBATRTUPLA</CODELEMENT>
 		<FBKELEMENT></FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.atributosdtupla.accesoadatos.ADAtributosDTupla</CLSACDATOS>
 	</ELEMENTCFG>
 </ROOT>

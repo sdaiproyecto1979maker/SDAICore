@@ -11,11 +11,10 @@ import sdai.com.sis.aplicaciones.KAplicaciones;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.conexiones.IdQuery;
-import sdai.com.sis.rednodal.datosdsistema.accesoadatos.SituacionDDatoDSistema;
 import sdai.com.sis.rednodal.nodos.KNodos;
+import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
-import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
@@ -37,41 +36,46 @@ public final class ADNodos extends AbstractAccesoADatos implements IAccesoADatos
 	@Override
 	public void generateElementosVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
 		for (Node node : nodes) {
-			String codigoDNodo = DocumentoXML.getStringValueNodeDescendencia(node, KNodos.KNodo.AtributosDEntidad.CODIGONODO);
-			KeyCache keyCache = KeyCache.getInstancia(Nodo.class, codigoDNodo);
-			if (CacheDRednodal.existeInstancia(keyCache)) {
-				SituacionDNodo situacionDNodo = SituacionDNodo.getInstancia(codigoDNodo);
-				if (situacionDNodo == null) {
-					situacionDNodo = getSituacionDNodo(codigoDNodo, Boolean.valueOf(false));
-					if (existenCambios(situacionDNodo, node)) {
-						Nodo nodo = Nodo.getInstancia(codigoDNodo);
-						ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
-						NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
-						SituacionDNodo instancia = new SituacionDNodo();
-						instancia.addNode(numeroDVersion, Integer.valueOf(1), node);
-						instancia.setNodo(nodo);
-						nodo.setSituacionDNodo(situacionDNodo);
-						nodo.getSituacionesDNodo().add(situacionDNodo);
-						keyCache = KeyCache.getInstancia(SituacionDDatoDSistema.class, codigoDNodo);
-						CacheDRednodal.almacenarInstancia(keyCache, situacionDNodo);
-					}
-				}
-			} else {
-				ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
-				NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
-				Nodo nodo = new Nodo();
-				nodo.addNode(numeroDVersion, Integer.valueOf(1), node);
-				SituacionDNodo situacionDNodo = new SituacionDNodo();
-				situacionDNodo.addNode(numeroDVersion, Integer.valueOf(1), node);
-				situacionDNodo.setNodo(nodo);
-				nodo.setSituacionDNodo(situacionDNodo);
-				nodo.getSituacionesDNodo().add(situacionDNodo);
-				keyCache = KeyCache.getInstancia(Nodo.class, codigoDNodo);
-				CacheDRednodal.almacenarInstancia(keyCache, nodo);
-				keyCache = KeyCache.getInstancia(SituacionDDatoDSistema.class, codigoDNodo);
-				CacheDRednodal.almacenarInstancia(keyCache, situacionDNodo);
-			}
+			//TODO Desarrollar la parte de la comprobación de los nodos cuando haya conexion
+			Nodo nodo = createNewNodo(node, codigoDProyectoDAplicacion);
+			createNewSituacionDNodo(nodo, node, codigoDProyectoDAplicacion);
 		}
+	}
+	
+	private Nodo createNewNodo(Node root, String codigoDProyectoDAplicacion) throws Exception {
+		//TODO: Descomentar las lineas cuando haya conexion
+		/*
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		//TODO: Quitar esta linea despues de descomentar las anteriores
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class); 
+		Integer numeroDSituacion = Integer.valueOf(1);
+		Nodo nodo = (Nodo) Reflexion.createInstancia(Nodo.class);		
+		nodo.addNode(numeroDVersion, numeroDSituacion, root);
+		String codigoDNodo = nodo.getCodigoDNodo();
+		KeyCache keyCache = KeyCache.getInstancia(Nodo.class, Boolean.valueOf(false), codigoDNodo);
+		CacheDRednodal.almacenarInstancia(keyCache, nodo);
+		return nodo;
+	}
+	
+	private void createNewSituacionDNodo(Nodo nodo, Node root, String codigoDProyectoDAplicacion) throws Exception {
+		//TODO: Descomentar las lineas cuando haya conexion
+		/*
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		//TODO: Quitar esta linea despues de descomentar las anteriores
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class); 
+		Integer numeroDSituacion = nodo.getSituacionesDNodo().size() + 1;
+		SituacionDNodo situacionDNodo = (SituacionDNodo) Reflexion.createInstancia(SituacionDNodo.class);		
+		situacionDNodo.addNode(numeroDVersion, numeroDSituacion, root);
+		situacionDNodo.setNodo(nodo);
+		nodo.setSituacionDNodo(situacionDNodo);
+		nodo.getSituacionesDNodo().add(situacionDNodo);
+		String codigoDNodo = nodo.getCodigoDNodo();
+		KeyCache keyCache = KeyCache.getInstancia(SituacionDNodo.class, Boolean.valueOf(false), codigoDNodo);
+		CacheDRednodal.almacenarInstancia(keyCache, situacionDNodo);
 	}
 
 	private Boolean existenCambios(SituacionDNodo situacionDNodo, Node root) {

@@ -9,7 +9,6 @@ import sdai.com.sis.rednodal.datosdsistema.accesoadatos.DatoDSistema;
 import sdai.com.sis.rednodal.datosdsistema.accesoadatos.SituacionDDatoDSistema;
 import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
-import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
@@ -30,8 +29,13 @@ public abstract class DatosDSistemaUtil {
 	}
 
 	public static DatoDSistema createNewDatoDSistema(Node root, String codigoDProyectoDAplicacion) throws Exception {
+		//TODO: Descomentar las lineas cuando haya conexion
+		/*
 		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
 		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		//TODO: Quitar esta linea despues de descomentar las anteriores
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class); 
 		Integer numeroDSituacion = Integer.valueOf(1);
 		DatoDSistema datoDSistema = (DatoDSistema) Reflexion.createInstancia(DatoDSistema.class);
 		datoDSistema.addNode(numeroDVersion, numeroDSituacion, root);
@@ -42,8 +46,13 @@ public abstract class DatosDSistemaUtil {
 	}
 
 	public static void createNewSituacionDDatoDSistema(DatoDSistema datoDSistema, Node root, String codigoDProyectoDAplicacion) throws Exception {
+		//TODO: Descomentar las lineas cuando haya conexion
+		/*
 		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
 		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		//TODO: Quitar esta linea despues de descomentar las anteriores
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class); 
 		Integer numeroDSituacion = datoDSistema.getSituacionesDDatoDSistema().size();
 		SituacionDDatoDSistema instancia = (SituacionDDatoDSistema) Reflexion.createInstancia(SituacionDDatoDSistema.class);
 		instancia.addNode(numeroDVersion, numeroDSituacion, root);

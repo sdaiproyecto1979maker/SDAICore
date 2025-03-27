@@ -35,13 +35,24 @@ public abstract class AbstractCacheDSistema implements ICacheDSistema {
 	}
 
 	@Override
-	public void eliminarInstancia(KeyCache keyCache) {
+	public void eliminarInstancia(KeyCache keyCache) throws Exception {
 		this.contenedorDInstancias.eliminarInstancia(keyCache);
 	}
 
 	@Override
-	public void eliminarInstancias() {
+	public void eliminarInstancias() throws Exception {
 		this.contenedorDInstancias.eliminarInstancias();
+	}
+
+	@Override
+	public Boolean existeInstanciaNoDeleteable(KeyCache keyCache) {
+		Boolean swDeleteable = Boolean.valueOf(true);
+		InstanciaDContenedor instanciaDContenedor = this.contenedorDInstancias.recuperarInstancia(keyCache);
+		if (instanciaDContenedor != null) {
+			KeyCache keyCache2 = instanciaDContenedor.getKeyCache();
+			swDeleteable = keyCache2.getSwDeleteable();
+		}
+		return swDeleteable.equals(Boolean.valueOf(false)) ? Boolean.valueOf(true) : Boolean.valueOf(false);
 	}
 
 	@Override

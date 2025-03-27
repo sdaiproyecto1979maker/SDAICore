@@ -8,12 +8,18 @@ import org.w3c.dom.Node;
 
 import sdai.com.sis.accesoadatos.AbstractAccesoADatos;
 import sdai.com.sis.accesoadatos.IAccesoADatosCFG;
+import sdai.com.sis.cacchesdsistema.KeyCache;
+import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
+import sdai.com.sis.rednodal.datosdsistema.KDatosDSistema;
 import sdai.com.sis.rednodal.datosdsistema.accesoadatos.DatoDSistema;
 import sdai.com.sis.rednodal.datosdsistema.accesoadatos.SituacionDDatoDSistema;
+import sdai.com.sis.rednodal.tuplas.KTuplas;
 import sdai.com.sis.rednodal.tuplas.accesoadatos.SituacionDTupla;
 import sdai.com.sis.rednodal.tuplas.accesoadatos.Tupla;
+import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 15/03/2025
@@ -34,8 +40,66 @@ public final class ADAtributosDTupla extends AbstractAccesoADatos implements IAc
 	@Override
 	public void generateElementosVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
 		for (Node node : nodes) {
-
+			//TODO Desarrollar la parte de la comprobación de los nodos cuando haya conexion
+			AtributoDTupla atributoDTupla = createNewAtributoDTupla(node, codigoDProyectoDAplicacion);
+			createNewSituacionDAtributoDTupla(atributoDTupla, node, codigoDProyectoDAplicacion);
 		}
+	}
+	
+	private AtributoDTupla createNewAtributoDTupla(Node root, String codigoDProyectoDAplicacion) throws Exception {
+		//TODO: Descomentar las lineas cuando haya conexion
+		/*
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		//TODO: Quitar esta linea despues de descomentar las anteriores
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class); 
+		Integer numeroDSituacion = Integer.valueOf(1);
+		AtributoDTupla atributoDTupla = (AtributoDTupla) Reflexion.createInstancia(AtributoDTupla.class);		
+		atributoDTupla.addNode(numeroDVersion, numeroDSituacion, root);
+		String codigoDTupla = DocumentoXML.getStringValueNodeDescendencia(root, KTuplas.KTupla.AtributosDEntidad.CODIGTUPLA);
+		Tupla tupla = Tupla.getInstancia(codigoDTupla);
+		atributoDTupla.setTupla(tupla);
+		String codigoDDato = DocumentoXML.getStringValueNodeDescendencia(root, KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO);
+		DatoDSistema datoDSistema = DatoDSistema.getInstancia(codigoDDato);
+		atributoDTupla.setDatoDSistema(datoDSistema);
+		KeyCache keyCache = KeyCache.getInstancia(AtributoDTupla.class, Boolean.valueOf(false), codigoDTupla, codigoDDato);
+		CacheDRednodal.almacenarInstancia(keyCache, atributoDTupla);
+		return atributoDTupla;
+	}
+	
+	private void createNewSituacionDAtributoDTupla(AtributoDTupla atributoDTupla, Node root, String codigoDProyectoDAplicacion) throws Exception {
+		//TODO: Descomentar las lineas cuando haya conexion
+		/*
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		//TODO: Quitar esta linea despues de descomentar las anteriores
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class); 
+		Integer numeroDSituacion = atributoDTupla.getSituacionesDAtributoDTupla().size() + 1;
+		SituacionDAtributoDTupla situacionDAtributoDTupla = (SituacionDAtributoDTupla) Reflexion.createInstancia(SituacionDAtributoDTupla.class);		
+		situacionDAtributoDTupla.addNode(numeroDVersion, numeroDSituacion, root);
+		situacionDAtributoDTupla.setAtributoDTupla(atributoDTupla);
+		atributoDTupla.setSituacionDAtributoDTupla(situacionDAtributoDTupla);
+		atributoDTupla.getSituacionesDAtributoDTupla().add(situacionDAtributoDTupla);
+		String codigoDTupla = DocumentoXML.getStringValueNodeDescendencia(root, KTuplas.KTupla.AtributosDEntidad.CODIGTUPLA);
+		String codigoDDato = DocumentoXML.getStringValueNodeDescendencia(root, KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO);
+		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDTupla.class, Boolean.valueOf(false), codigoDTupla, codigoDDato);
+		CacheDRednodal.almacenarInstancia(keyCache, situacionDAtributoDTupla);
+		addToCacheDTuplas(codigoDTupla, situacionDAtributoDTupla);
+	}
+	
+	private void addToCacheDTuplas(String codigoDTupla, SituacionDAtributoDTupla situacionDAtributoDTupla) throws Exception {
+		List<SituacionDAtributoDTupla> lista = new ArrayList<SituacionDAtributoDTupla>();
+		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDTupla.class, codigoDTupla);
+		SituacionDAtributoDTupla[] situacionesDAtributoDTupla = (SituacionDAtributoDTupla[]) CacheDRednodal.recuperarInstancia(keyCache);
+		if(situacionesDAtributoDTupla == null || situacionesDAtributoDTupla.length == 0) 
+			situacionesDAtributoDTupla = getSituacionesDAtributoDTupla(codigoDTupla);
+		for(SituacionDAtributoDTupla situacionDAtributoDTupla2 : situacionesDAtributoDTupla)
+			lista.add(situacionDAtributoDTupla2);
+		lista.add(situacionDAtributoDTupla);
+		situacionesDAtributoDTupla = lista.toArray(new SituacionDAtributoDTupla[0]);
+		CacheDRednodal.almacenarInstancia(keyCache, situacionesDAtributoDTupla);
 	}
 
 	SituacionDAtributoDTupla[] getSituacionesDAtributoDTupla(String codigoDTupla) throws Exception {

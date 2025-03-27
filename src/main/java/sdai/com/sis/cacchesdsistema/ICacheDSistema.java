@@ -15,9 +15,11 @@ public interface ICacheDSistema {
 
 	void almacenarInstancia(KeyCache keyCache, Object instancia);
 
-	void eliminarInstancia(KeyCache keyCache);
+	void eliminarInstancia(KeyCache keyCache) throws Exception;
 
-	void eliminarInstancias();
+	void eliminarInstancias() throws Exception;
+
+	Boolean existeInstanciaNoDeleteable(KeyCache keyCache);
 
 	Integer getMinutosEnContenedor();
 

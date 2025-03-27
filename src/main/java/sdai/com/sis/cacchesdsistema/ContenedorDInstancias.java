@@ -2,6 +2,9 @@ package sdai.com.sis.cacchesdsistema;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import sdai.com.sis.accesoadatos.IEntidadCFG;
+import sdai.com.sis.utilidades.Reflexion;
+
 /**
  * @date 26/03/2025
  * @since VERSIONDCOREENCURSO
@@ -55,24 +58,51 @@ public class ContenedorDInstancias extends ConcurrentHashMap<String, InstanciaDC
 		super.put(key, instanciaDContenedor);
 	}
 
-	void eliminarInstancia(KeyCache keyCache) {
+	void eliminarInstancia(KeyCache keyCache) throws Exception {
 		Boolean swDeleteable = keyCache.getSwDeleteable();
 		if (swDeleteable.equals(Boolean.valueOf(true))) {
+			if (isEntidadCFG(keyCache)) {
+				String key = keyCache.getKeyCache();
+				InstanciaDContenedor instanciaDContenedor = super.get(key);
+				Class<?> clase = keyCache.getClase();
+				Object instance = Reflexion.createInstancia(clase.getName());
+				if (instance instanceof IEntidadCFG)
+					Reflexion.invokeMetodo(instance, "deleteCacheInstanciaArray", instanciaDContenedor);
+			} else {
+				String key = keyCache.getKeyCache();
+				super.remove(key);
+			}
+		}
+	}
+
+	void eliminarInstancias() throws Exception {
+		InstanciaDContenedor[] instanciasDContenedor = super.values().toArray(new InstanciaDContenedor[0]);
+		for (InstanciaDContenedor instanciaDContenedor : instanciasDContenedor) {
+			KeyCache keyCache = instanciaDContenedor.getKeyCache();
+			Boolean swDeleteable = keyCache.getSwDeleteable();
+			if (swDeleteable.equals(Boolean.valueOf(false)))
+				continue;
+			if (isEntidadCFG(keyCache)) {
+				Class<?> clase = keyCache.getClase();
+				Object instance = Reflexion.createInstancia(clase.getName());
+				if (instance instanceof IEntidadCFG)
+					Reflexion.invokeMetodo(instance, "deleteCacheInstanciaArray", instanciaDContenedor);
+			}
 			String key = keyCache.getKeyCache();
 			super.remove(key);
 		}
 	}
 
-	void eliminarInstancias() {
-		InstanciaDContenedor[] instanciasDContenedor = super.values().toArray(new InstanciaDContenedor[0]);
-		for (InstanciaDContenedor instanciaDContenedor : instanciasDContenedor) {
-			KeyCache keyCache = instanciaDContenedor.getKeyCache();
-			Boolean swDeleteable = keyCache.getSwDeleteable();
-			if (swDeleteable.equals(Boolean.valueOf(true))) {
-				String key = keyCache.getKeyCache();
-				super.remove(key);
-			}
+	private Boolean isEntidadCFG(KeyCache keyCache) {
+		Class<?> clase = keyCache.getClase();
+		Class<?> superClass = clase.getSuperclass();
+		Class<?>[] interfaces = superClass.getInterfaces();
+		for (Class<?> interfaz : interfaces) {
+			String className = interfaz.getName();
+			if (className.equals(IEntidadCFG.class.getName()))
+				return Boolean.valueOf(true);
 		}
+		return Boolean.valueOf(false);
 	}
 
 }

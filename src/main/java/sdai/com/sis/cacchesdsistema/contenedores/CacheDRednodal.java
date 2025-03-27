@@ -29,12 +29,17 @@ public abstract class CacheDRednodal {
 			CacheDRednodal.instancia.almacenarInstancia(keyCache, instancia);
 	}
 
-	public static void eliminarInstancia(KeyCache keyCache) {
+	public static void eliminarInstancia(KeyCache keyCache) throws Exception {
 		CacheDRednodal.instancia.eliminarInstancia(keyCache);
 	}
 
-	public static void eliminarInstancias() {
+	public static void eliminarInstancias() throws Exception {
 		CacheDRednodal.instancia.eliminarInstancias();
+	}
+
+	public static Boolean existeInstanciaNoDeleteable(KeyCache keyCache) {
+		Boolean swDeleteable = CacheDRednodal.instancia.existeInstanciaNoDeleteable(keyCache);
+		return swDeleteable;
 	}
 
 	public static ICacheDSistema getInstancia() {
