@@ -52,6 +52,7 @@ public final class GlobalCaches extends Thread {
 
 	@Override
 	public void run() {
+		setName("GLOBALCHES");
 		try {
 			while (this.isContinuar.equals(Boolean.valueOf(true))) {
 				Hora horaDSistema = Hora.getHoraDSistema();
