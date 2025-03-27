@@ -38,12 +38,26 @@ public abstract class Util {
 		}
 		return lista.toArray(new String[0]);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public static <T> T[] createArrayTypes(T[] lista1, T[] lista2, Class<T> type) {
+		return (T[]) createArray(lista1, lista2, type);
+	}
+
 	public static Object[] createArray(Object[] lista1, Object[] lista2, Class<?> type) {
 		Integer size = lista1.length + lista2.length;
 		Object[] destino = (Object[]) java.lang.reflect.Array.newInstance(type, size);
 		System.arraycopy(lista1, 0, destino, 0, lista1.length);
 		System.arraycopy(lista2, 0, destino, lista1.length, lista2.length);
+		return destino;
+	}
+
+	public static Object[] addItemArray(Object[] lista1, Object nuevoItem) {
+		Integer size = lista1 == null ? 1 : lista1.length + 1;
+		Object[] destino = (Object[]) java.lang.reflect.Array.newInstance(nuevoItem.getClass(), size);
+		if (lista1 != null)
+			System.arraycopy(lista1, 0, destino, 0, lista1.length);
+		destino[size - 1] = nuevoItem;
 		return destino;
 	}
 
