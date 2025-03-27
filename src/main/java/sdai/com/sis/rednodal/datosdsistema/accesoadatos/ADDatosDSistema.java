@@ -15,7 +15,6 @@ import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
-import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
@@ -36,22 +35,17 @@ public final class ADDatosDSistema extends AbstractAccesoADatos implements IAcce
 	@Override
 	public void generateElementosVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
 		for (Node node : nodes) {
-			String codigoDDato = DocumentoXML.getStringValueNodeDescendencia(node, KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO);
-			DatoDSistema datoDSistema = DatoDSistema.getInstancia(codigoDDato);
-			if (datoDSistema != null) {
-				SituacionDDatoDSistema situacionDDatoDSistema = SituacionDDatoDSistema.getInstancia(codigoDDato);
-				if (existenDiferencias(node, codigoDProyectoDAplicacion, situacionDDatoDSistema))
-					createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
-			} else {
-				datoDSistema = createNewDatoDSistema(node, codigoDProyectoDAplicacion);
-				createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
-			}
+			DatoDSistema datoDSistema = createNewDatoDSistema(node, codigoDProyectoDAplicacion);
+			createNewSituacionDDatoDSistema(datoDSistema, node, codigoDProyectoDAplicacion);
 		}
 	}
 
 	private DatoDSistema createNewDatoDSistema(Node root, String codigoDProyectoDAplicacion) throws Exception {
+		/*
 		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
 		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class);
 		Integer numeroDSituacion = Integer.valueOf(1);
 		DatoDSistema datoDSistema = (DatoDSistema) Reflexion.createInstancia(DatoDSistema.class);
 		datoDSistema.addNode(numeroDVersion, numeroDSituacion, root);
@@ -62,8 +56,11 @@ public final class ADDatosDSistema extends AbstractAccesoADatos implements IAcce
 	}
 
 	private void createNewSituacionDDatoDSistema(DatoDSistema datoDSistema, Node root, String codigoDProyectoDAplicacion) throws Exception {
+		/*
 		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
 		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
+		*/
+		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class);
 		Integer numeroDSituacion = datoDSistema.getSituacionesDDatoDSistema().size() + 1;
 		SituacionDDatoDSistema situacionDDatoDSistema = (SituacionDDatoDSistema) Reflexion.createInstancia(SituacionDDatoDSistema.class);
 		situacionDDatoDSistema.addNode(numeroDVersion, numeroDSituacion, root);

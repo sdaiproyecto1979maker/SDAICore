@@ -20,6 +20,11 @@ public final class Hora {
 		return new Hora();
 	}
 
+	public Integer getHora() {
+		Integer hora = this.localDateTime.getHour();
+		return hora;
+	}
+
 	public Integer getMinutosTranscurridos(Hora hora) {
 		Duration duration = Duration.between(this.localDateTime, hora.getLocalDateTime());
 		Long segundosTranscurridos = duration.getSeconds();

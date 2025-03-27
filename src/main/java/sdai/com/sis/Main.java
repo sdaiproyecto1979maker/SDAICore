@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import org.w3c.dom.Node;
 
+import sdai.com.sis.cacchesdsistema.GlobalCaches;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.cacchesdsistema.rednodal.ContenedorDCache;
@@ -27,9 +28,7 @@ public class Main {
 		ElementosCFG elementosCFG = ElementosCFG.getInstancia();
 		String codigoDProyecto = null;
 		elementosCFG.loadVersionEnCurso(codigoDProyecto, root);
-		ContenedorDCache.getInstancias();
-		KeyCache keyCache = KeyCache.getInstancia(SituacionDTupla.class, "CONTECACHE");
-		CacheDRednodal.eliminarInstancia(keyCache);
+		GlobalCaches.getInstancia();
 	}
 
 }
