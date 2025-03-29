@@ -2,7 +2,7 @@ package sdai.com.sis.rednodal.atributosdnodo;
 
 /**
  * @date 15/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public abstract class KAtributosDNodo {

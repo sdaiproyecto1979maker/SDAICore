@@ -16,7 +16,7 @@ import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public final class FabricaDDatosDSistema extends AbstractFabricaDEntidadesCFG {
@@ -56,7 +56,7 @@ public final class FabricaDDatosDSistema extends AbstractFabricaDEntidadesCFG {
 	private SituacionDDatoDSistema obtenerSituacionAComparar(DatoDSistema datoDSistema) {
 		NumeroDVersion numeroDVersion = getNumeroDVersion();
 		List<SituacionDDatoDSistema> situacionesDDatoDSistema = datoDSistema.getSituacionesDDatoDSistema();
-		Collections.sort(situacionesDDatoDSistema);
+		//Collections.sort(situacionesDDatoDSistema);
 		for (SituacionDDatoDSistema situacionDDatoDSistema : situacionesDDatoDSistema) {
 			NumeroDVersion numeroDVersionAux = situacionDDatoDSistema.getNumeroDVersion();
 			if (NumerosDVersionUtil.isNumeroDVersionMayor(numeroDVersionAux, numeroDVersion).equals(Boolean.valueOf(true))) {

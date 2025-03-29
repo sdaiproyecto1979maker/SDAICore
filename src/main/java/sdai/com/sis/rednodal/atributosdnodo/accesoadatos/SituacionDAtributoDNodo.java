@@ -18,7 +18,7 @@ import sdai.com.sis.rednodal.nodos.accesoadatos.Nodo;
 
 /**
  * @date 15/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 @Entity
@@ -38,6 +38,17 @@ public final class SituacionDAtributoDNodo extends AbstractEntidadCFG {
 
 	SituacionDAtributoDNodo() {
 
+	}
+
+	public static SituacionDAtributoDNodo getInstancia(String codigoDNodo, String codigoDDato) throws Exception {
+		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDNodo.class, codigoDNodo, codigoDDato);
+		SituacionDAtributoDNodo instancia = (SituacionDAtributoDNodo) CacheDRednodal.recuperarInstancia(keyCache);
+		if (instancia == null) {
+			ADAtributosDNodo adatos = new ADAtributosDNodo();
+			instancia = adatos.getSituacionDAtributoDNodo(codigoDNodo, codigoDDato);
+			CacheDRednodal.almacenarInstancia(keyCache, instancia);
+		}
+		return instancia;
 	}
 
 	public static SituacionDAtributoDNodo[] getInstancias(String codigoDNodo) throws Exception {

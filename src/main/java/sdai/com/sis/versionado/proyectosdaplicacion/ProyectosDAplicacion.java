@@ -15,7 +15,7 @@ import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 12/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public final class ProyectosDAplicacion {

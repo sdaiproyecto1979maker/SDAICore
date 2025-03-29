@@ -1,13 +1,14 @@
 package sdai.com.sis.rednodal.atributosdnodo.accesoadatos;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.w3c.dom.Node;
 
 import sdai.com.sis.accesoadatos.AbstractAccesoADatos;
+import sdai.com.sis.accesoadatos.AbstractEntidadCFG;
 import sdai.com.sis.accesoadatos.IAccesoADatosCFG;
+import sdai.com.sis.aplicaciones.KAplicaciones;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.conexiones.IdQuery;
@@ -22,11 +23,12 @@ import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.utilidades.Util;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 15/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAccesoADatosCFG {
@@ -43,22 +45,23 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 	@Override
 	public void generateElementosVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
 		for (Node node : nodes) {
-			// TODO Desarrollar la parte de la comprobación de los nodos cuando haya
-			// conexion
-			AtributoDNodo atributoDNodo = createNewAtributoDNodo(node, codigoDProyectoDAplicacion);
-			createNewSituacionDAtributoDNodo(atributoDNodo, node, codigoDProyectoDAplicacion);
+			String codigoDNodo = DocumentoXML.getStringValueNodeDescendencia(node, KNodos.KNodo.AtributosDEntidad.CODIGONODO);
+			String codigoDDato = DocumentoXML.getStringValueNodeDescendencia(node, KDatosDSistema.KDatoDSistema.AtributosDEntidad.CODIGODATO);
+			AtributoDNodo atributoDNodo = AtributoDNodo.getInstancia(codigoDNodo, codigoDDato);
+			if (atributoDNodo != null) {
+				SituacionDAtributoDNodo situacionDAtributoDNodo = SituacionDAtributoDNodo.getInstancia(codigoDNodo, codigoDDato);
+				if (!situacionDAtributoDNodo.getSwEntidadActiva().equals(DocumentoXML.getBooleanValueNodeDescendencia(node, KAplicaciones.AtributosDEntidad.SWENTACTIV)))
+					createNewSituacionDAtributoDNodo(atributoDNodo, node, codigoDProyectoDAplicacion);
+			} else {
+				atributoDNodo = createNewAtributoDNodo(node, codigoDProyectoDAplicacion);
+				createNewSituacionDAtributoDNodo(atributoDNodo, node, codigoDProyectoDAplicacion);
+			}
 		}
 	}
 
 	private AtributoDNodo createNewAtributoDNodo(Node root, String codigoDProyectoDAplicacion) throws Exception {
-		// TODO: Descomentar las lineas cuando haya conexion
-		/*
-		 * ProyectosDAplicacion proyectosDAplicacion =
-		 * ProyectosDAplicacion.getInstancia(); NumeroDVersion numeroDVersion =
-		 * proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
-		 */
-		// TODO: Quitar esta linea despues de descomentar las anteriores
-		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class);
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
 		Integer numeroDSituacion = Integer.valueOf(1);
 		AtributoDNodo atributoDNodo = (AtributoDNodo) Reflexion.createInstancia(AtributoDNodo.class);
 		atributoDNodo.addNode(numeroDVersion, numeroDSituacion, root);
@@ -74,14 +77,8 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 	}
 
 	private void createNewSituacionDAtributoDNodo(AtributoDNodo atributoDNodo, Node root, String codigoDProyectoDAplicacion) throws Exception {
-		// TODO: Descomentar las lineas cuando haya conexion
-		/*
-		 * ProyectosDAplicacion proyectosDAplicacion =
-		 * ProyectosDAplicacion.getInstancia(); NumeroDVersion numeroDVersion =
-		 * proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
-		 */
-		// TODO: Quitar esta linea despues de descomentar las anteriores
-		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class);
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
 		Integer numeroDSituacion = atributoDNodo.getSituacionesDAtributoDNodo().size() + 1;
 		SituacionDAtributoDNodo situacionDAtributoDNodo = (SituacionDAtributoDNodo) Reflexion.createInstancia(SituacionDAtributoDNodo.class);
 		situacionDAtributoDNodo.addNode(numeroDVersion, numeroDSituacion, root);
@@ -96,11 +93,10 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 	}
 
 	private void addToCacheByNodo(SituacionDAtributoDNodo situacionDAtributoDNodo, String codigoDNodo) throws Exception {
-		List<SituacionDAtributoDNodo> lista = new ArrayList<SituacionDAtributoDNodo>();
 		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDNodo.class, codigoDNodo);
 		SituacionDAtributoDNodo[] situacionesDAtributoDNodo = (SituacionDAtributoDNodo[]) CacheDRednodal.recuperarInstancia(keyCache);
 		if (situacionesDAtributoDNodo == null || situacionesDAtributoDNodo.length == 0)
-			situacionesDAtributoDNodo = getSituacionesDAtributoDNodo(codigoDNodo);// TODO: LLamar al getInstancia cuando haya conexiones
+			situacionesDAtributoDNodo = SituacionDAtributoDNodo.getInstancias(codigoDNodo);
 		situacionesDAtributoDNodo = (SituacionDAtributoDNodo[]) Util.addItemArray(situacionesDAtributoDNodo, situacionDAtributoDNodo);
 		CacheDRednodal.almacenarInstancia(keyCache, situacionesDAtributoDNodo);
 	}
@@ -126,6 +122,23 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 		return instancia;
 	}
 
+	SituacionDAtributoDNodo getSituacionDAtributoDNodo(String codigoDNodo, String codigoDDato) throws Exception {
+		SituacionDNodo situacionDNodo = SituacionDNodo.getInstancia(codigoDNodo);
+		SituacionDDatoDSistema situacionDDatoDSistema = SituacionDDatoDSistema.getInstancia(codigoDDato);
+		if (situacionDNodo != null && situacionDDatoDSistema != null) {
+			AtributoDNodo atributoDNodo = AtributoDNodo.getInstancia(codigoDNodo, codigoDDato);
+			List<SituacionDAtributoDNodo> situacionesDAtributoDNodo = atributoDNodo.getSituacionesDAtributoDNodo();
+			SituacionDAtributoDNodo[] instancias = situacionesDAtributoDNodo.toArray(new SituacionDAtributoDNodo[0]);
+			Util.ordenar(instancias, AbstractEntidadCFG.NUMVERSDES);
+			for (SituacionDAtributoDNodo instancia : instancias) {
+				NumeroDVersion numeroDVersion = instancia.getNumeroDVersion();
+				if (NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion))
+					return instancia;
+			}
+		}
+		return null;
+	}
+
 	SituacionDAtributoDNodo[] getSituacionesDAtributoDNodo(String codigoDNodo) throws Exception {
 		SituacionDNodo situacionDNodo = SituacionDNodo.getInstancia(codigoDNodo);
 		if (situacionDNodo != null) {
@@ -138,12 +151,12 @@ public final class ADAtributosDNodo extends AbstractAccesoADatos implements IAcc
 				if (situacionDDatoDSistema != null) {
 					List<SituacionDAtributoDNodo> lista = new ArrayList<SituacionDAtributoDNodo>();
 					List<SituacionDAtributoDNodo> situacionesDAtributoDNodo = atributoDNodo.getSituacionesDAtributoDNodo();
-					Collections.sort(situacionesDAtributoDNodo);
-					for (Integer i = Integer.valueOf(situacionesDAtributoDNodo.size()); i > 0; i--) {
-						SituacionDAtributoDNodo situacionDAtributoDNodo = situacionesDAtributoDNodo.get(i);
-						NumeroDVersion numeroDVersion = situacionDAtributoDNodo.getNumeroDVersion();
+					SituacionDAtributoDNodo[] instancias = situacionesDAtributoDNodo.toArray(new SituacionDAtributoDNodo[0]);
+					Util.ordenar(instancias, AbstractEntidadCFG.NUMVERSDES);
+					for (SituacionDAtributoDNodo instancia : instancias) {
+						NumeroDVersion numeroDVersion = instancia.getNumeroDVersion();
 						if (NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion))
-							lista.add(situacionDAtributoDNodo);
+							lista.add(instancia);
 					}
 					return lista.toArray(new SituacionDAtributoDNodo[0]);
 				}

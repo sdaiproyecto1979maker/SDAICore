@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 /**
  * @date 12/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public abstract class Util {
@@ -59,6 +59,68 @@ public abstract class Util {
 			System.arraycopy(lista1, 0, destino, 0, lista1.length);
 		destino[size - 1] = nuevoItem;
 		return destino;
+	}
+
+	public static IOrdenacion[] ordenar(IOrdenacion[] objetos, Integer tipoDOrdenacion) {
+		if ((objetos.length == 0) || (objetos.length == 1))
+			return objetos;
+		Util.quickSort(objetos, 0, objetos.length - 1, tipoDOrdenacion);
+		return objetos;
+
+	}
+
+	private static void quickSort(IOrdenacion[] objetos, Integer izquierda, Integer derecha, Integer tipoDOrdenacion) {
+		Integer i = izquierda;
+		Integer j = derecha;
+		IOrdenacion mitad = objetos[(izquierda + derecha) / Integer.valueOf(2)];
+		do {
+			while (objetos[i].getKeyDOrdenacion(tipoDOrdenacion).compareTo(mitad.getKeyDOrdenacion(tipoDOrdenacion)) < 0) {
+				i++;
+			}
+			while (objetos[j].getKeyDOrdenacion(tipoDOrdenacion).compareTo(mitad.getKeyDOrdenacion(tipoDOrdenacion)) > 0) {
+				j--;
+			}
+			if (i <= j) {
+				IOrdenacion aux = objetos[i];
+				objetos[i] = objetos[j];
+				objetos[j] = aux;
+				i++;
+				j--;
+			}
+
+		} while (i <= j);
+		if (j > izquierda)
+			Util.quickSort(objetos, izquierda, j, tipoDOrdenacion);
+		if (i < derecha)
+			Util.quickSort(objetos, i, derecha, tipoDOrdenacion);
+	}
+
+	public static String addZeroesFirstToCadena(String cadena, Integer longitud) {
+		Character caracter = Character.valueOf('0');
+		return Util.addCharactersFirstToCadena(cadena, longitud, caracter);
+	}
+
+	public static String addZeroesLastToCadena(String cadena, Integer longitud) {
+		Character caracter = Character.valueOf('0');
+		return Util.addCharactersLastToCadena(cadena, longitud, caracter);
+	}
+
+	public static String addCharactersFirstToCadena(String cadena, Integer longitud, Character caracter) {
+		StringBuilder stringBuilder = new StringBuilder();
+		Integer longitudTotal = longitud - cadena.length();
+		for (Integer i = Integer.valueOf(0); i < longitudTotal; i++)
+			stringBuilder.append(caracter);
+		stringBuilder.append(cadena);
+		return stringBuilder.toString();
+	}
+
+	public static String addCharactersLastToCadena(String cadena, Integer longitud, Character caracter) {
+		StringBuilder stringBuilder = new StringBuilder();
+		Integer longitudTotal = longitud - cadena.length();
+		stringBuilder.append(cadena);
+		for (Integer i = Integer.valueOf(0); i < longitudTotal; i++)
+			stringBuilder.append(caracter);
+		return stringBuilder.toString();
 	}
 
 }

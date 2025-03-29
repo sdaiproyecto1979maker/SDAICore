@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sdai.com.sis</groupId>
 	<artifactId>SDAICore</artifactId>
-	<version>0.0.0.0-RELEASE</version>
+	<version>1.0.0.0-RELEASE</version>
 	<build>
 		<resources>
 			<resource>

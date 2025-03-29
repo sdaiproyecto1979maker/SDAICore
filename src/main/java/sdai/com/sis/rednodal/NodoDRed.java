@@ -14,7 +14,7 @@ import sdai.com.sis.rednodal.tuplas.accesoadatos.SituacionDTupla;
 
 /**
  * @date 26/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public final class NodoDRed {

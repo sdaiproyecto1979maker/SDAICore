@@ -1,13 +1,13 @@
 package sdai.com.sis.rednodal.tuplas.accesoadatos;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.w3c.dom.Node;
 
 import sdai.com.sis.accesoadatos.AbstractAccesoADatos;
 import sdai.com.sis.accesoadatos.IAccesoADatosCFG;
+import sdai.com.sis.aplicaciones.KAplicaciones;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.conexiones.IdQuery;
@@ -19,11 +19,12 @@ import sdai.com.sis.utilidades.Reflexion;
 import sdai.com.sis.utilidades.Util;
 import sdai.com.sis.versionado.numerosdversion.NumerosDVersionUtil;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
+import sdai.com.sis.versionado.proyectosdaplicacion.ProyectosDAplicacion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public final class ADTuplas extends AbstractAccesoADatos implements IAccesoADatosCFG {
@@ -40,22 +41,22 @@ public final class ADTuplas extends AbstractAccesoADatos implements IAccesoADato
 	@Override
 	public void generateElementosVersionEnCurso(String codigoDProyectoDAplicacion, Node[] nodes) throws Exception {
 		for (Node node : nodes) {
-			// TODO Desarrollar la parte de la comprobación de los nodos cuando haya
-			// conexion
-			Tupla tupla = createNewTupla(node, codigoDProyectoDAplicacion);
-			createNewSituacionDTupla(tupla, node, codigoDProyectoDAplicacion);
+			String codigoDTupla = DocumentoXML.getStringValueNodeDescendencia(node, KTuplas.KTupla.AtributosDEntidad.CODIGTUPLA);
+			Tupla tupla = Tupla.getInstancia(codigoDTupla);
+			if (tupla != null) {
+				SituacionDTupla situacionDTupla = SituacionDTupla.getInstancia(codigoDTupla);
+				if (existenDiferencias(situacionDTupla, node))
+					createNewSituacionDTupla(tupla, node, codigoDProyectoDAplicacion);
+			} else {
+				tupla = createNewTupla(node, codigoDProyectoDAplicacion);
+				createNewSituacionDTupla(tupla, node, codigoDProyectoDAplicacion);
+			}
 		}
 	}
 
 	private Tupla createNewTupla(Node root, String codigoDProyectoDAplicacion) throws Exception {
-		// TODO: Descomentar las lineas cuando haya conexion
-		/*
-		 * ProyectosDAplicacion proyectosDAplicacion =
-		 * ProyectosDAplicacion.getInstancia(); NumeroDVersion numeroDVersion =
-		 * proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
-		 */
-		// TODO: Quitar esta linea despues de descomentar las anteriores
-		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class);
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
 		Integer numeroDSituacion = Integer.valueOf(1);
 		Tupla tupla = (Tupla) Reflexion.createInstancia(Tupla.class);
 		tupla.addNode(numeroDVersion, numeroDSituacion, root);
@@ -66,14 +67,8 @@ public final class ADTuplas extends AbstractAccesoADatos implements IAccesoADato
 	}
 
 	private void createNewSituacionDTupla(Tupla tupla, Node root, String codigoDProyectoDAplicacion) throws Exception {
-		// TODO: Descomentar las lineas cuando haya conexion
-		/*
-		 * ProyectosDAplicacion proyectosDAplicacion =
-		 * ProyectosDAplicacion.getInstancia(); NumeroDVersion numeroDVersion =
-		 * proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
-		 */
-		// TODO: Quitar esta linea despues de descomentar las anteriores
-		NumeroDVersion numeroDVersion = (NumeroDVersion) Reflexion.createInstancia(NumeroDVersion.class);
+		ProyectosDAplicacion proyectosDAplicacion = ProyectosDAplicacion.getInstancia();
+		NumeroDVersion numeroDVersion = proyectosDAplicacion.getNumeroDVersion(codigoDProyectoDAplicacion);
 		Integer numeroDSituacion = tupla.getSituacionesDTupla().size() + 1;
 		SituacionDTupla situacionDTupla = (SituacionDTupla) Reflexion.createInstancia(SituacionDTupla.class);
 		situacionDTupla.addNode(numeroDVersion, numeroDSituacion, root);
@@ -94,6 +89,14 @@ public final class ADTuplas extends AbstractAccesoADatos implements IAccesoADato
 			situacionesDTupla = getSituacionesDTupla(codigoDNodo);
 		situacionesDTupla = (SituacionDTupla[]) Util.addItemArray(situacionesDTupla, situacionDTupla);
 		CacheDRednodal.almacenarInstancia(keyCache, situacionesDTupla);
+	}
+
+	private Boolean existenDiferencias(SituacionDTupla situacionDTupla, Node root) {
+		if (!situacionDTupla.getDescripcionDTupla().equals(DocumentoXML.getStringValueNodeDescendencia(root, KTuplas.KSituacionDTupla.AtributosDEntidad.DESCRTUPLA)))
+			return Boolean.valueOf(true);
+		if (!situacionDTupla.getSwEntidadActiva().equals(DocumentoXML.getBooleanValueNodeDescendencia(root, KAplicaciones.AtributosDEntidad.SWENTACTIV)))
+			return Boolean.valueOf(true);
+		return Boolean.valueOf(false);
 	}
 
 	Tupla getTupla(String codigoDTupla) throws Exception {
@@ -122,10 +125,8 @@ public final class ADTuplas extends AbstractAccesoADatos implements IAccesoADato
 
 	SituacionDTupla getSituacionDTupla(String codigoDTupla) throws Exception {
 		Tupla tupla = Tupla.getInstancia(codigoDTupla);
-		List<SituacionDTupla> situacionesDTupla = tupla.getSituacionesDTupla();
-		Collections.sort(situacionesDTupla);
-		for (Integer i = Integer.valueOf(situacionesDTupla.size()); i > 0; i--) {
-			SituacionDTupla situacionDTupla = situacionesDTupla.get(i);
+		SituacionDTupla[] situacionesDTupla = tupla.getSituacionesDTupla().toArray(new SituacionDTupla[0]);
+		for (SituacionDTupla situacionDTupla : situacionesDTupla) {
 			NumeroDVersion numeroDVersion = situacionDTupla.getNumeroDVersion();
 			if (NumerosDVersionUtil.isVersionDElementoValida(numeroDVersion))
 				return situacionDTupla;

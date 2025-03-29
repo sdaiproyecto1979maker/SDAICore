@@ -16,7 +16,7 @@ import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public abstract class AbstractVersionCFG implements IVersionCFG {
@@ -57,10 +57,13 @@ public abstract class AbstractVersionCFG implements IVersionCFG {
 		String pack = this.proyecto.getPackageDProyecto();
 		String path = pack.concat(PATH);
 		InputStream inputStream = AbstractVersionCFG.class.getResourceAsStream(path);
-		DocumentoXML documentoXML = new DocumentoXML(inputStream);
-		Node root = documentoXML.getRoot();
-		Node[] nodes = DocumentoXML.getDescendencia(root, VERSIONCFG);
-		return nodes;
+		if (inputStream != null) {
+			DocumentoXML documentoXML = new DocumentoXML(inputStream);
+			Node root = documentoXML.getRoot();
+			Node[] nodes = DocumentoXML.getDescendencia(root, VERSIONCFG);
+			return nodes;
+		}
+		return new Node[0];
 	}
 
 	private void ordenarNumerosDVersion() throws Exception {
@@ -101,11 +104,13 @@ public abstract class AbstractVersionCFG implements IVersionCFG {
 		String path = pack.concat(PATH);
 		path = path.replace(VERSIONCFG, NEWVERSION);
 		InputStream inputStream = AbstractVersionCFG.class.getResourceAsStream(path);
-		DocumentoXML documentoXML = new DocumentoXML(inputStream);
-		Node root = documentoXML.getRoot();
-		ElementosCFG elementosCFG = ElementosCFG.getInstancia();
-		String codigoDProyecto = this.proyecto.getCodigoDProyecto();
-		elementosCFG.loadVersionEnCurso(codigoDProyecto, root);
+		if (inputStream != null) {
+			DocumentoXML documentoXML = new DocumentoXML(inputStream);
+			Node root = documentoXML.getRoot();
+			ElementosCFG elementosCFG = ElementosCFG.getInstancia();
+			String codigoDProyecto = this.proyecto.getCodigoDProyecto();
+			elementosCFG.loadVersionEnCurso(codigoDProyecto, root);
+		}
 	}
 
 	public IProyecto getProyecto() {

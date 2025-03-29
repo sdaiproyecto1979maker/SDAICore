@@ -28,7 +28,7 @@ import sdai.com.sis.rednodal.nodos.accesoadatos.Nodo;
 
 /**
  * @date 15/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 @Entity

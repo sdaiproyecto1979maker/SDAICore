@@ -16,7 +16,7 @@ import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public final class FabricaDNodos extends AbstractFabricaDEntidadesCFG {
@@ -56,7 +56,7 @@ public final class FabricaDNodos extends AbstractFabricaDEntidadesCFG {
 	private SituacionDNodo obtenerSituacionAComparar(Nodo nodo) {
 		NumeroDVersion numeroDVersion = getNumeroDVersion();
 		List<SituacionDNodo> situacionesNodo = nodo.getSituacionesDNodo();
-		Collections.sort(situacionesNodo);
+		//Collections.sort(situacionesNodo);
 		for (SituacionDNodo situacionDNodo : situacionesNodo) {
 			NumeroDVersion numeroDVersionAux = situacionDNodo.getNumeroDVersion();
 			if (NumerosDVersionUtil.isNumeroDVersionMayor(numeroDVersionAux, numeroDVersion).equals(Boolean.valueOf(true))) {

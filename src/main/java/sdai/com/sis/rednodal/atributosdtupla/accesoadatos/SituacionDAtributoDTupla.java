@@ -16,14 +16,13 @@ import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdtupla.KAtributosDTupla;
 import sdai.com.sis.rednodal.datosdsistema.accesoadatos.DatoDSistema;
-import sdai.com.sis.rednodal.tuplas.accesoadatos.SituacionDTupla;
 import sdai.com.sis.rednodal.tuplas.accesoadatos.Tupla;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 15/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 @Entity
@@ -46,6 +45,17 @@ public final class SituacionDAtributoDTupla extends AbstractEntidadCFG {
 
 	SituacionDAtributoDTupla() {
 
+	}
+
+	public static SituacionDAtributoDTupla getInstancia(String codigoDTupla, String codigoDDato) throws Exception {
+		KeyCache keyCache = KeyCache.getInstancia(SituacionDAtributoDTupla.class, codigoDTupla, codigoDDato);
+		SituacionDAtributoDTupla instancia = (SituacionDAtributoDTupla) CacheDRednodal.recuperarInstancia(keyCache);
+		if (instancia == null) {
+			ADAtributosDTupla adatos = new ADAtributosDTupla();
+			instancia = adatos.getSituacionDAtributoDTupla(codigoDTupla, codigoDDato);
+			CacheDRednodal.almacenarInstancia(keyCache, instancia);
+		}
+		return instancia;
 	}
 
 	public static SituacionDAtributoDTupla[] getInstancias(String codigoDTupla) throws Exception {

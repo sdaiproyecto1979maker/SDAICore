@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
@@ -22,13 +23,15 @@ import sdai.com.sis.cacchesdsistema.InstanciaDContenedor;
 import sdai.com.sis.cacchesdsistema.KeyCache;
 import sdai.com.sis.cacchesdsistema.contenedores.CacheDRednodal;
 import sdai.com.sis.rednodal.atributosdtupla.accesoadatos.AtributoDTupla;
+import sdai.com.sis.rednodal.nodos.KNodos;
+import sdai.com.sis.rednodal.nodos.accesoadatos.Nodo;
 import sdai.com.sis.rednodal.tuplas.KTuplas;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 @Entity
@@ -55,6 +58,10 @@ public final class Tupla extends AbstractEntidadCFG {
 
 	@OneToMany(mappedBy = "tupla", cascade = CascadeType.ALL)
 	private List<AtributoDTupla> atibutosDTupla;
+
+	@ManyToOne
+	@JoinColumn(name = KNodos.KNodo.AtributosDEntidad.IDENTINODO)
+	private Nodo nodo;
 
 	Tupla() {
 		this.situacionesDTupla = new ArrayList<SituacionDTupla>();
@@ -122,6 +129,14 @@ public final class Tupla extends AbstractEntidadCFG {
 
 	public void setAtibutosDTupla(List<AtributoDTupla> atibutosDTupla) {
 		this.atibutosDTupla = atibutosDTupla;
+	}
+
+	public Nodo getNodo() {
+		return nodo;
+	}
+
+	public void setNodo(Nodo nodo) {
+		this.nodo = nodo;
 	}
 
 }

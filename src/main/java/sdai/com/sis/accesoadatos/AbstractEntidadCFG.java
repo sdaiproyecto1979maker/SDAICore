@@ -7,19 +7,25 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToOne;
 import sdai.com.sis.aplicaciones.KAplicaciones;
+import sdai.com.sis.utilidades.IOrdenacion;
+import sdai.com.sis.utilidades.Transform;
+import sdai.com.sis.utilidades.Util;
 import sdai.com.sis.versionado.KVersionado;
 import sdai.com.sis.versionado.numerosdversion.accesoadatos.NumeroDVersion;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
  * @date 13/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 @MappedSuperclass
-public abstract class AbstractEntidadCFG extends AbstractEntidad implements IEntidadCFG, Comparable<AbstractEntidadCFG> {
+public abstract class AbstractEntidadCFG extends AbstractEntidad implements IEntidadCFG, IOrdenacion {
 
 	private static final long serialVersionUID = 1L;
+
+	public static final Integer NUMVERSASC = Integer.valueOf(0);
+	public static final Integer NUMVERSDES = Integer.valueOf(1);
 
 	@Column(name = KAplicaciones.AtributosDEntidad.NUMERSITUA, nullable = false)
 	private Integer numeroDSituacion;
@@ -68,12 +74,13 @@ public abstract class AbstractEntidadCFG extends AbstractEntidad implements IEnt
 	}
 
 	@Override
-	public int compareTo(AbstractEntidadCFG o) {
-		if (getNumeroDSituacion() > o.getNumeroDSituacion())
-			return 1;
-		else if (getNumeroDSituacion() < o.getNumeroDSituacion())
-			return -1;
-		return 0;
+	public String getKeyDOrdenacion(Integer tipoDOrdenacion) {
+		if (tipoDOrdenacion.equals(NUMVERSDES)) {
+			String cadena = Util.addZeroesLastToCadena(String.valueOf(1), Transform.toString(getNumeroDSituacion()).length() + Integer.valueOf(1));
+			Integer integerCadena = Transform.toInteger(cadena) - getNumeroDSituacion();
+			return Util.addCharactersFirstToCadena(Transform.toString(integerCadena), Integer.valueOf(10), Character.valueOf('9'));
+		}
+		return Util.addZeroesFirstToCadena(Transform.toString(getNumeroDSituacion()), Integer.valueOf(10));
 	}
 
 }

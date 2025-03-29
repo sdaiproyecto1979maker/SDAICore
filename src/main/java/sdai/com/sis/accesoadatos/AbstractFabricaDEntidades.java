@@ -4,7 +4,7 @@ import sdai.com.sis.conexiones.IdConexion;
 
 /**
  * @date 13/03/2025
- * @since VERSIONDCOREENCURSO
+ * @since 1.0.0.0-RELEASE
  * @author Sergio_M
  */
 public abstract class AbstractFabricaDEntidades implements IFabricaDEntidades {
