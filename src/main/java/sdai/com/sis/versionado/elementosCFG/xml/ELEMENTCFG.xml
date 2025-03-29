@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- @date 12/03/2025 @since 1.0.0.0-RELEASE @author Sergio_M -->
+<ROOT>
+	<ELEMENTCFG>
+		<CODELEMENT>TBDATSISTE</CODELEMENT>
+		<FBKELEMENT>sdai.com.sis.rednodal.datosdsistema.accesoadatos.FabricaDDatosDSistema</FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.datosdsistema.accesoadatos.ADDatosDSistema</CLSACDATOS>
+	</ELEMENTCFG>
+	<ELEMENTCFG>
+		<CODELEMENT>TBENTINODO</CODELEMENT>
+		<FBKELEMENT>sdai.com.sis.rednodal.nodos.accesoadatos.FabricaDNodos</FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.nodos.accesoadatos.ADNodos</CLSACDATOS>
+	</ELEMENTCFG>
+	<ELEMENTCFG>
+		<CODELEMENT>TBATRDNODO</CODELEMENT>
+		<FBKELEMENT></FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.atributosdnodo.accesoadatos.ADAtributosDNodo</CLSACDATOS>
+	</ELEMENTCFG>
+	<ELEMENTCFG>
+		<CODELEMENT>TBENTTUPLA</CODELEMENT>
+		<FBKELEMENT></FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.tuplas.accesoadatos.ADTuplas</CLSACDATOS>
+	</ELEMENTCFG>
+	<ELEMENTCFG>
+		<CODELEMENT>TBATRTUPLA</CODELEMENT>
+		<FBKELEMENT></FBKELEMENT>
+		<CLSACDATOS>sdai.com.sis.rednodal.atributosdtupla.accesoadatos.ADAtributosDTupla</CLSACDATOS>
+	</ELEMENTCFG>
+</ROOT>
