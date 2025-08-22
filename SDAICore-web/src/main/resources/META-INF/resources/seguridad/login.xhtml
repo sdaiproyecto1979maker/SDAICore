@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">   
+    <h:body>
+        <h:form id="formDatos">
+            <div class="capaLogin">
+                <p:outputLabel for="LITEIDIOMA" value="#{beanGestor.traduccionLabel}" rendered="#{beanSesionDUsuario.mostrarIdiomas}">: </p:outputLabel>
+                <p:selectOneMenu id="LITEIDIOMA" value="#{beanSesionDUsuario.codigoDIdioma}" rendered="#{beanSesionDUsuario.mostrarIdiomas}">
+                    <f:selectItem itemValue="" itemLabel="Seleccionar"></f:selectItem>
+                    <f:selectItems value="#{beanSesionDUsuario.listaDIdiomas}"></f:selectItems>
+                    <p:ajax event="change" listener="#{beanSesionDUsuario.cambiarIdioma}" oncomplete="location.reload();"></p:ajax>
+                </p:selectOneMenu>
+            </div>
+        </h:form>
+    </h:body>
+</html>

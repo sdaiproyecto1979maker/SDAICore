@@ -1,0 +1,9 @@
+.capaLogin {
+    position: absolute;
+    padding: 5px;
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+    border-bottom: 1px solid black;
+}
