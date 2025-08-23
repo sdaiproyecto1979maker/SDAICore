@@ -12,6 +12,7 @@ public interface GestorDProcesosLocal {
 
     void iniciar(String codigoDProceso);
 
+    //void procesarAccion(String codigoDAccion) throws ErrorGeneral;
     ProcesoDSesionLocal getProcesoDSesionLocal();
 
 }

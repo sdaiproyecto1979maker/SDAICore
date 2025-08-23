@@ -10,9 +10,17 @@ public final class KProcesosDSesion {
     public final class ProcesosDSesion {
 
         /**
+         * Proceso de sesión default
+         */
+        public static final String DFPROCSESI = "DFPROCSESI";
+        /**
          * Proceso de login
          */
         public static final String PROCELOGIN = "PROCELOGIN";
+        /**
+         * Proceso de inicio de sistema
+         */
+        public static final String PROCINISIS = "PROCINISIS";
     }
 
     public final class PaginasDProceso {
@@ -29,6 +37,10 @@ public final class KProcesosDSesion {
          * Proceso de login
          */
         public static final String PROCELOGIN = "/seguridad/login.xhtml";
+        /**
+         * Pagina void
+         */
+        public static final String PAGINAVOID = "/pagina_void.xhtml";
     }
 
 }

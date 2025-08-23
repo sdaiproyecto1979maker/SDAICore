@@ -1,11 +1,13 @@
 package sdai.com.sis.utilidades;
 
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @date 22/08/2025
@@ -51,6 +53,19 @@ public final class FacesUtil {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIComponent component = UIComponent.getCurrentComponent(facesContext);
         return component;
+    }
+
+    public static Map<String, String> getParametrosDRequest() {
+        ExternalContext externalContext = FacesUtil.getExternalContext();
+        Map<String, String> parametrosDRequest = externalContext.getRequestParameterMap();
+        return parametrosDRequest;
+    }
+
+    public static Map<String, Object> getAlmacenDVista() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map<String, Object> almacenDVista = viewRoot.getViewMap();
+        return almacenDVista;
     }
 
 }

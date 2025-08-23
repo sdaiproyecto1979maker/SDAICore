@@ -20,6 +20,8 @@ import sdai.com.sis.utilidades.Util;
 @RequestScoped
 public class BeanGestor {
 
+    private static final String PARMACCION = "PARMACCION";
+
     @Inject
     private GestorDProcesosLocal gestorDProcesosLocal;
     @Inject
@@ -43,4 +45,24 @@ public class BeanGestor {
         return "";
     }
 
+    public String getTraduccion() {
+        UIComponent component = FacesUtil.getCurrentComponent();
+        String id = component.getId();
+        return this.traductorLocal.traducir(id);
+    }
+
+    /*
+    public String procesarAccion() {
+        try {
+            Map<String, String> parametrosDRequest = FacesUtil.getParametrosDRequest();
+            String codigoDAccion = parametrosDRequest.get(PARMACCION);
+            this.gestorDProcesosLocal.procesarAccion(codigoDAccion);
+            return KProcesosDSesion.PaginasDProceso.PLANTILLAM;
+        } catch (ErrorGeneral ex) {
+            FacesMessage facesMessage = new FacesMessage(ex.getSeverity(), ex.getSummary(), ex.getMessage());
+            PrimeFaces.current().dialog().showMessageDynamic(facesMessage, true);
+            return "";
+        }
+    }
+     */
 }

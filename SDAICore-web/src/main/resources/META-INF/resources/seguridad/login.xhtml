@@ -13,6 +13,21 @@
                     <f:selectItems value="#{beanSesionDUsuario.listaDIdiomas}"></f:selectItems>
                     <p:ajax event="change" listener="#{beanSesionDUsuario.cambiarIdioma}" oncomplete="location.reload();"></p:ajax>
                 </p:selectOneMenu>
+                <p:panel id="PANELLOGIN" header="#{beanGestor.traduccion}" class="panelLogin">
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="* " class="obligatorio"></p:outputLabel>
+                        <p:outputLabel for="CODIGUSUAR" value="#{beanGestor.traduccionLabel}">: </p:outputLabel>
+                        <p:inputText id="CODIGUSUAR" value="#{beanUsuarioLogin.codigoDUsuario}"></p:inputText>
+                        <p:outputLabel value="* " class="obligatorio"></p:outputLabel>
+                        <p:outputLabel for="PASSWUSUAR" value="#{beanGestor.traduccionLabel}">: </p:outputLabel>
+                        <p:password id="PASSWUSUAR" value="#{beanUsuarioLogin.passwordDUsuario}"></p:password>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" class="panelContenidoCentrado">
+                        <p:commandButton id="BOTONLOGIN" value="#{beanGestor.traduccion}" action="#{beanGestor.procesarAccion}" ajax="false" class="botonCentrado">
+                            <f:param name="PARMACCION" value="ACCIOLOGIN"></f:param>
+                        </p:commandButton>
+                    </h:panelGrid>
+                </p:panel>
             </div>
         </h:form>
     </h:body>
