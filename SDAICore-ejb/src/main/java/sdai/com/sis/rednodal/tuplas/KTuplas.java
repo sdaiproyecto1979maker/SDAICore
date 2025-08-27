@@ -15,4 +15,11 @@ public final class KTuplas {
         public static final String CODIGTUPLA = "CODIGTUPLA";
         public static final String DESCRTUPLA = "DESCRTUPLA";
     }
+
+    public final class NamedQueries {
+
+        public static final String STUPLA0000 = "STUPLA0000";
+        public static final String STUPLA0001 = "STUPLA0001";
+    }
+
 }

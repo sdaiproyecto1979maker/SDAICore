@@ -1,6 +1,7 @@
 package sdai.com.sis.dataswaps;
 
 import java.util.List;
+import sdai.com.sis.dsentidades.DSEntidadLocal;
 import sdai.com.sis.procesosdsesion.ProcesoDSesionLocal;
 import sdai.com.sis.utilidades.EstructuraDatos;
 
@@ -19,10 +20,16 @@ public interface DataSwapLocal {
 
     void generateDataSwap();
 
+    DSEntidadLocal getDSEntidad(String codigoDEntidad);
+
+    DSEntidadLocal[] getDSEntidades();
+
     ProcesoDSesionLocal getProcesoDSesionLocal();
 
     String getCodigoDDataSwap();
 
     List<EstructuraDatos> getEstructurasTemporales();
+
+    DataSwapImplLocal getDataSwapImplLocal();
 
 }

@@ -1,6 +1,8 @@
 package sdai.com.sis.procesosdsesion;
 
+import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.util.AnnotationLiteral;
+import sdai.com.sis.rednodal.ElementoDRedLocal;
 
 /**
  * @date 22/08/2025
@@ -17,6 +19,12 @@ public class ProcesosDSesionLiteral extends AnnotationLiteral<ProcesosDSesion> i
 
     public static ProcesosDSesionLiteral of(String value) {
         return new ProcesosDSesionLiteral(value);
+    }
+
+    public static Instance<ElementoDRedLocal> getInstancia(Instance<ElementoDRedLocal> instancias, String codigoDQualifer) {
+        ProcesosDSesionLiteral procesosDSesionLiteral = of(codigoDQualifer);
+        Instance<ElementoDRedLocal> instancia = instancias.select(procesosDSesionLiteral);
+        return instancia;
     }
 
     @Override

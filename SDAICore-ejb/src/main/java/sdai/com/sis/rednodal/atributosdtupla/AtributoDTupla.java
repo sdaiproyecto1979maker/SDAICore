@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import sdai.com.sis.rednodal.datosdsistema.DatoDSistema;
@@ -21,6 +23,10 @@ import sdai.com.sis.rednodal.tuplas.Tupla;
  */
 @Entity
 @Table(name = KAtributosDTupla.NOMBRTABLA)
+@NamedQueries({
+    @NamedQuery(name = KAtributosDTupla.NamedQueries.SATRTU0000, query = "SELECT A FROM AtributoDTupla A WHERE A.tupla.codigoDTupla=:CODIGTUPLA AND A.datoDSistema.codigoDDato=:CODIGODATO"),
+    @NamedQuery(name = KAtributosDTupla.NamedQueries.SATRTU0001, query = "SELECT A FROM AtributoDTupla A")
+})
 public class AtributoDTupla implements Serializable {
 
     @Id

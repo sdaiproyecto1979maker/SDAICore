@@ -19,6 +19,7 @@ public final class KNodos {
     public final class NamedQueries {
 
         public static final String SNODOS0000 = "SNODOS0000";
+        public static final String SNODOS0001 = "SNODOS0001";
     }
 
 }

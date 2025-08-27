@@ -24,7 +24,7 @@
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
-        <param-name>VERSIDCORE</param-name>
-        <param-value>0.0.0.0-RELEASE</param-value>
+        <param-name>DIREPRINCI</param-name>
+        <param-value>workSDAI</param-value>
     </context-param>
 </web-fragment>

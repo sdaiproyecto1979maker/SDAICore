@@ -64,4 +64,15 @@ public class DataSwapsUtil {
         return lista.toArray(DSEntidadLocal[]::new);
     }
 
+    public void destroyDataSwapLocal(DataSwapLocal dataSwapLocal) {
+        DataSwapImpl dataSwapImpl = (DataSwapImpl) dataSwapLocal.getDataSwapImplLocal();
+        String qualifer = dataSwapImpl.getCodigoDQualifer();
+        if (Util.isCadenaVacia(qualifer)) {
+            qualifer = KDataSwaps.DataSwaps.DFDATASWAP;
+        }
+        DataSwapsLiteral dataSwapsLiteral = DataSwapsLiteral.of(qualifer);
+        Instance<DataSwapLocal> instancia = this.instancias.select(dataSwapsLiteral);
+        instancia.destroy(dataSwapLocal);
+    }
+
 }

@@ -1,11 +1,16 @@
 package sdai.com.sis.sistema;
 
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import java.util.Map;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.outputlabel.OutputLabel;
+import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.procesosdsesion.GestorDProcesosLocal;
+import sdai.com.sis.procesosdsesion.KProcesosDSesion;
 import sdai.com.sis.procesosdsesion.ProcesoDSesionLocal;
 import sdai.com.sis.traducciones.TraductorLocal;
 import sdai.com.sis.utilidades.FacesUtil;
@@ -51,7 +56,6 @@ public class BeanGestor {
         return this.traductorLocal.traducir(id);
     }
 
-    /*
     public String procesarAccion() {
         try {
             Map<String, String> parametrosDRequest = FacesUtil.getParametrosDRequest();
@@ -64,5 +68,5 @@ public class BeanGestor {
             return "";
         }
     }
-     */
+
 }

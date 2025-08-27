@@ -4,7 +4,6 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import sdai.com.sis.excepciones.ErrorGeneral;
@@ -25,13 +24,11 @@ public class ValidadorDIntegridad implements ValidadorDIntegridadLocal {
     private TraductorLocal traductorLocal;
 
     @Override
-    public void validar(List<Object> beans, Class<?>... grupos) throws ErrorGeneral {
-        for (Object bean : beans) {
-            for (Class<?> grupo : grupos) {
-                Set<ConstraintViolation<Object>> violaciones = validarGrupo(bean, grupo);
-                if (!violaciones.isEmpty()) {
-                    lanzarErrorGeneral(violaciones);
-                }
+    public void validar(Object bean, Class<?>... grupos) throws ErrorGeneral {
+        for (Class<?> grupo : grupos) {
+            Set<ConstraintViolation<Object>> violaciones = validarGrupo(bean, grupo);
+            if (!violaciones.isEmpty()) {
+                lanzarErrorGeneral(violaciones);
             }
         }
     }

@@ -14,6 +14,8 @@ public interface SdaiCFGLocal {
 
     String getVersionDFramework();
 
+    Boolean isAppFramework();
+
     String getVersionDCustom();
 
 }

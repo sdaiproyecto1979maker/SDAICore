@@ -25,7 +25,8 @@ import sdai.com.sis.rednodal.tuplas.Tupla;
 @Entity
 @Table(name = KNodos.NOMBRTABLA)
 @NamedQueries({
-    @NamedQuery(name = KNodos.NamedQueries.SNODOS0000, query = "SELECT N FROM Nodo N WHERE N.codigoDNodo=:CODIGONODO")
+    @NamedQuery(name = KNodos.NamedQueries.SNODOS0000, query = "SELECT N FROM Nodo N WHERE N.codigoDNodo=:CODIGONODO"),
+    @NamedQuery(name = KNodos.NamedQueries.SNODOS0001, query = "SELECT N FROM Nodo N")
 })
 public class Nodo implements Serializable {
 

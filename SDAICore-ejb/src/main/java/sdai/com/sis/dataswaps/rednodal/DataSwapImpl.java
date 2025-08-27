@@ -11,13 +11,13 @@ import sdai.com.sis.rednodal.TuplaDNodoLocal;
  */
 public final class DataSwapImpl extends ElementoDRed implements DataSwapImplLocal {
 
-    protected static final String CODIGONODO = "DFDATASWAP";
+    public static final String CODIGONODO = "DFDATASWAP";
 
-    protected static final String CDDATASWAP = "CDDATASWAP";
-    protected static final String DSDATASWAP = "DSDATASWAP";
-    protected static final String CDQUALIFER = "CDQUALIFER";
+    public static final String CDDATASWAP = "CDDATASWAP";
+    public static final String DSDATASWAP = "DSDATASWAP";
+    public static final String CDQUALIFER = "CDQUALIFER";
 
-    DataSwapImpl(TuplaDNodoLocal tuplaDNodoLocal) {
+    public DataSwapImpl(TuplaDNodoLocal tuplaDNodoLocal) {
         super(tuplaDNodoLocal);
     }
 

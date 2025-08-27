@@ -1,7 +1,9 @@
 package sdai.com.sis.xml;
 
+import jakarta.faces.application.FacesMessage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -10,7 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import sdai.com.sis.excepciones.ErrorGeneral;
 
 /**
  * @date 22/08/2025
@@ -23,10 +27,26 @@ public final class DocumentoXML {
 
     private final Document document;
 
-    public DocumentoXML(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        this.document = documentBuilder.parse(inputStream);
+    public DocumentoXML(InputStream inputStream) throws ErrorGeneral {
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            this.document = documentBuilder.parse(inputStream);
+        } catch (IOException | ParserConfigurationException | SAXException ex) {
+            ErrorGeneral errorGeneral = new ErrorGeneral(FacesMessage.SEVERITY_ERROR, "Documento XML", ex.getMessage());
+            throw errorGeneral;
+        }
+    }
+
+    public DocumentoXML(String bdXML) throws ErrorGeneral {
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            this.document = documentBuilder.parse(new InputSource(new StringReader(bdXML)));
+        } catch (IOException | ParserConfigurationException | SAXException ex) {
+            ErrorGeneral errorGeneral = new ErrorGeneral(FacesMessage.SEVERITY_ERROR, "Documento XML", ex.getMessage());
+            throw errorGeneral;
+        }
     }
 
     public Node getRoot() {

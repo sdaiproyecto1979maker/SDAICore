@@ -4,6 +4,10 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import sdai.com.sis.beans.BeanDVistaImplLocal;
+import sdai.com.sis.beans.rednodal.BeansDVistaUtil;
 import sdai.com.sis.dsentidades.DSEntidadLocal;
 import sdai.com.sis.dsentidades.DSEntidadesLiteral;
 import sdai.com.sis.rednodal.NodoDRedLocal;
@@ -23,6 +27,8 @@ public class DSEntidadesUtil {
     @Inject
     @Any
     private Instance<DSEntidadLocal> instancias;
+    @Inject
+    private BeansDVistaUtil beansDVistaUtil;
 
     public DSEntidadLocal getDSEntidadLocal(String codigoDEntidad) {
         NodoDRedLocal nodoDRedLocal = this.nodosDRedLocal.getNodoDRedLocal(DSEntidadImpl.CODIGONODO);
@@ -38,6 +44,26 @@ public class DSEntidadesUtil {
         DSEntidadLocal dSEntidadLocal = instancia.get();
         dSEntidadLocal.setDSEntidadImplLocal(dSEntidadImpl);
         return dSEntidadLocal;
+    }
+
+    public BeanDVistaImplLocal[] getBeansDVista(String codigoDEntidad) {
+        List<BeanDVistaImplLocal> lista = new ArrayList<>();
+        NodoDRedLocal nodoDRedLocal = this.nodosDRedLocal.getNodoDRedLocal("BEANENTITY");
+        TuplaDNodoLocal[] tuplasDNodo = nodoDRedLocal.getTuplasDNodo(DSEntidadImpl.CODIENTITY, codigoDEntidad);
+        for (TuplaDNodoLocal tuplaDNodo : tuplasDNodo) {
+            String codigoDBean = tuplaDNodo.getDatoDTupla("CODIGOBEAN").getValorDAtributo();
+            BeanDVistaImplLocal beanDVista = this.beansDVistaUtil.getBeanDVista(codigoDBean);
+            lista.add(beanDVista);
+        }
+        return lista.toArray(BeanDVistaImplLocal[]::new);
+    }
+
+    public void destroyDSEntidadLocal(DSEntidadLocal dSEntidadLocal) {
+        DSEntidadImpl dSEntidadImpl = (DSEntidadImpl) dSEntidadLocal.getDSEntidadImplLocal();
+        String qualifer = dSEntidadImpl.getCodigoDQualifer();
+        DSEntidadesLiteral dSEntidadesLiteral = DSEntidadesLiteral.of(qualifer);
+        Instance<DSEntidadLocal> instancia = this.instancias.select(dSEntidadesLiteral);
+        instancia.destroy(dSEntidadLocal);
     }
 
 }

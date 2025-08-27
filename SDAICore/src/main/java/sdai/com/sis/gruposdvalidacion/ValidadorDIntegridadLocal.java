@@ -1,7 +1,6 @@
 package sdai.com.sis.gruposdvalidacion;
 
 import jakarta.ejb.Local;
-import java.util.List;
 import sdai.com.sis.excepciones.ErrorGeneral;
 
 /**
@@ -12,6 +11,6 @@ import sdai.com.sis.excepciones.ErrorGeneral;
 @Local
 public interface ValidadorDIntegridadLocal {
 
-    void validar(List<Object> beans, Class<?>... grupos) throws ErrorGeneral;
+    void validar(Object bean, Class<?>... grupos) throws ErrorGeneral;
 
 }

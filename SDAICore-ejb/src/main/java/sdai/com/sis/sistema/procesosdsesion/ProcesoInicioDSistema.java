@@ -11,9 +11,10 @@ import sdai.com.sis.dataswaps.DataSwapsLiteral;
 import sdai.com.sis.dataswaps.DefaultDataSwap;
 import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.procesosdsesion.KProcesosDSesion;
-import sdai.com.sis.procesosdsesion.ProcesoDSesionImplLocal;
+import sdai.com.sis.procesosdsesion.rednodal.ProcesoDSesionImplLocal;
 import sdai.com.sis.procesosdsesion.ProcesoDSesionLocal;
 import sdai.com.sis.procesosdsesion.ProcesosDSesion;
+import sdai.com.sis.rednodal.ElementoDRedImplLocal;
 
 /**
  * @23/08/2025
@@ -65,7 +66,17 @@ public class ProcesoInicioDSistema implements ProcesoDSesionLocal, Serializable 
     }
 
     @Override
-    public void setProcesoDSesion(ProcesoDSesionImplLocal procesoDSesion) {
+    public void procesarAccion(String codigoDAccion) throws ErrorGeneral {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ProcesoDSesionImplLocal getProcesoDSesionImplLocal() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setElementoDRedImplLocal(ElementoDRedImplLocal elementoDRedImplLocal) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

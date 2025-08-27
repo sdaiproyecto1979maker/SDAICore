@@ -13,4 +13,11 @@ public final class KAtributosDNodo {
 
         public static final String IDATRSNODO = "IDATRSNODO";
     }
+
+    public final class NamedQueries {
+
+        public static final String SATRNO0000 = "SATRNO0000";
+        public static final String SATRNO0001 = "SATRNO0001";
+    }
+
 }

@@ -4,6 +4,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.io.InputStream;
 import org.w3c.dom.Node;
+import sdai.com.sis.excepciones.ErrorGeneral;
+import sdai.com.sis.utilidades.Util;
 import sdai.com.sis.xml.DocumentoXML;
 
 /**
@@ -32,8 +34,8 @@ public class SdaiCFG implements SdaiCFGLocal {
             this.versionDCore = DocumentoXML.getValorString(root, VERSIDCORE);
             this.versionDFramework = DocumentoXML.getValorString(root, VERSIFRMWK);
             this.versionDCustom = DocumentoXML.getValorString(root, VERSICUSTM);
-        } catch (Exception ex) {
-
+        } catch (ErrorGeneral ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -45,6 +47,11 @@ public class SdaiCFG implements SdaiCFGLocal {
     @Override
     public String getVersionDFramework() {
         return versionDFramework;
+    }
+
+    @Override
+    public Boolean isAppFramework() {
+        return Util.isCadenaNoVacia(getVersionDFramework());
     }
 
     @Override

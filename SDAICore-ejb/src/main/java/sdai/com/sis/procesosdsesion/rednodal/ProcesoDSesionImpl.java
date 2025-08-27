@@ -1,6 +1,5 @@
 package sdai.com.sis.procesosdsesion.rednodal;
 
-import sdai.com.sis.procesosdsesion.ProcesoDSesionImplLocal;
 import sdai.com.sis.rednodal.ElementoDRed;
 import sdai.com.sis.rednodal.TuplaDNodoLocal;
 
@@ -18,7 +17,7 @@ public final class ProcesoDSesionImpl extends ElementoDRed implements ProcesoDSe
     protected static final String CDQUALIFER = "CDQUALIFER";
     protected static final String PAGEDPROCE = "PAGEDPROCE";
 
-    ProcesoDSesionImpl(TuplaDNodoLocal tuplaDNodoLocal) {
+    public ProcesoDSesionImpl(TuplaDNodoLocal tuplaDNodoLocal) {
         super(tuplaDNodoLocal);
     }
 
@@ -36,7 +35,7 @@ public final class ProcesoDSesionImpl extends ElementoDRed implements ProcesoDSe
     public String getCodigoDQualifer() {
         return getValorString(CDQUALIFER);
     }
-    
+
     @Override
     public String getPaginaDProceso() {
         return getValorString(PAGEDPROCE);

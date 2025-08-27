@@ -2,13 +2,11 @@ package sdai.com.sis.sistema;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.utilidades.Transform;
 import sdai.com.sis.xml.DocumentoXML;
 
@@ -39,33 +37,33 @@ public class AtributosDSistema implements AtributosDSistemaLocal {
             loadAtributosDCore();
             loadAtributosDFramework();
             loadAtributosDCustom();
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-
+        } catch (ErrorGeneral ex) {
+            throw new RuntimeException(ex);
         }
     }
 
-    private void loadAtributosDCore() throws ParserConfigurationException, SAXException, IOException {
+    private void loadAtributosDCore() throws ErrorGeneral {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PATHDCORE);
         if (inputStream != null) {
             loadAtributos(inputStream);
         }
     }
 
-    private void loadAtributosDFramework() throws ParserConfigurationException, SAXException, IOException {
+    private void loadAtributosDFramework() throws ErrorGeneral {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PATHFRMWK);
         if (inputStream != null) {
             loadAtributos(inputStream);
         }
     }
 
-    private void loadAtributosDCustom() throws ParserConfigurationException, SAXException, IOException {
+    private void loadAtributosDCustom() throws ErrorGeneral {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PATHCUSTM);
         if (inputStream != null) {
             loadAtributos(inputStream);
         }
     }
 
-    private void loadAtributos(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+    private void loadAtributos(InputStream inputStream) throws ErrorGeneral {
         DocumentoXML documentoXML = new DocumentoXML(inputStream);
         Node root = documentoXML.getRoot();
         Node[] nodes = DocumentoXML.getDescendencia(root);

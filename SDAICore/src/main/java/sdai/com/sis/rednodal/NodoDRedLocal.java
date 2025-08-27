@@ -18,6 +18,8 @@ public interface NodoDRedLocal {
 
     TuplaDNodoLocal[] getTuplasDNodo();
 
+    TuplaDNodoLocal getTuplaDNodo(Object... argumentos);
+
     TuplaDNodoLocal getTuplaDNodo(String... argumentos);
 
     TuplaDNodoLocal[] getTuplasDNodo(String... argumentos);

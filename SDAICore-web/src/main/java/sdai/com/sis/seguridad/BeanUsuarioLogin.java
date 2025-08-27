@@ -5,7 +5,8 @@ import jakarta.inject.Named;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-import sdai.com.sis.beans.seguridad.BeanUsuarioLoginLocal;
+import sdai.com.sis.beans.BeanDVistaLocal;
+import sdai.com.sis.dsentidades.DSEntidadLocal;
 
 /**
  * @date 22/08/2025
@@ -14,7 +15,7 @@ import sdai.com.sis.beans.seguridad.BeanUsuarioLoginLocal;
  */
 @Named
 @ViewScoped
-public class BeanUsuarioLogin implements BeanUsuarioLoginLocal, Serializable {
+public class BeanUsuarioLogin implements BeanDVistaLocal, Serializable {
 
     @NotBlank(groups = NotBlank.class, message = "USUARNOBLK")
     @Size(min = 3, max = 45, groups = Size.class, message = "USUARDSIZE")
@@ -24,6 +25,11 @@ public class BeanUsuarioLogin implements BeanUsuarioLoginLocal, Serializable {
     private String passwordDUsuario;
 
     @Override
+    public void addDatosDEntidad(DSEntidadLocal dSEntidad) {
+        dSEntidad.addValorDDato("CODIGUSUAR", getCodigoDUsuario());
+        dSEntidad.addValorDDato("PASSWUSUAR", getPasswordDUsuario());
+    }
+
     public String getCodigoDUsuario() {
         return codigoDUsuario;
     }
@@ -32,7 +38,6 @@ public class BeanUsuarioLogin implements BeanUsuarioLoginLocal, Serializable {
         this.codigoDUsuario = codigoDUsuario;
     }
 
-    @Override
     public String getPasswordDUsuario() {
         return passwordDUsuario;
     }

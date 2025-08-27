@@ -22,6 +22,10 @@ public final class ErrorGeneral extends Throwable {
         this.summary = summary;
     }
 
+    public ErrorGeneral(Throwable throwable) {
+        super(throwable);
+    }
+
     public FacesMessage.Severity getSeverity() {
         return severity;
     }

@@ -1,8 +1,8 @@
 package sdai.com.sis.accionesdsistema;
 
 import jakarta.ejb.Local;
-import sdai.com.sis.dataswaps.DataSwapLocal;
 import sdai.com.sis.excepciones.ErrorGeneral;
+import sdai.com.sis.procesosdsesion.ProcesoDSesionLocal;
 
 /**
  * @date 23/08/2025
@@ -12,6 +12,8 @@ import sdai.com.sis.excepciones.ErrorGeneral;
 @Local
 public interface AccionDSistemaLocal {
 
-    void procesarAccion(DataSwapLocal dataSwapLocal) throws ErrorGeneral;
+    void setAccionDSistemaImplLocal(AccionDSistemaImplLocal accionDSistemaImplLocal);
+
+    void procesarAccion(ProcesoDSesionLocal procesoDSesionLocal) throws ErrorGeneral;
 
 }

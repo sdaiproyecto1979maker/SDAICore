@@ -14,4 +14,10 @@ public final class KAtributosDTupla {
         public static final String IDATRTUPLA = "IDATRTUPLA";
         public static final String VALORATRIB = "VALORATRIB";
     }
+
+    public final class NamedQueries {
+
+        public static final String SATRTU0000 = "SATRTU0000";
+        public static final String SATRTU0001 = "SATRTU0001";
+    }
 }

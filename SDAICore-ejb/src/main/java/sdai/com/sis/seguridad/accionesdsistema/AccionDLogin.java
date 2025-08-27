@@ -1,14 +1,11 @@
 package sdai.com.sis.seguridad.accionesdsistema;
 
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
-import sdai.com.sis.accionesdsistema.AccionDSistemaLocal;
 import sdai.com.sis.accionesdsistema.AccionesDSistema;
 import sdai.com.sis.accionesdsistema.KAccionesDSistema;
-import sdai.com.sis.dataswaps.DataSwapLocal;
 import sdai.com.sis.excepciones.ErrorGeneral;
-import sdai.com.sis.procesosdsesion.GestorDProcesosLocal;
-import sdai.com.sis.procesosdsesion.KProcesosDSesion;
+import sdai.com.sis.seguridad.dataswaps.DSUsuario;
+import sdai.com.sis.seguridad.dataswaps.DataSwapSeguridad;
 
 /**
  * @23/08/2025
@@ -17,22 +14,13 @@ import sdai.com.sis.procesosdsesion.KProcesosDSesion;
  */
 @RequestScoped
 @AccionesDSistema(KAccionesDSistema.AccionesDSistema.ACCIOLOGIN)
-public class AccionDLogin implements AccionDSistemaLocal {
-
-    @Inject
-    private GestorDProcesosLocal gestorDProcesosLocal;
+public class AccionDLogin extends AbstractAccionSeguridad {
 
     @Override
-    public void procesarAccion(DataSwapLocal dataSwapLocal) throws ErrorGeneral {
-        /*DataSwapSeguridad dataSwapSeguridad = (DataSwapSeguridad) dataSwapLocal;
-        DSUsuario dSUsuario = dataSwapSeguridad.getDsUsuario();
+    protected void procesar(DataSwapSeguridad dataSwapSeguridad) throws ErrorGeneral {
+        DSUsuario dSUsuario = dataSwapSeguridad.getDSUsuario();
         String codigoDUsuario = dSUsuario.getCodigoDUsuario();
-        String passwordDUsuario = dSUsuario.getPasswordDUsuario();*/
-        crearProcesoInicioDSistema();
-    }
-
-    private void crearProcesoInicioDSistema() {
-        this.gestorDProcesosLocal.iniciar(KProcesosDSesion.ProcesosDSesion.PROCINISIS);
+        String passwordDUsuario = dSUsuario.getPasswordDUsuario();
     }
 
 }

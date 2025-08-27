@@ -5,6 +5,7 @@ import java.util.List;
 import sdai.com.sis.rednodal.atributosdnodo.AtributoDNodo;
 import sdai.com.sis.rednodal.nodos.Nodo;
 import sdai.com.sis.rednodal.tuplas.Tupla;
+import sdai.com.sis.utilidades.Transform;
 
 /**
  * @date 23/08/2025
@@ -43,6 +44,16 @@ public final class NodoDRed implements NodoDRedLocal {
             lista.add(tuplaDNodo);
         }
         return lista.toArray(TuplaDNodoLocal[]::new);
+    }
+
+    @Override
+    public TuplaDNodoLocal getTuplaDNodo(Object... argumentos) {
+        List<String> lista = new ArrayList<>();
+        for (Object argumento : argumentos) {
+            lista.add(Transform.toString(argumento));
+        }
+        TuplaDNodoLocal[] tuplaDNodoLocals = getTuplasDNodo(lista.toArray(String[]::new));
+        return tuplaDNodoLocals[0];
     }
 
     @Override
