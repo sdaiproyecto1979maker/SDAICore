@@ -4,15 +4,11 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import sdai.com.sis.beans.BeanDVistaImplLocal;
+import sdai.com.sis.beans.rednoal.BeanDVistaImplLocal;
 import sdai.com.sis.beans.rednodal.BeansDVistaUtil;
 import sdai.com.sis.dsentidades.DSEntidadLocal;
 import sdai.com.sis.dsentidades.DSEntidadesLiteral;
-import sdai.com.sis.rednodal.NodoDRedLocal;
 import sdai.com.sis.rednodal.NodosDRedLocal;
-import sdai.com.sis.rednodal.TuplaDNodoLocal;
 
 /**
  * @date 23/08/2025
@@ -31,10 +27,11 @@ public class DSEntidadesUtil {
     private BeansDVistaUtil beansDVistaUtil;
 
     public DSEntidadLocal getDSEntidadLocal(String codigoDEntidad) {
-        NodoDRedLocal nodoDRedLocal = this.nodosDRedLocal.getNodoDRedLocal(DSEntidadImpl.CODIGONODO);
+        /*NodoDRedLocal nodoDRedLocal = this.nodosDRedLocal.getNodoDRedLocal(DSEntidadImpl.CODIGONODO);
         TuplaDNodoLocal tuplaDNodoLocal = nodoDRedLocal.getTuplaDNodo(DSEntidadImpl.CODIENTITY, codigoDEntidad);
         DSEntidadImpl dSEntidadImpl = new DSEntidadImpl(tuplaDNodoLocal);
-        return createDSEntidadLocal(dSEntidadImpl);
+        return createDSEntidadLocal(dSEntidadImpl);*/
+        return null;
     }
 
     private DSEntidadLocal createDSEntidadLocal(DSEntidadImpl dSEntidadImpl) {
@@ -47,7 +44,7 @@ public class DSEntidadesUtil {
     }
 
     public BeanDVistaImplLocal[] getBeansDVista(String codigoDEntidad) {
-        List<BeanDVistaImplLocal> lista = new ArrayList<>();
+        /*List<BeanDVistaImplLocal> lista = new ArrayList<>();
         NodoDRedLocal nodoDRedLocal = this.nodosDRedLocal.getNodoDRedLocal("BEANENTITY");
         TuplaDNodoLocal[] tuplasDNodo = nodoDRedLocal.getTuplasDNodo(DSEntidadImpl.CODIENTITY, codigoDEntidad);
         for (TuplaDNodoLocal tuplaDNodo : tuplasDNodo) {
@@ -55,7 +52,8 @@ public class DSEntidadesUtil {
             BeanDVistaImplLocal beanDVista = this.beansDVistaUtil.getBeanDVista(codigoDBean);
             lista.add(beanDVista);
         }
-        return lista.toArray(BeanDVistaImplLocal[]::new);
+        return lista.toArray(BeanDVistaImplLocal[]::new);*/
+        return null;
     }
 
     public void destroyDSEntidadLocal(DSEntidadLocal dSEntidadLocal) {

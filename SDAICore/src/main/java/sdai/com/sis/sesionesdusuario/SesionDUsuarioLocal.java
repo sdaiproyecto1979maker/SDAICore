@@ -11,6 +11,8 @@ import java.util.Locale;
 @Local
 public interface SesionDUsuarioLocal {
 
+    UsuarioDSesionLocal getUsuarioDSesionLocal();
+
     Locale getLocale();
 
     void setLocale(String locale);

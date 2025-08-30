@@ -1,7 +1,9 @@
 package sdai.com.sis.dataswaps;
 
 import java.util.List;
+import sdai.com.sis.dataswaps.rednodal.DataSwapImplLocal;
 import sdai.com.sis.dsentidades.DSEntidadLocal;
+import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.procesosdsesion.ProcesoDSesionLocal;
 import sdai.com.sis.utilidades.EstructuraDatos;
 
@@ -16,9 +18,11 @@ public interface DataSwapLocal {
 
     void setProcesoDSesionLocal(ProcesoDSesionLocal procesoDSesionLocal);
 
-    void iniciar();
+    void iniciar() throws ErrorGeneral;
 
-    void generateDataSwap();
+    void generateDataSwap() throws ErrorGeneral;
+
+    ContextoDataSwapLocal getContextoDataSwapLocal();
 
     DSEntidadLocal getDSEntidad(String codigoDEntidad);
 
@@ -26,10 +30,12 @@ public interface DataSwapLocal {
 
     ProcesoDSesionLocal getProcesoDSesionLocal();
 
-    String getCodigoDDataSwap();
-
     List<EstructuraDatos> getEstructurasTemporales();
 
     DataSwapImplLocal getDataSwapImplLocal();
+
+    String getCodigoDDataSwap();
+
+    String getCodigoDQualifer();
 
 }

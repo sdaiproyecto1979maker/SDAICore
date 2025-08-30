@@ -25,7 +25,8 @@ import sdai.com.sis.rednodal.tuplas.Tupla;
 @Table(name = KAtributosDTupla.NOMBRTABLA)
 @NamedQueries({
     @NamedQuery(name = KAtributosDTupla.NamedQueries.SATRTU0000, query = "SELECT A FROM AtributoDTupla A WHERE A.tupla.codigoDTupla=:CODIGTUPLA AND A.datoDSistema.codigoDDato=:CODIGODATO"),
-    @NamedQuery(name = KAtributosDTupla.NamedQueries.SATRTU0001, query = "SELECT A FROM AtributoDTupla A")
+    @NamedQuery(name = KAtributosDTupla.NamedQueries.SATRTU0001, query = "SELECT A FROM AtributoDTupla A"),
+    @NamedQuery(name = KAtributosDTupla.NamedQueries.SATRTU0002, query = "SELECT A FROM AtributoDTupla A WHERE A.entornoAplicacion=:ENTORNOAPP")
 })
 public class AtributoDTupla implements Serializable {
 
@@ -44,6 +45,9 @@ public class AtributoDTupla implements Serializable {
 
     @Column(name = KAtributosDTupla.AtributosDEntidad.VALORATRIB, length = 450, nullable = false)
     private String valorDAtributo;
+
+    @Column(name = KAtributosDTupla.AtributosDEntidad.ENTORNOAPP, length = 10, nullable = false)
+    private String entornoAplicacion;
 
     AtributoDTupla() {
     }
@@ -78,6 +82,14 @@ public class AtributoDTupla implements Serializable {
 
     public void setValorDAtributo(String valorDAtributo) {
         this.valorDAtributo = valorDAtributo;
+    }
+
+    public String getEntornoAplicacion() {
+        return entornoAplicacion;
+    }
+
+    public void setEntornoAplicacion(String entornoAplicacion) {
+        this.entornoAplicacion = entornoAplicacion;
     }
 
 }

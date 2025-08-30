@@ -2,9 +2,16 @@ package sdai.com.sis.sistema;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.io.InputStream;
 import org.w3c.dom.Node;
+import sdai.com.sis.cachesdsistema.CacheDSistemaLocal;
+import sdai.com.sis.cachesdsistema.GlobalCaches;
+import sdai.com.sis.cachesdsistema.KCachesDSistema;
+import sdai.com.sis.cachesdsistema.KeyCache;
 import sdai.com.sis.excepciones.ErrorGeneral;
+import sdai.com.sis.rednodal.nodos.ADNodos;
+import sdai.com.sis.rednodal.nodos.Nodo;
 import sdai.com.sis.utilidades.Util;
 import sdai.com.sis.xml.DocumentoXML;
 
@@ -24,6 +31,13 @@ public class SdaiCFG implements SdaiCFGLocal {
     private String versionDCore;
     private String versionDFramework;
     private String versionDCustom;
+    private ThreadSdaiCFG threadSdaiCFG;
+    @Inject
+    private ADNodos adNodos;
+    @Inject
+    private GlobalCaches globalCaches;
+    private Boolean isContinuar = Boolean.TRUE;
+    private Boolean isLoad;
 
     @PostConstruct
     public void init() {
@@ -34,6 +48,9 @@ public class SdaiCFG implements SdaiCFGLocal {
             this.versionDCore = DocumentoXML.getValorString(root, VERSIDCORE);
             this.versionDFramework = DocumentoXML.getValorString(root, VERSIFRMWK);
             this.versionDCustom = DocumentoXML.getValorString(root, VERSICUSTM);
+            this.isLoad = Boolean.FALSE;
+            this.threadSdaiCFG = new ThreadSdaiCFG();
+            this.threadSdaiCFG.start();
         } catch (ErrorGeneral ex) {
             throw new RuntimeException(ex);
         }
@@ -57,6 +74,34 @@ public class SdaiCFG implements SdaiCFGLocal {
     @Override
     public String getVersionDCustom() {
         return versionDCustom;
+    }
+
+    public void precargarCFG() {
+        this.isLoad = Boolean.FALSE;
+    }
+
+    private class ThreadSdaiCFG extends Thread {
+
+        @Override
+        public void run() {
+            try {
+                while (isContinuar) {
+                    if (!isLoad) {
+                        CacheDSistemaLocal cacheDSistemaLocal = globalCaches.getCacheDSistemaLocal(KCachesDSistema.CachesDSistema.CACHEREDNO);
+                        Nodo[] nodos = adNodos.getNodos();
+                        for (Nodo nodo : nodos) {
+                            String codigoDNodo = nodo.getCodigoDNodo();
+                            KeyCache keyCache = KeyCache.getInstancia(Nodo.class, codigoDNodo);
+                            cacheDSistemaLocal.almacenarInstancia(keyCache, nodo);
+                        }
+                        isLoad = Boolean.TRUE;
+                    }
+                    Thread.sleep(10000);
+                }
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
 }

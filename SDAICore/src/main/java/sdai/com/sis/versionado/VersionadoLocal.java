@@ -12,7 +12,9 @@ import sdai.com.sis.excepciones.ErrorGeneral;
 public interface VersionadoLocal {
 
     void generarCFG() throws ErrorGeneral;
-    
+
     void generarComparacion() throws ErrorGeneral;
+
+    Boolean getIsThreadFinalizado();
 
 }

@@ -14,4 +14,13 @@ public final class Transform {
         return String.valueOf(value);
     }
 
+    public static Integer toInteger(Object value) {
+        try {
+            String cadena = Transform.toString(value);
+            return Integer.valueOf(cadena);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
+
 }

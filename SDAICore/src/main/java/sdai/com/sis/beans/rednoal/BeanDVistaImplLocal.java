@@ -1,4 +1,4 @@
-package sdai.com.sis.beans;
+package sdai.com.sis.beans.rednoal;
 
 import jakarta.ejb.Local;
 

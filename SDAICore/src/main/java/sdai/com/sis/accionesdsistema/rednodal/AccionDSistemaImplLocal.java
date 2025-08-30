@@ -1,4 +1,4 @@
-package sdai.com.sis.accionesdsistema;
+package sdai.com.sis.accionesdsistema.rednodal;
 
 import jakarta.ejb.Local;
 
@@ -17,5 +17,7 @@ public interface AccionDSistemaImplLocal {
     String getCodigoDQualifer();
 
     String getProcesoDestino();
+
+    String getSistemaDReglas();
 
 }

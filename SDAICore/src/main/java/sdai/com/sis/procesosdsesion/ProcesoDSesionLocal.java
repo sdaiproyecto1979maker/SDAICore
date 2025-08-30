@@ -1,10 +1,9 @@
 package sdai.com.sis.procesosdsesion;
 
-import sdai.com.sis.procesosdsesion.rednodal.ProcesoDSesionImplLocal;
 import jakarta.ejb.Local;
 import sdai.com.sis.dataswaps.DataSwapLocal;
 import sdai.com.sis.excepciones.ErrorGeneral;
-import sdai.com.sis.rednodal.ElementoDRedLocal;
+import sdai.com.sis.procesosdsesion.rednodal.ProcesoDSesionImplLocal;
 
 /**
  * @date 22/08/2025
@@ -12,7 +11,13 @@ import sdai.com.sis.rednodal.ElementoDRedLocal;
  * @author Sergio_M
  */
 @Local
-public interface ProcesoDSesionLocal extends ElementoDRedLocal {        
+public interface ProcesoDSesionLocal {
+
+    void setProcesoDSesionImplLocal(ProcesoDSesionImplLocal procesoDSesionImplLocal);
+
+    void iniciar() throws ErrorGeneral;
+
+    /////////////////////////////////////////////////////////////////////////////////
 
     void procesarAccion(String codigoDAccion) throws ErrorGeneral;
 
@@ -25,5 +30,7 @@ public interface ProcesoDSesionLocal extends ElementoDRedLocal {
     void realizarValidaciones() throws ErrorGeneral;
 
     ProcesoDSesionImplLocal getProcesoDSesionImplLocal();
+
+    String getCodigoDQualifer();
 
 }

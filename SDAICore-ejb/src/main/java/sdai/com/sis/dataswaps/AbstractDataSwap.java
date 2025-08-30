@@ -1,15 +1,20 @@
 package sdai.com.sis.dataswaps;
 
 import jakarta.annotation.PreDestroy;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import sdai.com.sis.dataswaps.rednodal.DataSwapsUtil;
+import sdai.com.sis.dataswaps.rednodal.DataSwapImplLocal;
+import sdai.com.sis.dataswaps.rednodal.EntidadDataSwapImpl;
 import sdai.com.sis.dsentidades.DSEntidadLocal;
-import sdai.com.sis.dsentidades.rednodal.DSEntidadesUtil;
+import sdai.com.sis.dsentidades.DSEntidadesLiteral;
+import sdai.com.sis.dsentidades.rednodal.DSEntidadImpl;
+import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.procesosdsesion.ProcesoDSesionLocal;
 import sdai.com.sis.utilidades.EstructuraDatos;
 
@@ -23,10 +28,10 @@ public abstract class AbstractDataSwap implements DataSwapLocal, Serializable {
     private DataSwapImplLocal dataSwapImplLocal;
     private ProcesoDSesionLocal procesoDSesionLocal;
     @Inject
-    private DataSwapsUtil dataSwapsUtil;
+    @Any
+    private Instance<DSEntidadLocal> instancias;
     private final Map<String, DSEntidadLocal> almacenDEntidades;
-    @Inject
-    private DSEntidadesUtil dSEntidadesUtil;
+    private ContextoDataSwap contextoDataSwap;
 
     public AbstractDataSwap() {
         this.almacenDEntidades = new HashMap<>();
@@ -38,17 +43,29 @@ public abstract class AbstractDataSwap implements DataSwapLocal, Serializable {
     }
 
     @Override
-    public void iniciar() {
-        String codigoDDataSwap = getCodigoDDataSwap();
-        DSEntidadLocal[] dsEntidades = this.dataSwapsUtil.getEntidadesDDataSwap(codigoDDataSwap);
-        for (DSEntidadLocal dsEntidad : dsEntidades) {
-            String codigoDEntidad = dsEntidad.getCodigoDEntidad();
-            this.almacenDEntidades.put(codigoDEntidad, dsEntidad);
-        }
+    public void setProcesoDSesionLocal(ProcesoDSesionLocal procesoDSesionLocal) {
+        this.procesoDSesionLocal = procesoDSesionLocal;
     }
 
     @Override
-    public void generateDataSwap() {
+    public void iniciar() throws ErrorGeneral {
+        String codigoDDataSwap = getCodigoDDataSwap();
+        EntidadDataSwapImpl[] entidades = EntidadDataSwapImpl.getInstancias(codigoDDataSwap);
+        for (EntidadDataSwapImpl entidad : entidades) {
+            String codigoDEntidad = entidad.getCodigoDEntidad();
+            DSEntidadImpl dSEntidadImpl = DSEntidadImpl.getInstancia(codigoDEntidad);
+            String codigoDQualifer = dSEntidadImpl.getCodigoDQualifer();
+            DSEntidadesLiteral literal = DSEntidadesLiteral.of(codigoDQualifer);
+            Instance<DSEntidadLocal> instancia = this.instancias.select(literal);
+            DSEntidadLocal entidadLocal = instancia.get();
+            entidadLocal.setDSEntidadImplLocal(dSEntidadImpl);
+            this.almacenDEntidades.put(codigoDEntidad, entidadLocal);
+        }
+        this.contextoDataSwap = new ContextoDataSwap();
+    }
+
+    @Override
+    public void generateDataSwap() throws ErrorGeneral {
         DSEntidadLocal[] entidades = getDSEntidades();
         for (DSEntidadLocal entidad : entidades) {
             entidad.generateDSEntidad();
@@ -56,8 +73,18 @@ public abstract class AbstractDataSwap implements DataSwapLocal, Serializable {
     }
 
     @Override
-    public void setProcesoDSesionLocal(ProcesoDSesionLocal procesoDSesionLocal) {
-        this.procesoDSesionLocal = procesoDSesionLocal;
+    public ContextoDataSwapLocal getContextoDataSwapLocal() {
+        return this.contextoDataSwap;
+    }
+
+    @Override
+    public String getCodigoDDataSwap() {
+        return this.dataSwapImplLocal.getCodigoDDataSwap();
+    }
+
+    @Override
+    public String getCodigoDQualifer() {
+        return this.dataSwapImplLocal.getCodigoDQualifer();
     }
 
     @Override
@@ -75,11 +102,6 @@ public abstract class AbstractDataSwap implements DataSwapLocal, Serializable {
     @Override
     public ProcesoDSesionLocal getProcesoDSesionLocal() {
         return procesoDSesionLocal;
-    }
-
-    @Override
-    public String getCodigoDDataSwap() {
-        return this.dataSwapImplLocal.getCodigoDDataSwap();
     }
 
     @Override
@@ -102,7 +124,10 @@ public abstract class AbstractDataSwap implements DataSwapLocal, Serializable {
     public void destroy() {
         DSEntidadLocal[] entidades = getDSEntidades();
         for (DSEntidadLocal entidad : entidades) {
-            this.dSEntidadesUtil.destroyDSEntidadLocal(entidad);
+            String codigoDQualifer = entidad.getCodigoDQualifer();
+            DSEntidadesLiteral literal = DSEntidadesLiteral.of(codigoDQualifer);
+            Instance<DSEntidadLocal> instancia = this.instancias.select(literal);
+            instancia.destroy(entidad);
         }
     }
 

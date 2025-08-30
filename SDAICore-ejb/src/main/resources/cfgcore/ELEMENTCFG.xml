@@ -7,27 +7,23 @@
     </ELEMENTCFG>
     <ELEMENTCFG>
         <CODIELEMEN>TBENTINODO</CODIELEMEN>
-        <CLASELEMEN>sdai.com.sis.rednodal.nodos.XMLNodo</CLASELEMEN>
-        <CLASADATOS>sdai.com.sis.rednodal.nodos.ADNodos</CLASADATOS>
-        <METHODPERS>persistNodoVersion</METHODPERS>
+        <CLSVERSION>sdai.com.sis.rednodal.nodos.VersionadoNodos</CLSVERSION>
+        <CLSCOMPARA>sdai.com.sis.rednodal.nodos.ComparadorNodos</CLSCOMPARA>
     </ELEMENTCFG>
     <ELEMENTCFG>
         <CODIELEMEN>TBATRSNODO</CODIELEMEN>
-        <CLASELEMEN>sdai.com.sis.rednodal.atributosdnodo.XMLAtributoDNodo</CLASELEMEN>
-        <CLASADATOS>sdai.com.sis.rednodal.atributosdnodo.ADAtributosDNodo</CLASADATOS>
-        <METHODPERS>persistAtributoDNodoVersion</METHODPERS>
+        <CLSVERSION>sdai.com.sis.rednodal.atributosdnodo.VersionadoAtributosDNodo</CLSVERSION>
+        <CLSCOMPARA>sdai.com.sis.rednodal.atributosdnodo.ComparadorAtributosDNodo</CLSCOMPARA>
     </ELEMENTCFG>
     <ELEMENTCFG>
         <CODIELEMEN>TBENTTUPLA</CODIELEMEN>
-        <CLASELEMEN>sdai.com.sis.rednodal.tuplas.XMLTupla</CLASELEMEN>
-        <CLASADATOS>sdai.com.sis.rednodal.tuplas.ADTuplas</CLASADATOS>
-        <METHODPERS>persistTuplaVersion</METHODPERS>
+        <CLSVERSION>sdai.com.sis.rednodal.tuplas.VersionadoTuplas</CLSVERSION>
+        <CLSCOMPARA>sdai.com.sis.rednodal.tuplas.ComparadorTuplas</CLSCOMPARA>
     </ELEMENTCFG>
     <ELEMENTCFG>
         <CODIELEMEN>TBATRTUPLA</CODIELEMEN>
-        <CLASELEMEN>sdai.com.sis.rednodal.atributosdtupla.XMLAtributoDTupla</CLASELEMEN>
-        <CLASADATOS>sdai.com.sis.rednodal.atributosdtupla.ADAtributosDTupla</CLASADATOS>
-        <METHODPERS>persistAtributoDTuplaVersion</METHODPERS>
+        <CLSVERSION>sdai.com.sis.rednodal.atributosdtupla.VersionadoAtributosDTupla</CLSVERSION>
+        <CLSCOMPARA>sdai.com.sis.rednodal.atributosdtupla.ComparadorAtributosDTupla</CLSCOMPARA>
     </ELEMENTCFG>
 </ROOT>
 

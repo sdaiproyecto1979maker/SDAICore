@@ -13,11 +13,13 @@ public final class KAtributosDTupla {
 
         public static final String IDATRTUPLA = "IDATRTUPLA";
         public static final String VALORATRIB = "VALORATRIB";
+        public static final String ENTORNOAPP = "ENTORNOAPP";
     }
 
     public final class NamedQueries {
 
         public static final String SATRTU0000 = "SATRTU0000";
         public static final String SATRTU0001 = "SATRTU0001";
+        public static final String SATRTU0002 = "SATRTU0002";
     }
 }

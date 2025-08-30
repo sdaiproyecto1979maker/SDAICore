@@ -8,6 +8,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
+import sdai.com.sis.beans.BeanDVistaLocal;
 
 /**
  * @date 22/08/2025
@@ -61,11 +62,25 @@ public final class FacesUtil {
         return parametrosDRequest;
     }
 
+    public static Map<String, Object> getAlmacenDSesion() {
+        ExternalContext externalContext = FacesUtil.getExternalContext();
+        Map<String, Object> almacenDSesion = externalContext.getSessionMap();
+        return almacenDSesion;
+    }
+
     public static Map<String, Object> getAlmacenDVista() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot viewRoot = facesContext.getViewRoot();
         Map<String, Object> almacenDVista = viewRoot.getViewMap();
         return almacenDVista;
+    }
+
+    public static BeanDVistaLocal getBeanDVistaLocal(String codigoDNamed) {
+        Map<String, Object> almacenDVista = FacesUtil.getAlmacenDVista();
+        if (almacenDVista.containsKey(codigoDNamed)) {
+            return (BeanDVistaLocal) almacenDVista.get(codigoDNamed);
+        }
+        return null;
     }
 
 }

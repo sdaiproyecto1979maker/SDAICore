@@ -18,12 +18,14 @@ public class DSUsuario extends AbstractDSEntidad {
     public static final String DSDUSUARIO = "DSDUSUARIO";
     public static final String CODIGUSUAR = "CODIGUSUAR";
     public static final String PASSWUSUAR = "PASSWUSUAR";
+    public static final String PASSRUSUAR = "PASSRUSUAR";
 
     @Override
     public EstructuraDatos generateEstructuraDDatos() {
         EstructuraDatos eDatos = new EstructuraDatos(DSDUSUARIO);
         eDatos.addDato(CODIGUSUAR, getCodigoDUsuario());
         eDatos.addDato(PASSWUSUAR, getPasswordDUsuario());
+        eDatos.addDato(PASSRUSUAR, getPasswordRUsuario());
         return eDatos;
     }
 
@@ -33,6 +35,10 @@ public class DSUsuario extends AbstractDSEntidad {
 
     public String getPasswordDUsuario() {
         return getValorStringOriginal(PASSWUSUAR);
+    }
+
+    public String getPasswordRUsuario() {
+        return getValorStringOriginal(PASSRUSUAR);
     }
 
 }

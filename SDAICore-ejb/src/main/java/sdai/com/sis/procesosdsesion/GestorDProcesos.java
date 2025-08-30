@@ -1,6 +1,8 @@
 package sdai.com.sis.procesosdsesion;
 
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -9,8 +11,8 @@ import java.util.Map;
 import sdai.com.sis.dataswaps.DataSwapLocal;
 import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.procesosdsesion.rednodal.ProcesoDSesionImpl;
-import sdai.com.sis.rednodal.GeneradorDElementos;
 import sdai.com.sis.utilidades.EstructuraDatos;
+import sdai.com.sis.utilidades.Util;
 
 /**
  * @date 22/08/2025
@@ -21,7 +23,8 @@ import sdai.com.sis.utilidades.EstructuraDatos;
 public class GestorDProcesos implements GestorDProcesosLocal, Serializable {
 
     @Inject
-    private GeneradorDElementos generadorDElementos;
+    @Any
+    private Instance<ProcesoDSesionLocal> instancias;
     private ProcesoDSesionLocal procesoDSesionLocal;
     private final Map<String, EstructuraDatos> almacenDEstructuras;
 
@@ -33,9 +36,18 @@ public class GestorDProcesos implements GestorDProcesosLocal, Serializable {
     public void iniciar(String codigoDProceso) throws ErrorGeneral {
         if (this.procesoDSesionLocal != null) {
             generarEstructurasTemporales();
-            //this.generadorDProcesosDSesion.deleteProcesoDSesion(this.procesoDSesionLocal);
+            destroyProcesoDSesion();
         }
-        this.procesoDSesionLocal = (ProcesoDSesionLocal) this.generadorDElementos.getElementoDRedLocal("PROCSESION", ProcesoDSesionImpl.class, "CODIGPROCE", codigoDProceso);
+        ProcesoDSesionImpl procesoDSesionImpl = ProcesoDSesionImpl.getInstancia(codigoDProceso);
+        String codigoDQualifer = procesoDSesionImpl.getCodigoDQualifer();
+        if (Util.isCadenaVacia(codigoDQualifer)) {
+            codigoDQualifer = KProcesosDSesion.ProcesosDSesion.DFPROCSESI;
+        }
+        ProcesosDSesionLiteral procesosDSesionLiteral = ProcesosDSesionLiteral.of(codigoDQualifer);
+        Instance<ProcesoDSesionLocal> instancia = this.instancias.select(procesosDSesionLiteral);
+        this.procesoDSesionLocal = instancia.get();
+        this.procesoDSesionLocal.setProcesoDSesionImplLocal(procesoDSesionImpl);
+        this.procesoDSesionLocal.iniciar();
     }
 
     @Override
@@ -58,6 +70,16 @@ public class GestorDProcesos implements GestorDProcesosLocal, Serializable {
     @Override
     public ProcesoDSesionLocal getProcesoDSesionLocal() {
         return procesoDSesionLocal;
+    }
+
+    public void destroyProcesoDSesion() {
+        String codigoDQualifer = this.procesoDSesionLocal.getCodigoDQualifer();
+        if (Util.isCadenaVacia(codigoDQualifer)) {
+            codigoDQualifer = KProcesosDSesion.ProcesosDSesion.DFPROCSESI;
+        }
+        ProcesosDSesionLiteral literal = ProcesosDSesionLiteral.of(codigoDQualifer);
+        Instance<ProcesoDSesionLocal> instancia = this.instancias.select(literal);
+        instancia.destroy(this.procesoDSesionLocal);
     }
 
 }

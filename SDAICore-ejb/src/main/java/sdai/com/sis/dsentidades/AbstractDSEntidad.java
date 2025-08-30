@@ -6,12 +6,14 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import sdai.com.sis.beans.BeanDVistaImplLocal;
 import sdai.com.sis.beans.BeanDVistaLocal;
-import sdai.com.sis.beans.BeansUtil;
+import sdai.com.sis.beans.rednodal.BeanDVistaImpl;
+import sdai.com.sis.dsentidades.rednodal.BeanDEntidadImpl;
+import sdai.com.sis.dsentidades.rednodal.DSEntidadImplLocal;
 import sdai.com.sis.dsentidades.rednodal.DSEntidadesUtil;
 import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.gruposdvalidacion.ValidadorDIntegridadLocal;
+import sdai.com.sis.utilidades.FacesUtil;
 import sdai.com.sis.utilidades.Transform;
 
 /**
@@ -40,27 +42,41 @@ public abstract class AbstractDSEntidad implements DSEntidadLocal, Serializable 
     @Override
     public void validarIntegridad() throws ErrorGeneral {
         String codigoDEntidad = getCodigoDEntidad();
-        BeanDVistaImplLocal[] beansDVista = this.dSEntidadesUtil.getBeansDVista(codigoDEntidad);
-        for (BeanDVistaImplLocal beanDVista : beansDVista) {
-            String named = beanDVista.getCodigoDNamed();
-            Object bean = BeansUtil.getBeanDVista(named);
-            if (bean != null) {
+        BeanDEntidadImpl[] beans = BeanDEntidadImpl.getInstancias(codigoDEntidad);
+        for (BeanDEntidadImpl bean : beans) {
+            String codigoDBean = bean.getCodigoDBean();
+            BeanDVistaImpl beanDVistaImpl = BeanDVistaImpl.getInstancia(codigoDBean);
+            String named = beanDVistaImpl.getCodigoDNamed();
+            BeanDVistaLocal beanDVistaLocal = FacesUtil.getBeanDVistaLocal(named);
+            if (beanDVistaLocal != null) {
                 this.validadorDIntegridadLocal.validar(bean, NotBlank.class, Size.class);
             }
         }
     }
 
     @Override
-    public void generateDSEntidad() {
+    public void generateDSEntidad() throws ErrorGeneral {
         String codigoDEntidad = getCodigoDEntidad();
-        BeanDVistaImplLocal[] beansDVista = this.dSEntidadesUtil.getBeansDVista(codigoDEntidad);
-        for (BeanDVistaImplLocal beanDVista : beansDVista) {
-            String named = beanDVista.getCodigoDNamed();
-            BeanDVistaLocal bean = (BeanDVistaLocal) BeansUtil.getBeanDVista(named);
-            if (bean != null) {
-                bean.addDatosDEntidad(this);
+        BeanDEntidadImpl[] beans = BeanDEntidadImpl.getInstancias(codigoDEntidad);
+        for (BeanDEntidadImpl bean : beans) {
+            String codigoDBean = bean.getCodigoDBean();
+            BeanDVistaImpl beanDVistaImpl = BeanDVistaImpl.getInstancia(codigoDBean);
+            String named = beanDVistaImpl.getCodigoDNamed();
+            BeanDVistaLocal beanDVistaLocal = FacesUtil.getBeanDVistaLocal(named);
+            if (beanDVistaLocal != null) {
+                beanDVistaLocal.addDatosDEntidad(this);
             }
         }
+    }
+
+    @Override
+    public String getCodigoDEntidad() {
+        return this.dSEntidadImplLocal.getCodigoDEntidad();
+    }
+
+    @Override
+    public String getCodigoDQualifer() {
+        return this.dSEntidadImplLocal.getCodigoDQualifer();
     }
 
     @Override
@@ -78,11 +94,6 @@ public abstract class AbstractDSEntidad implements DSEntidadLocal, Serializable 
     @Override
     public void addValorDDato(String key, Object value) {
         this.almacenDDatos.put(key, value);
-    }
-
-    @Override
-    public String getCodigoDEntidad() {
-        return this.dSEntidadImplLocal.getCodigoDEntidad();
     }
 
     @Override

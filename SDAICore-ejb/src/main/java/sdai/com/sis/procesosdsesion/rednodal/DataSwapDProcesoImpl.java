@@ -1,6 +1,14 @@
 package sdai.com.sis.procesosdsesion.rednodal;
 
+import jakarta.enterprise.inject.spi.CDI;
+import sdai.com.sis.cachesdsistema.CacheDSistemaLocal;
+import sdai.com.sis.cachesdsistema.GlobalCaches;
+import sdai.com.sis.cachesdsistema.KCachesDSistema;
+import sdai.com.sis.cachesdsistema.KeyCache;
+import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.rednodal.ElementoDRed;
+import sdai.com.sis.rednodal.NodoDRedLocal;
+import sdai.com.sis.rednodal.NodosDRed;
 import sdai.com.sis.rednodal.TuplaDNodoLocal;
 
 /**
@@ -10,13 +18,28 @@ import sdai.com.sis.rednodal.TuplaDNodoLocal;
  */
 public class DataSwapDProcesoImpl extends ElementoDRed implements DataSwapDProcesoImplLocal {
 
-    public static final String CODIGONODO = "DASWAPROCE";
+    private static final String CODIGONODO = "DASWAPROCE";
 
-    public static final String CODIGPROCE = "CODIGPROCE";
-    public static final String CDDATASWAP = "CDDATASWAP";
+    private static final String CODIGPROCE = "CODIGPROCE";
+    private static final String CDDATASWAP = "CDDATASWAP";
 
-    public DataSwapDProcesoImpl(TuplaDNodoLocal tuplaDNodoLocal) {
+    private DataSwapDProcesoImpl(TuplaDNodoLocal tuplaDNodoLocal) {
         super(tuplaDNodoLocal);
+    }
+
+    public static DataSwapDProcesoImpl getInstancia(String codigoDProceso) throws ErrorGeneral {
+        KeyCache keyCache = KeyCache.getInstancia(DataSwapDProcesoImpl.class, codigoDProceso);
+        GlobalCaches globalCaches = CDI.current().select(GlobalCaches.class).get();
+        CacheDSistemaLocal cacheDSistemaLocal = globalCaches.getCacheDSistemaLocal(KCachesDSistema.CachesDSistema.CACHEREDNO);
+        DataSwapDProcesoImpl instancia = (DataSwapDProcesoImpl) cacheDSistemaLocal.recuperarInstancia(keyCache);
+        if (instancia == null) {
+            NodosDRed nodosDRed = CDI.current().select(NodosDRed.class).get();
+            NodoDRedLocal nodoDRedLocal = nodosDRed.getNodoDRedLocal(CODIGONODO);
+            TuplaDNodoLocal tuplaDNodoLocal = nodoDRedLocal.getTuplaDNodo(CODIGPROCE, codigoDProceso);
+            instancia = new DataSwapDProcesoImpl(tuplaDNodoLocal);
+            cacheDSistemaLocal.almacenarInstancia(keyCache, instancia);
+        }
+        return instancia;
     }
 
     @Override
@@ -27,10 +50,5 @@ public class DataSwapDProcesoImpl extends ElementoDRed implements DataSwapDProce
     @Override
     public String getCodigoDDataSwap() {
         return getValorString(CDDATASWAP);
-    }
-
-    @Override
-    public String getCodigoDQualifer() {
-        return "";
     }
 }

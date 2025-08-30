@@ -1,6 +1,7 @@
 package sdai.com.sis.rednodal;
 
 import jakarta.ejb.Local;
+import sdai.com.sis.excepciones.ErrorGeneral;
 
 /**
  * @date 23/08/2025
@@ -18,9 +19,9 @@ public interface NodoDRedLocal {
 
     TuplaDNodoLocal[] getTuplasDNodo();
 
-    TuplaDNodoLocal getTuplaDNodo(Object... argumentos);
+    TuplaDNodoLocal getTuplaDNodo(Object... argumentos) throws ErrorGeneral;
 
-    TuplaDNodoLocal getTuplaDNodo(String... argumentos);
+    TuplaDNodoLocal getTuplaDNodo(String... argumentos) throws ErrorGeneral;
 
     TuplaDNodoLocal[] getTuplasDNodo(String... argumentos);
 

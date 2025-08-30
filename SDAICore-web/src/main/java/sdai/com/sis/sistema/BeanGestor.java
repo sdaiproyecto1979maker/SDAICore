@@ -61,6 +61,12 @@ public class BeanGestor {
             Map<String, String> parametrosDRequest = FacesUtil.getParametrosDRequest();
             String codigoDAccion = parametrosDRequest.get(PARMACCION);
             this.gestorDProcesosLocal.procesarAccion(codigoDAccion);
+            Map<String, Object> almacenDSesion = FacesUtil.getAlmacenDSesion();
+            String newPagina = (String) almacenDSesion.get(KProcesosDSesion.DNEWPAGINA);
+            if (Util.isCadenaNoVacia(newPagina)) {
+                almacenDSesion.remove(KProcesosDSesion.DNEWPAGINA);
+                return newPagina;
+            }
             return KProcesosDSesion.PaginasDProceso.PLANTILLAM;
         } catch (ErrorGeneral ex) {
             FacesMessage facesMessage = new FacesMessage(ex.getSeverity(), ex.getSummary(), ex.getMessage());

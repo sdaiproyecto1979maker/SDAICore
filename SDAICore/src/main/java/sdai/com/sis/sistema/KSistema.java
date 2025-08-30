@@ -17,6 +17,10 @@ public final class KSistema {
          * Nombre de sistema
          */
         public static final String NOMBRSISTE = "NOMBRSISTE";
+        /**
+         * Número de intentos login
+         */
+        public static final String NMINTLOGIN = "NMINTLOGIN";
     }
 
 }

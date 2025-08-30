@@ -37,6 +37,8 @@ public final class ElementoCFG {
         String className = getClaseDComparacion();
         ComparadorDElemento comparadorDElemento = (ComparadorDElemento) Reflexion.createInstancia(className);
         comparadorDElemento.getMerges(documentoXMLOrigen, documentoXMLDestino);
+        comparadorDElemento.getRemoves(documentoXMLOrigen, documentoXMLDestino);
+        comparadorDElemento.getPersists(documentoXMLOrigen, documentoXMLDestino);
         return comparadorDElemento;
     }
 

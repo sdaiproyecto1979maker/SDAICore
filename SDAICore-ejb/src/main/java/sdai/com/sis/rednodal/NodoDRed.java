@@ -1,7 +1,9 @@
 package sdai.com.sis.rednodal;
 
+import jakarta.faces.application.FacesMessage;
 import java.util.ArrayList;
 import java.util.List;
+import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.rednodal.atributosdnodo.AtributoDNodo;
 import sdai.com.sis.rednodal.nodos.Nodo;
 import sdai.com.sis.rednodal.tuplas.Tupla;
@@ -57,8 +59,28 @@ public final class NodoDRed implements NodoDRedLocal {
     }
 
     @Override
-    public TuplaDNodoLocal getTuplaDNodo(String... argumentos) {
+    public TuplaDNodoLocal getTuplaDNodo(String... argumentos) throws ErrorGeneral {
         TuplaDNodoLocal[] tuplaDNodoLocals = getTuplasDNodo(argumentos);
+        if (tuplaDNodoLocals == null || tuplaDNodoLocals.length == 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("No se han encontrado tuplas para el nodo ");
+            stringBuilder.append(getCodigoDNodo());
+            stringBuilder.append(" con los siguientes argumentos (");
+            for (int i = 0; i < argumentos.length; i = i + 2) {
+                if (i % 2 == 0) {
+                    stringBuilder.append(argumentos[i]);
+                } else {
+                    stringBuilder.append(": ");
+                    stringBuilder.append(argumentos[i + 1]);
+                }
+                if (i + 2 < argumentos.length) {
+                    stringBuilder.append(", ");
+                }
+            }
+            stringBuilder.append(")");
+            ErrorGeneral errorGeneral = new ErrorGeneral(FacesMessage.SEVERITY_ERROR, "Nodo de red", stringBuilder.toString());
+            throw errorGeneral;
+        }
         return tuplaDNodoLocals[0];
     }
 

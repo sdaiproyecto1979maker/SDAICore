@@ -29,7 +29,8 @@ import sdai.com.sis.rednodal.nodos.Nodo;
 @Table(name = KTuplas.NOMBRTABLA)
 @NamedQueries({
     @NamedQuery(name = KTuplas.NamedQueries.STUPLA0000, query = "SELECT T FROM Tupla T WHERE T.codigoDTupla=:CODIGTUPLA"),
-    @NamedQuery(name = KTuplas.NamedQueries.STUPLA0001, query = "SELECT T FROM Tupla T")
+    @NamedQuery(name = KTuplas.NamedQueries.STUPLA0001, query = "SELECT T FROM Tupla T"),
+    @NamedQuery(name = KTuplas.NamedQueries.STUPLA0002, query = "SELECT T FROM Tupla T WHERE T.entornoAplicacion=:ENTORNOAPP")
 })
 public class Tupla implements Serializable {
 
@@ -43,6 +44,9 @@ public class Tupla implements Serializable {
 
     @Column(name = KTuplas.AtributosDEntidad.DESCRTUPLA, length = 450, nullable = false)
     private String descripcionDTupla;
+
+    @Column(name = KTuplas.AtributosDEntidad.ENTORNOAPP, length = 10, nullable = false)
+    private String entornoAplicacion;
 
     @ManyToOne
     @JoinColumn(name = KNodos.AtributosDEntidad.IDENTINODO)
@@ -77,6 +81,14 @@ public class Tupla implements Serializable {
 
     public void setDescripcionDTupla(String descripcionDTupla) {
         this.descripcionDTupla = descripcionDTupla;
+    }
+
+    public String getEntornoAplicacion() {
+        return entornoAplicacion;
+    }
+
+    public void setEntornoAplicacion(String entornoAplicacion) {
+        this.entornoAplicacion = entornoAplicacion;
     }
 
     public Nodo getNodo() {

@@ -7,6 +7,9 @@ package sdai.com.sis.procesosdsesion;
  */
 public final class KProcesosDSesion {
 
+    public static final String NEWPROCESO = "NEWPROCESO";
+    public static final String DNEWPAGINA = "DNEWPAGINA";
+
     public final class ProcesosDSesion {
 
         /**
@@ -17,6 +20,10 @@ public final class KProcesosDSesion {
          * Proceso de login
          */
         public static final String PROCELOGIN = "PROCELOGIN";
+        /**
+         * Proceso cambio de clave
+         */
+        public static final String PRSWTCHPAS = "PRSWTCHPAS";
         /**
          * Proceso de inicio de sistema
          */

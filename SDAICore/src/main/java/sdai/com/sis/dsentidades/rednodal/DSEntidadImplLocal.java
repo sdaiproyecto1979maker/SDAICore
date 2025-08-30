@@ -1,4 +1,4 @@
-package sdai.com.sis.dsentidades;
+package sdai.com.sis.dsentidades.rednodal;
 
 /**
  * @date 23/08/2025

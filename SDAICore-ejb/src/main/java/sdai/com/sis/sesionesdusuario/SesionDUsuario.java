@@ -4,6 +4,7 @@ import jakarta.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import sdai.com.sis.seguridad.usuarios.Usuario;
 import sdai.com.sis.utilidades.Util;
 
 /**
@@ -14,7 +15,17 @@ import sdai.com.sis.utilidades.Util;
 @SessionScoped
 public class SesionDUsuario implements SesionDUsuarioLocal, Serializable {
 
+    private UsuarioDSesionLocal usuarioDSesionLocal;
     private Locale locale;
+
+    @Override
+    public UsuarioDSesionLocal getUsuarioDSesionLocal() {
+        return this.usuarioDSesionLocal;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuarioDSesionLocal = new UsuarioDSesion(usuario);
+    }
 
     @Override
     public Locale getLocale() {

@@ -1,17 +1,24 @@
 package sdai.com.sis.procesosdsesion;
 
 import jakarta.annotation.PreDestroy;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import java.io.Serializable;
+import sdai.com.sis.accionesdsistema.AccionDSistemaLocal;
+import sdai.com.sis.accionesdsistema.AccionesDSistemaLiteral;
+import sdai.com.sis.accionesdsistema.KAccionesDSistema;
+import sdai.com.sis.accionesdsistema.rednodal.AccionDSistemaImpl;
 import sdai.com.sis.dataswaps.DataSwapLocal;
+import sdai.com.sis.dataswaps.DataSwapsLiteral;
+import sdai.com.sis.dataswaps.KDataSwaps;
 import sdai.com.sis.dataswaps.rednodal.DataSwapImpl;
-import sdai.com.sis.dataswaps.rednodal.DataSwapsUtil;
 import sdai.com.sis.dsentidades.DSEntidadLocal;
 import sdai.com.sis.excepciones.ErrorGeneral;
+import sdai.com.sis.procesosdsesion.rednodal.AccionDProcesoImpl;
 import sdai.com.sis.procesosdsesion.rednodal.DataSwapDProcesoImpl;
 import sdai.com.sis.procesosdsesion.rednodal.ProcesoDSesionImplLocal;
-import sdai.com.sis.rednodal.ElementoDRedImplLocal;
-import sdai.com.sis.rednodal.GeneradorDElementos;
+import sdai.com.sis.utilidades.Util;
 
 /**
  * @date 23/08/2025
@@ -21,24 +28,42 @@ import sdai.com.sis.rednodal.GeneradorDElementos;
 public abstract class AbstractProcesoDSesion implements ProcesoDSesionLocal, Serializable {
 
     private ProcesoDSesionImplLocal procesoDSesionImplLocal;
+    @Inject
+    @Any
+    private Instance<DataSwapLocal> instancias;
     private DataSwapLocal dataSwapLocal;
     @Inject
-    private GeneradorDElementos generadorDElementos;
+    private GestorDProcesos gestorDProcesos;
     @Inject
-    private DataSwapsUtil dataSwapsUtil;
+    @Any
+    private Instance<AccionDSistemaLocal> acciones;
 
     @Override
-    public void setElementoDRedImplLocal(ElementoDRedImplLocal elementoDRedImplLocal) {
-        this.procesoDSesionImplLocal = (ProcesoDSesionImplLocal) elementoDRedImplLocal;
+    public void setProcesoDSesionImplLocal(ProcesoDSesionImplLocal procesoDSesionImplLocal) {
+        this.procesoDSesionImplLocal = procesoDSesionImplLocal;
     }
 
     @Override
     public void iniciar() throws ErrorGeneral {
         String codigoDProceso = getCodigoDProceso();
-        DataSwapDProcesoImpl dataSwapDProcesoImpl = (DataSwapDProcesoImpl) this.generadorDElementos.getElementoDRedImplLocal(DataSwapDProcesoImpl.CODIGONODO, DataSwapDProcesoImpl.class, DataSwapDProcesoImpl.CODIGPROCE, codigoDProceso);
-        String codigoDDataSwap = dataSwapDProcesoImpl.getCodigoDDataSwap();
-        this.dataSwapLocal = (DataSwapLocal) this.generadorDElementos.getElementoDRedLocal(DataSwapImpl.CODIGONODO, DataSwapImpl.class, DataSwapImpl.CDDATASWAP, codigoDDataSwap);
+        String codigoDDataSwap;
+        try {
+            DataSwapDProcesoImpl dataSwapDProcesoImpl = DataSwapDProcesoImpl.getInstancia(codigoDProceso);
+            codigoDDataSwap = dataSwapDProcesoImpl.getCodigoDDataSwap();
+        } catch (ErrorGeneral ex) {
+            codigoDDataSwap = KDataSwaps.DataSwaps.DFDATASWAP;
+        }
+        DataSwapImpl dataSwapImpl = DataSwapImpl.getInstancia(codigoDDataSwap);
+        String codigoDQualifer = dataSwapImpl.getCodigoDQualifer();
+        if (Util.isCadenaVacia(codigoDQualifer)) {
+            codigoDQualifer = KDataSwaps.DataSwaps.DFDATASWAP;
+        }
+        DataSwapsLiteral dataSwapsLiteral = DataSwapsLiteral.of(codigoDQualifer);
+        Instance<DataSwapLocal> instancia = this.instancias.select(dataSwapsLiteral);
+        this.dataSwapLocal = instancia.get();
+        this.dataSwapLocal.setDataSwapImplLocal(dataSwapImpl);
         this.dataSwapLocal.setProcesoDSesionLocal(this);
+        this.dataSwapLocal.iniciar();
     }
 
     @Override
@@ -51,8 +76,28 @@ public abstract class AbstractProcesoDSesion implements ProcesoDSesionLocal, Ser
 
     @Override
     public void procesarAccion(String codigoDAccion) throws ErrorGeneral {
-        /*AccionDSistemaLocal accionDSistemaLocal = this.generadorAccionesDProceso.getAccionDSistemaLocal(getCodigoDProceso(), codigoDAccion);
-        accionDSistemaLocal.procesarAccion(this);*/
+        String codigoDQualifer;
+        String codigoDProceso = getCodigoDProceso();
+        AccionDSistemaImpl accionDSistemaImpl = null;
+        AccionDProcesoImpl accionDProcesoImpl = AccionDProcesoImpl.getInstancia(codigoDProceso, codigoDAccion);
+        if (accionDProcesoImpl != null) {
+            codigoDQualifer = accionDProcesoImpl.getCodigoDQualifer();
+        } else {
+            accionDSistemaImpl = AccionDSistemaImpl.getInstancia(codigoDAccion);
+            codigoDQualifer = accionDSistemaImpl.getCodigoDQualifer();
+        }
+        if (Util.isCadenaVacia(codigoDQualifer)) {
+            codigoDQualifer = KAccionesDSistema.AccionesDSistema.DEFAACCION;
+        }
+        AccionesDSistemaLiteral literal = AccionesDSistemaLiteral.of(codigoDQualifer);
+        Instance<AccionDSistemaLocal> instancia = this.acciones.select(literal);
+        AccionDSistemaLocal accionDSistemaLocal = instancia.get();
+        if (accionDProcesoImpl != null) {
+            accionDSistemaLocal.setAccionDProcesoImplLocal(accionDProcesoImpl);
+        } else {
+            accionDSistemaLocal.setAccionDSistemaImplLocal(accionDSistemaImpl);
+        }
+        accionDSistemaLocal.procesarAccion(this);
     }
 
     @Override
@@ -75,9 +120,20 @@ public abstract class AbstractProcesoDSesion implements ProcesoDSesionLocal, Ser
         return procesoDSesionImplLocal;
     }
 
+    @Override
+    public String getCodigoDQualifer() {
+        return this.procesoDSesionImplLocal.getCodigoDQualifer();
+    }
+
     @PreDestroy
     public void destroy() {
-        this.dataSwapsUtil.destroyDataSwapLocal(this.dataSwapLocal);
+        String codigoDQualifer = this.dataSwapLocal.getCodigoDQualifer();
+        if (Util.isCadenaVacia(codigoDQualifer)) {
+            codigoDQualifer = KDataSwaps.DataSwaps.DFDATASWAP;
+        }
+        DataSwapsLiteral literal = DataSwapsLiteral.of(codigoDQualifer);
+        Instance<DataSwapLocal> instancia = this.instancias.select(literal);
+        instancia.destroy(this.dataSwapLocal);
     }
 
 }

@@ -26,7 +26,8 @@ import sdai.com.sis.rednodal.tuplas.Tupla;
 @Table(name = KNodos.NOMBRTABLA)
 @NamedQueries({
     @NamedQuery(name = KNodos.NamedQueries.SNODOS0000, query = "SELECT N FROM Nodo N WHERE N.codigoDNodo=:CODIGONODO"),
-    @NamedQuery(name = KNodos.NamedQueries.SNODOS0001, query = "SELECT N FROM Nodo N")
+    @NamedQuery(name = KNodos.NamedQueries.SNODOS0001, query = "SELECT N FROM Nodo N"),
+    @NamedQuery(name = KNodos.NamedQueries.SNODOS0002, query = "SELECT N FROM Nodo N WHERE N.entornoAplicacion=:ENTORNOAPP")
 })
 public class Nodo implements Serializable {
 
@@ -40,6 +41,9 @@ public class Nodo implements Serializable {
 
     @Column(name = KNodos.AtributosDEntidad.DESCRDNODO, length = 450, nullable = false)
     private String descripcionDNodo;
+
+    @Column(name = KNodos.AtributosDEntidad.ENTORNOAPP, length = 10, nullable = false)
+    private String entornoAplicacion;
 
     @OneToMany(mappedBy = "nodo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<AtributoDNodo> atributosDNodo;
@@ -74,6 +78,14 @@ public class Nodo implements Serializable {
 
     public void setDescripcionDNodo(String descripcionDNodo) {
         this.descripcionDNodo = descripcionDNodo;
+    }
+
+    public String getEntornoAplicacion() {
+        return entornoAplicacion;
+    }
+
+    public void setEntornoAplicacion(String entornoAplicacion) {
+        this.entornoAplicacion = entornoAplicacion;
     }
 
     public List<AtributoDNodo> getAtributosDNodo() {

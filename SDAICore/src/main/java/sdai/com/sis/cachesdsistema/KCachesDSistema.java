@@ -13,6 +13,10 @@ public final class KCachesDSistema {
          * Cache de rednodal
          */
         public static final String CACHEREDNO = "CACHEREDNO";
+        /**
+         * Cache de seguridad
+         */
+        public static final String CACHESEGUR = "CACHESEGUR";
     }
 
 }

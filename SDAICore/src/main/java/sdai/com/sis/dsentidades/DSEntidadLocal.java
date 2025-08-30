@@ -1,5 +1,6 @@
 package sdai.com.sis.dsentidades;
 
+import sdai.com.sis.dsentidades.rednodal.DSEntidadImplLocal;
 import sdai.com.sis.excepciones.ErrorGeneral;
 import sdai.com.sis.utilidades.EstructuraDatos;
 
@@ -14,15 +15,23 @@ public interface DSEntidadLocal {
 
     void validarIntegridad() throws ErrorGeneral;
 
-    void generateDSEntidad();
+    void generateDSEntidad() throws ErrorGeneral;
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    String getCodigoDEntidad();
+
+    String getCodigoDQualifer();
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
 
     String getValorStringOriginal(String key);
 
     String getValorString(String key);
 
     void addValorDDato(String key, Object value);
-
-    String getCodigoDEntidad();
 
     DSEntidadImplLocal getDSEntidadImplLocal();
 

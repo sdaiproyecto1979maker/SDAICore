@@ -47,6 +47,13 @@ public class ADAtributosDTupla {
         return query.getResultList().toArray(AtributoDTupla[]::new);
     }
 
+    public AtributoDTupla[] getAtributosDTupla(String entornoAplicacion) {
+        EntityManager entityManager = this.poolDConexionesLocal.getConexionCFG();
+        TypedQuery<AtributoDTupla> query = entityManager.createNamedQuery(KAtributosDTupla.NamedQueries.SATRTU0002, AtributoDTupla.class);
+        query.setParameter(KAtributosDTupla.AtributosDEntidad.ENTORNOAPP, entornoAplicacion);
+        return query.getResultList().toArray(AtributoDTupla[]::new);
+    }
+
     public void persistAtributoDTuplaVersion(XMLCFGLocal xmlCFGLocal) {
         XMLAtributoDTupla xmlAtributoDTupla = (XMLAtributoDTupla) xmlCFGLocal;
         String codigoDTupla = xmlAtributoDTupla.getCodigoDTupla();

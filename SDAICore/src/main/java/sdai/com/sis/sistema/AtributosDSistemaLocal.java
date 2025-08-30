@@ -12,4 +12,6 @@ public interface AtributosDSistemaLocal {
 
     String getValorString(String nombreDAtributo);
 
+    Integer getValorInteger(String nombreDAtributo);
+
 }

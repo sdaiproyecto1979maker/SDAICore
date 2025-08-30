@@ -37,6 +37,14 @@ public final class Fecha {
         return new Fecha(localDate);
     }
 
+    public void addMeses(Long numeroDMeses) {
+        this.localDate = this.localDate.plusMonths(numeroDMeses);
+    }
+
+    public Boolean isMenor(Fecha fecha) {
+        return this.localDate.isBefore(fecha.getLocalDate());
+    }
+
     public String toChar() {
         return toChar("dd/MM/yyyy");
     }

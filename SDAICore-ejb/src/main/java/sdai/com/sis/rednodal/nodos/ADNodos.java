@@ -42,6 +42,13 @@ public class ADNodos {
         return query.getResultList().toArray(Nodo[]::new);
     }
 
+    public Nodo[] getNodos(String entornoAplicacion) {
+        EntityManager entityManager = this.poolDConexionesLocal.getConexionCFG();
+        TypedQuery<Nodo> query = entityManager.createNamedQuery(KNodos.NamedQueries.SNODOS0002, Nodo.class);
+        query.setParameter(KNodos.AtributosDEntidad.ENTORNOAPP, entornoAplicacion);
+        return query.getResultList().toArray(Nodo[]::new);
+    }
+
     public void persistNodoVersion(XMLCFGLocal xmlCFGLocal) {
         XMLNodo xmlNodo = (XMLNodo) xmlCFGLocal;
         String codigoDNodo = xmlNodo.getCodigoDNodo();

@@ -10,6 +10,10 @@ public final class KAccionesDSistema {
     public final class AccionesDSistema {
 
         /**
+         * Accion default
+         */
+        public static final String DEFAACCION = "DEFAACCION";
+        /**
          * Acción de login
          */
         public static final String ACCIOLOGIN = "ACCIOLOGIN";

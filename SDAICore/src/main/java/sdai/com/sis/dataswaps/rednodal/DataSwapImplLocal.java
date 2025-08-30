@@ -1,16 +1,16 @@
-package sdai.com.sis.dataswaps;
-
-import sdai.com.sis.rednodal.ElementoDRedImplLocal;
+package sdai.com.sis.dataswaps.rednodal;
 
 /**
  * @date 23/08/2025
  * @since VERSIONDCOREENCURSO
  * @author Sergio_M
  */
-public interface DataSwapImplLocal extends ElementoDRedImplLocal {
+public interface DataSwapImplLocal {
 
     String getCodigoDDataSwap();
 
     String getDescripcionDDataSwap();
+
+    String getCodigoDQualifer();
 
 }

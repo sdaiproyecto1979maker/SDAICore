@@ -79,5 +79,11 @@ public class AtributosDSistema implements AtributosDSistemaLocal {
         Object value = this.atributosDSistema.get(nombreDAtributo);
         return Transform.toString(value);
     }
+    
+    @Override
+    public Integer getValorInteger(String nombreDAtributo) {
+        Object value = this.atributosDSistema.get(nombreDAtributo);
+        return Transform.toInteger(value);
+    }
 
 }

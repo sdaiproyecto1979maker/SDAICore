@@ -6,9 +6,7 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import sdai.com.sis.accionesdsistema.AccionDSistemaLocal;
 import sdai.com.sis.accionesdsistema.AccionesDSistemaLiteral;
-import sdai.com.sis.rednodal.NodoDRedLocal;
 import sdai.com.sis.rednodal.NodosDRedLocal;
-import sdai.com.sis.rednodal.TuplaDNodoLocal;
 
 /**
  * @date 23/08/2025
@@ -25,10 +23,12 @@ public class AccionesDSistemaUtil {
     private Instance<AccionDSistemaLocal> instancias;
 
     public AccionDSistemaLocal getAccionDSistemaLocal(String codigoDAccion) {
-        NodoDRedLocal nodoDRedLocal = this.nodosDRedLocal.getNodoDRedLocal(AccionDSistemaImpl.CODIGONODO);
+        /*NodoDRedLocal nodoDRedLocal = this.nodosDRedLocal.getNodoDRedLocal(AccionDSistemaImpl.CODIGONODO);
         TuplaDNodoLocal tuplaDNodoLocal = nodoDRedLocal.getTuplaDNodo(AccionDSistemaImpl.CODIACCION, codigoDAccion);
         AccionDSistemaImpl accionDSistemaImpl = new AccionDSistemaImpl(tuplaDNodoLocal);
         return createAccionDSistemaLocal(accionDSistemaImpl);
+         */
+        return null;
     }
 
     private AccionDSistemaLocal createAccionDSistemaLocal(AccionDSistemaImpl accionDSistemaImpl) {

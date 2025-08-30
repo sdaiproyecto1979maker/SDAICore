@@ -1,7 +1,6 @@
 package sdai.com.sis.procesosdsesion.rednodal;
 
 import jakarta.ejb.Local;
-import sdai.com.sis.rednodal.ElementoDRedImplLocal;
 
 /**
  * @date 23/08/2025
@@ -9,11 +8,13 @@ import sdai.com.sis.rednodal.ElementoDRedImplLocal;
  * @author Sergio_M
  */
 @Local
-public interface ProcesoDSesionImplLocal extends ElementoDRedImplLocal {
+public interface ProcesoDSesionImplLocal {
 
     String getCodigoDProceso();
 
-    String getDescripcionDProceso();    
+    String getDescripcionDProceso();
+
+    String getCodigoDQualifer();
 
     String getPaginaDProceso();
 

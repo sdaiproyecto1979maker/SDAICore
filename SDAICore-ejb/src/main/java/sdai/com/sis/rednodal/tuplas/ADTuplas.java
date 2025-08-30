@@ -46,6 +46,13 @@ public class ADTuplas {
         return query.getResultList().toArray(Tupla[]::new);
     }
 
+    public Tupla[] getTuplas(String entornoAplicacion) {
+        EntityManager entityManager = this.poolDConexionesLocal.getConexionCFG();
+        TypedQuery<Tupla> query = entityManager.createNamedQuery(KTuplas.NamedQueries.STUPLA0002, Tupla.class);
+        query.setParameter(KTuplas.AtributosDEntidad.ENTORNOAPP, entornoAplicacion);
+        return query.getResultList().toArray(Tupla[]::new);
+    }
+
     public void persistTuplaVersion(XMLCFGLocal xmlCFGLocal) {
         XMLTupla xmlTupla = (XMLTupla) xmlCFGLocal;
         String codigoDTupla = xmlTupla.getCodigoDTupla();

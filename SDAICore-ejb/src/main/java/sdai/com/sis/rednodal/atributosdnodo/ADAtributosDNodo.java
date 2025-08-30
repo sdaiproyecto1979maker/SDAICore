@@ -47,6 +47,13 @@ public class ADAtributosDNodo {
         return query.getResultList().toArray(AtributoDNodo[]::new);
     }
 
+    public AtributoDNodo[] getAtributosDNodo(String entornoAplicacion) {
+        EntityManager entityManager = this.poolDConexionesLocal.getConexionCFG();
+        TypedQuery<AtributoDNodo> query = entityManager.createNamedQuery(KAtributosDNodo.NamedQueries.SATRNO0002, AtributoDNodo.class);
+        query.setParameter(KAtributosDNodo.AtributosDEntidad.ENTORNOAPP, entornoAplicacion);
+        return query.getResultList().toArray(AtributoDNodo[]::new);
+    }
+
     public void persistAtributoDNodoVersion(XMLCFGLocal xmlCFGLocal) {
         XMLAtributoDNodo xmlAtributoDNodo = (XMLAtributoDNodo) xmlCFGLocal;
         String codigoDNodo = xmlAtributoDNodo.getCodigoDNodo();

@@ -25,7 +25,8 @@ import sdai.com.sis.rednodal.nodos.Nodo;
 @Table(name = KAtributosDNodo.NOMBRTABLA)
 @NamedQueries({
     @NamedQuery(name = KAtributosDNodo.NamedQueries.SATRNO0000, query = "SELECT A FROM AtributoDNodo A WHERE A.nodo.codigoDNodo=:CODIGONODO AND A.datoDSistema.codigoDDato=:CODIGODATO"),
-    @NamedQuery(name = KAtributosDNodo.NamedQueries.SATRNO0001, query = "SELECT A FROM AtributoDNodo A")
+    @NamedQuery(name = KAtributosDNodo.NamedQueries.SATRNO0001, query = "SELECT A FROM AtributoDNodo A"),
+    @NamedQuery(name = KAtributosDNodo.NamedQueries.SATRNO0002, query = "SELECT A FROM AtributoDNodo A WHERE A.entornoAplicacion=:ENTORNOAPP")
 })
 public class AtributoDNodo implements Serializable {
 
@@ -41,6 +42,9 @@ public class AtributoDNodo implements Serializable {
     @ManyToOne
     @JoinColumn(name = KDatosDSistema.AtributosDEntidad.IDDATSISTE)
     private DatoDSistema datoDSistema;
+
+    @Column(name = KNodos.AtributosDEntidad.ENTORNOAPP, length = 10, nullable = false)
+    private String entornoAplicacion;
 
     AtributoDNodo() {
     }
@@ -67,6 +71,14 @@ public class AtributoDNodo implements Serializable {
 
     public void setDatoDSistema(DatoDSistema datoDSistema) {
         this.datoDSistema = datoDSistema;
+    }
+
+    public String getEntornoAplicacion() {
+        return entornoAplicacion;
+    }
+
+    public void setEntornoAplicacion(String entornoAplicacion) {
+        this.entornoAplicacion = entornoAplicacion;
     }
 
 }
